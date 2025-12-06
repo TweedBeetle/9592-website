@@ -2,18 +2,38 @@
 
 Personal/business website for Christo Wilken / 9592 Solutions.
 
+## About
+
+**Business**: 9592 Solutions UG (German limited liability)
+**Location**: Berlin (as of Nov 2025)
+**Email**: christo@9592.tech
+**Domain**: 9592.tech
+
+**What I do**: AI systems and software development. Conversational agents, retrieval pipelines, LLM integrations, data extraction. Clients include content creators and small businesses needing AI-powered tools.
+
+**Background**: CS from TU Munich. Self-employed, working with clients worldwide.
+
 ## Stack
 
-- **Framework**: Astro (static site generator)
+- **Framework**: Astro 5 (static site generator)
 - **Styling**: Tailwind CSS v4
+- **TypeScript**: Strict mode
 - **Hosting**: Vercel
-- **Domain**: 9592.tech
+- **Fonts**: Inter (body), JetBrains Mono (code)
+
+## Design Philosophy
+
+**Minimalist, not minimal**: Clean and uncluttered, but with enough personality to be memorable. Typography and spacing do the heavy lifting.
+
+**Dark theme primary**: #0a0a0a background, off-white text. Easier on eyes, fits the technical aesthetic.
+
+**No gratuitous animations**: Subtle hover states and transitions only. Motion should feel purposeful.
+
+**Professional but not corporate**: This is a personal brand. Technical sophistication over marketing polish.
 
 ## Design System
 
 ### Colors
-
-Dark mode primary:
 
 | Token | Value | Usage |
 |-------|-------|-------|
@@ -21,19 +41,47 @@ Dark mode primary:
 | `bg-secondary` | `#141414` | Card/section backgrounds |
 | `text-primary` | `#fafafa` | Headings, important text |
 | `text-secondary` | `#a1a1a1` | Body text, descriptions |
-| `accent` | `#3b82f6` | Links, highlights (blue-500) |
+| `accent` | `#3b82f6` | Links, highlights |
+| `accent-hover` | `#60a5fa` | Hover states |
 
 ### Typography
 
-- **Headings**: Inter (system fallback: sans-serif)
-- **Body**: Inter
-- **Code/technical**: JetBrains Mono or system monospace
+- **Headings**: Inter, semibold/bold
+- **Body**: Inter, regular
+- **Code/monospace**: JetBrains Mono
 
 ### Spacing
 
-Use Tailwind's default scale. Prefer generous whitespace:
+Generous whitespace. Use Tailwind's scale:
 - Section padding: `py-24` or `py-32`
 - Content max-width: `max-w-3xl` for text, `max-w-5xl` for wider layouts
+
+## Content & Voice
+
+**Be direct**: Say what you mean. No filler, no hedging.
+
+**No superlatives**: Avoid "amazing", "incredible", "cutting-edge". Let the work speak.
+
+**Technically accurate**: Prefer precise descriptions over marketing speak.
+
+**Honest about scope**: Don't overclaim. If it's a small project, say so.
+
+### Writing Style
+
+- Active voice
+- Short sentences and paragraphs
+- No em dashes (use colons or break into sentences)
+- No emoji unless explicitly requested
+
+## Code Standards
+
+**No over-engineering**: Only add what's needed. Three similar lines > premature abstraction.
+
+**No dead code**: Delete unused code completely. No commented-out blocks.
+
+**TypeScript strict**: Avoid `any`. Use proper types.
+
+**Edit over create**: Prefer modifying existing files over adding new ones.
 
 ## Project Structure
 
@@ -43,9 +91,9 @@ src/
     Layout.astro      # Base HTML layout
   pages/
     index.astro       # Homepage
-  styles/
-    global.css        # Tailwind imports + custom CSS
   components/         # Reusable components (as needed)
+  styles/
+    global.css        # Tailwind imports + theme tokens
 public/
   favicon.svg
 ```
@@ -54,7 +102,7 @@ public/
 
 ### Current Pages
 
-- `/` - Homepage with hero, brief intro, contact CTA
+- `/` - Homepage with hero, services, selected work
 
 ### Planned
 
@@ -64,7 +112,7 @@ public/
 ## Development
 
 ```bash
-npm run dev      # Start dev server
+npm run dev      # Start dev server (localhost:4321)
 npm run build    # Build for production
 npm run preview  # Preview production build
 ```
@@ -78,7 +126,6 @@ npx vercel        # Deploy preview
 npx vercel --prod # Deploy production
 ```
 
-## Contact
+## Reference Material
 
-- Email: christo@9592.tech
-- No contact form (intentional)
+For profile content and project details: `~/memex/2_Areas/Self/Profile/`
