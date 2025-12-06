@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+  <main class="max-w-3xl mx-auto px-6 py-24 md:py-32">
+    <!-- Hero -->
+    <section class="mb-20">
+      <p class="font-mono text-sm text-accent mb-4">9592 Solutions</p>
+      <h1 class="text-4xl md:text-5xl font-semibold text-text-primary mb-6 leading-tight">
+        Christo Wilken
+      </h1>
+      <p class="text-xl text-text-secondary leading-relaxed mb-8">
+        I build AI systems and software that solve real problems.
+        Based in Berlin, working with clients worldwide.
+      </p>
+      <a
+        href="mailto:christo@9592.tech"
+        class="inline-flex items-center gap-2 text-accent hover:text-accent-hover transition-colors"
+      >
+        <span>christo@9592.tech</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </section>
+
+    <!-- What I do -->
+    <section class="mb-20">
+      <h2 class="font-mono text-sm text-text-secondary mb-6 uppercase tracking-wider">What I do</h2>
+      <div class="space-y-4 text-text-secondary leading-relaxed">
+        <p>
+          I design and implement AI-powered systems: conversational agents,
+          retrieval pipelines, and custom integrations that actually work in production.
+        </p>
+        <p>
+          Recent work includes building knowledge assistants for content creators,
+          automated document processing, and LLM-based data extraction.
+        </p>
+      </div>
+    </section>
+
+    <!-- Selected work -->
+    <section class="mb-20">
+      <h2 class="font-mono text-sm text-text-secondary mb-6 uppercase tracking-wider">Selected work</h2>
+      <ul class="space-y-6">
+        <li class="group">
+          <a href="https://askjeevesny.com" target="_blank" rel="noopener noreferrer" class="block p-4 -mx-4 rounded-lg hover:bg-bg-secondary transition-colors">
+            <h3 class="text-text-primary font-medium mb-1 group-hover:text-accent transition-colors">
+              Jeeves Laundry Assistant
+            </h3>
+            <p class="text-text-secondary text-sm">
+              AI chatbot trained on 400+ videos from @jeeves_ny, answering laundry and garment care questions.
+            </p>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pt-12 border-t border-bg-secondary">
+      <p class="text-sm text-text-secondary">
+        <a href="mailto:christo@9592.tech" class="hover:text-accent transition-colors">christo@9592.tech</a>
+      </p>
+    </footer>
+  </main>
+</Layout>
