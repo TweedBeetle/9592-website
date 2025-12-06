@@ -3,14 +3,23 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
-  <main class="max-w-3xl mx-auto px-6 py-24 md:py-32">
+  <main class="max-w-3xl mx-auto px-6 py-16 md:py-20">
     <!-- Hero -->
-    <section class="mb-20">
-      <p class="font-mono text-sm text-accent mb-4">9592 Solutions</p>
-      <h1 class="text-4xl md:text-5xl font-semibold text-text-primary mb-6 leading-tight">
-        Christo Wilken
-      </h1>
-      <p class="text-xl text-text-secondary leading-relaxed mb-8">
+    <section class="mb-14">
+      <div class="flex items-center gap-5 mb-5">
+        <img
+          src="/christo-wilken.jpg"
+          alt="Christo Wilken"
+          class="w-24 h-24 rounded-full object-cover"
+        />
+        <div class="-translate-y-[3px]">
+          <h1 class="text-[30px] md:text-5xl font-semibold text-text-primary leading-tight">
+            Christo Wilken
+          </h1>
+          <p class="font-mono text-sm text-text-secondary mt-1 ml-[3px]">9592 Solutions</p>
+        </div>
+      </div>
+      <p class="text-xl text-text-secondary leading-relaxed mb-6">
         I build AI systems and software that solve real problems.
         Based in Berlin, working with clients worldwide.
       </p>
@@ -24,42 +33,79 @@ import Layout from '../layouts/Layout.astro';
     </section>
 
     <!-- What I do -->
-    <section class="mb-20">
-      <h2 class="font-mono text-sm text-text-secondary mb-6 uppercase tracking-wider">What I do</h2>
+    <section class="mb-14">
+      <h2 class="font-mono text-sm text-text-secondary mb-4 uppercase tracking-wider">What I do</h2>
       <div class="space-y-4 text-text-secondary leading-relaxed">
         <p>
-          I design and implement AI-powered systems: conversational agents,
-          retrieval pipelines, and custom integrations that actually work in production.
+          I build software across the stack: backends, mobile apps, AI systems,
+          and the infrastructure to make them work in production.
         </p>
         <p>
-          Recent work includes building knowledge assistants for content creators,
-          automated document processing, and LLM-based data extraction.
+          Most of my work involves LLMs. Conversational agents, retrieval systems,
+          data extraction. But I focus on whatever creates real value for you,
+          your users, or your audience.
         </p>
       </div>
     </section>
 
     <!-- Selected work -->
-    <section class="mb-20">
-      <h2 class="font-mono text-sm text-text-secondary mb-6 uppercase tracking-wider">Selected work</h2>
-      <ul class="space-y-6">
+    <section class="mb-14">
+      <h2 class="font-mono text-sm text-text-secondary mb-4 uppercase tracking-wider">Selected work</h2>
+      <ul class="space-y-4">
         <li class="group">
-          <a href="https://askjeevesny.com" target="_blank" rel="noopener noreferrer" class="block p-4 -mx-4 rounded-lg hover:bg-bg-secondary transition-colors">
-            <h3 class="text-text-primary font-medium mb-1 group-hover:text-accent transition-colors">
-              Jeeves Laundry Assistant
-            </h3>
-            <p class="text-text-secondary text-sm">
-              AI chatbot trained on 400+ videos from @jeeves_ny, answering laundry and garment care questions.
-            </p>
+          <a href="https://askjeevesny.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 -mx-4 rounded-lg hover:bg-bg-secondary transition-colors">
+            <div>
+              <h3 class="text-text-primary font-medium mb-1 group-hover:text-accent transition-colors flex items-center gap-2">
+                Jeeves Laundry Assistant
+                <span class="inline-flex items-center gap-1.5 text-[11px] font-mono text-emerald-500/50 ml-1">
+                  <span class="relative flex h-2 w-2">
+                    <span class="absolute inline-flex h-full w-full rounded-full bg-emerald-500/30 animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite]"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500/40 shadow-[0_0_6px_rgba(16,185,129,0.4)]"></span>
+                  </span>
+                  live
+                </span>
+              </h3>
+              <p class="text-text-secondary text-sm">
+                AI chatbot trained on 400+ videos from @jeeves_ny, answering laundry and garment care questions.
+              </p>
+            </div>
+            <svg class="w-4 h-4 text-text-secondary/40 shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </li>
+        <li class="group">
+          <a href="https://ai-actions.app" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 -mx-4 rounded-lg hover:bg-bg-secondary transition-colors">
+            <div>
+              <h3 class="text-text-primary font-medium mb-1 group-hover:text-accent transition-colors">
+                AI Actions
+              </h3>
+              <p class="text-text-secondary text-sm">
+                iOS app exposing ChatGPT, DALL-E, Perplexity, and Gemini through native Apple Shortcuts.
+              </p>
+            </div>
+            <svg class="w-4 h-4 text-text-secondary/40 shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </li>
+        <li class="group">
+          <a href="/Christo_Wilken_Masters_Thesis_LLM_Reasoning_TUM_2025.pdf" class="flex items-center justify-between p-4 -mx-4 rounded-lg hover:bg-bg-secondary transition-colors">
+            <div>
+              <h3 class="text-text-primary font-medium mb-1 group-hover:text-accent transition-colors">
+                Master's Thesis
+              </h3>
+              <p class="text-text-secondary text-sm">
+                Process reward models for mathematical reasoning in LLMs. TU Munich, 2025.
+              </p>
+            </div>
+            <svg class="w-4 h-4 text-text-secondary/40 shrink-0 ml-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
           </a>
         </li>
       </ul>
     </section>
 
-    <!-- Footer -->
-    <footer class="pt-12 border-t border-bg-secondary">
-      <p class="text-sm text-text-secondary">
-        <a href="mailto:christo@9592.tech" class="hover:text-accent transition-colors">christo@9592.tech</a>
-      </p>
-    </footer>
   </main>
 </Layout>

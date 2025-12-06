@@ -126,6 +126,12 @@ npx vercel        # Deploy preview
 npx vercel --prod # Deploy production
 ```
 
+### Workflow
+
+**Always preview locally before deploying to production.** Use `npm run dev` and Playwright to verify changes visually before running `vercel --prod`.
+
+For pixel-perfect adjustments, use Playwright's `browser_evaluate()` to tweak styles in real-time before committing to code.
+
 ## Reference Material
 
 For profile content and project details: `~/memex/2_Areas/Self/Profile/`
