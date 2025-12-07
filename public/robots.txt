@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://9592.tech/sitemap-index.xml
