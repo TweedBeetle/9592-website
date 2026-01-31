@@ -221,4 +221,126 @@ const articleStructuredData = {
     color: var(--color-text-primary);
     font-weight: 600;
   }
+
+  /* Footnote styling */
+  .prose .footnotes {
+    margin-top: 3em;
+    padding-top: 1.5em;
+    border-top: 1px solid var(--color-bg-secondary);
+    font-size: 0.9em;
+  }
+
+  .prose .footnotes-sep {
+    display: none;
+  }
+
+  .prose .footnotes ol {
+    padding-left: 1.5em;
+  }
+
+  .prose .footnotes li {
+    margin-bottom: 0.75em;
+  }
+
+  /* Footnote reference in text */
+  .prose sup a[href^="#fn"] {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0 0.1em;
+  }
+
+  .prose sup a[href^="#fn"]:hover {
+    text-decoration: underline;
+  }
+
+  /* Back-reference link */
+  .prose .footnotes a[href^="#fnref"] {
+    text-decoration: none;
+    margin-left: 0.25em;
+  }
+
+  /* Highlight animation for targets */
+  @keyframes highlight-flash {
+    0% { background-color: rgba(59, 130, 246, 0.3); }
+    100% { background-color: transparent; }
+  }
+
+  .prose .footnotes li:target {
+    animation: highlight-flash 1.5s ease-out;
+    border-radius: 0.25em;
+    padding: 0.25em;
+    margin-left: -0.25em;
+  }
+
+  .prose sup:target,
+  .prose sup:has(a:target) {
+    animation: highlight-flash 1.5s ease-out;
+    border-radius: 0.25em;
+  }
+
+  /* Alternative: highlight the parent paragraph when returning */
+  .prose p:has(sup a:target),
+  .prose li:has(sup a:target) {
+    animation: highlight-flash 1.5s ease-out;
+    border-radius: 0.25em;
+  }
+</style>
+
+<style>
+  /* Fast smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+</style>
+
+<script>
+  // Smooth scroll with delayed highlight
+  document.addEventListener('DOMContentLoaded', () => {
+    const footnoteLinks = document.querySelectorAll('a[href^="#fn"], a[href^="#fnref"]');
+
+    footnoteLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href')?.slice(1);
+        const target = document.getElementById(targetId || '');
+
+        if (target) {
+          // Smooth scroll to center
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+          // Update URL hash
+          history.pushState(null, '', link.getAttribute('href') || '');
+
+          // Add highlight after small delay (let scroll settle)
+          setTimeout(() => {
+            target.classList.add('footnote-highlight');
+          }, 300);
+
+          // Remove highlight after animation (300ms delay + 2.25s duration)
+          setTimeout(() => {
+            target.classList.remove('footnote-highlight');
+          }, 2550);
+        }
+      });
+    });
+  });
+</script>
+
+<style is:global>
+  .footnote-highlight {
+    animation: highlight-flash 2.25s ease-out !important;
+    border-radius: 0.25em;
+  }
+
+  .prose li.footnote-highlight {
+    padding: 0.25em;
+    margin-left: -0.25em;
+  }
 </style>
