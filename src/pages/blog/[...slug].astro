@@ -1,0 +1,224 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: post,
+  }));
+}
+
+type Props = CollectionEntry<'blog'>;
+
+const post = Astro.props;
+const { Content } = await post.render();
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+// Structured data for article
+const articleStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": post.data.title,
+  "description": post.data.description,
+  "author": {
+    "@type": "Person",
+    "name": post.data.author,
+    "url": "https://9592.tech"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "9592 Solutions",
+    "url": "https://9592.tech"
+  },
+  "datePublished": post.data.publishedAt.toISOString(),
+  "dateModified": (post.data.updatedAt || post.data.publishedAt).toISOString(),
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": Astro.url.href
+  }
+};
+---
+
+<Layout
+  title={`${post.data.title} | 9592 Solutions`}
+  description={post.data.description}
+>
+  <!-- Article structured data (JSON-LD can go in body) -->
+  <script type="application/ld+json" set:html={JSON.stringify(articleStructuredData)} />
+
+  <main class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <!-- Back link -->
+    <a
+      href="/blog"
+      class="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors mb-8"
+    >
+      <span aria-hidden="true">&larr;</span>
+      <span>All posts</span>
+    </a>
+
+    <article>
+      <!-- Header -->
+      <header class="mb-10">
+        <time
+          datetime={post.data.publishedAt.toISOString()}
+          class="font-mono text-sm text-text-secondary"
+        >
+          {formatDate(post.data.publishedAt)}
+        </time>
+        <h1 class="text-3xl md:text-4xl font-semibold text-text-primary mt-2 mb-4 leading-tight">
+          {post.data.title}
+        </h1>
+        <p class="text-xl text-text-secondary">
+          {post.data.description}
+        </p>
+        {post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mt-4">
+            {post.data.tags.map((tag) => (
+              <span class="text-xs font-mono text-text-secondary bg-bg-secondary px-2 py-1 rounded">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <!-- Content -->
+      <div class="prose prose-invert prose-lg max-w-none">
+        <Content />
+      </div>
+    </article>
+
+    <!-- Footer -->
+    <footer class="mt-16 pt-8 border-t border-bg-secondary">
+      <a
+        href="/blog"
+        class="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors"
+      >
+        <span aria-hidden="true">&larr;</span>
+        <span>Back to all posts</span>
+      </a>
+    </footer>
+  </main>
+</Layout>
+
+<style is:global>
+  /* Prose styling for blog content */
+  .prose {
+    color: var(--color-text-secondary);
+  }
+
+  .prose h2, .prose h3, .prose h4 {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+  }
+
+  .prose h2 {
+    font-size: 1.5rem;
+  }
+
+  .prose h3 {
+    font-size: 1.25rem;
+  }
+
+  .prose p {
+    margin-bottom: 1.25em;
+    line-height: 1.75;
+  }
+
+  .prose a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .prose a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .prose strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .prose ul, .prose ol {
+    margin-bottom: 1.25em;
+    padding-left: 1.5em;
+  }
+
+  .prose li {
+    margin-bottom: 0.5em;
+  }
+
+  .prose ul li {
+    list-style-type: disc;
+  }
+
+  .prose ol li {
+    list-style-type: decimal;
+  }
+
+  .prose blockquote {
+    border-left: 3px solid var(--color-accent);
+    padding-left: 1em;
+    margin-left: 0;
+    margin-bottom: 1.25em;
+    font-style: italic;
+    color: var(--color-text-secondary);
+  }
+
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background-color: var(--color-bg-secondary);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25em;
+  }
+
+  .prose pre {
+    background-color: var(--color-bg-secondary);
+    padding: 1em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+    margin-bottom: 1.25em;
+  }
+
+  .prose pre code {
+    background: none;
+    padding: 0;
+  }
+
+  .prose hr {
+    border: none;
+    border-top: 1px solid var(--color-bg-secondary);
+    margin: 2em 0;
+  }
+
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.25em;
+  }
+
+  .prose th, .prose td {
+    border: 1px solid var(--color-bg-secondary);
+    padding: 0.75em;
+    text-align: left;
+  }
+
+  .prose th {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+</style>

@@ -1,0 +1,77 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+---
+
+<Layout
+  title="Blog | 9592 Solutions"
+  description="Thoughts on AI systems, LLMs, and building software that works in production."
+>
+  <main class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <!-- Header -->
+    <header class="mb-12">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors mb-8"
+      >
+        <span aria-hidden="true">&larr;</span>
+        <span>Back</span>
+      </a>
+      <h1 class="text-3xl md:text-4xl font-semibold text-text-primary mb-4">
+        Blog
+      </h1>
+      <p class="text-text-secondary text-lg">
+        Thoughts on AI systems, LLMs, and building software that works in production.
+      </p>
+    </header>
+
+    <!-- Posts -->
+    {posts.length === 0 ? (
+      <p class="text-text-secondary">No posts yet. Check back soon.</p>
+    ) : (
+      <ul class="space-y-6">
+        {posts.map((post) => (
+          <li class="group">
+            <a
+              href={`/blog/${post.slug}`}
+              class="block p-4 -mx-4 rounded-lg hover:bg-bg-secondary transition-colors"
+            >
+              <time
+                datetime={post.data.publishedAt.toISOString()}
+                class="font-mono text-sm text-text-secondary"
+              >
+                {formatDate(post.data.publishedAt)}
+              </time>
+              <h2 class="text-xl font-medium text-text-primary mt-1 group-hover:text-accent transition-colors">
+                {post.data.title}
+              </h2>
+              <p class="text-text-secondary mt-2 line-clamp-2">
+                {post.data.description}
+              </p>
+              {post.data.tags.length > 0 && (
+                <div class="flex flex-wrap gap-2 mt-3">
+                  {post.data.tags.map((tag) => (
+                    <span class="text-xs font-mono text-text-secondary bg-bg-secondary px-2 py-1 rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </main>
+</Layout>

@@ -4,11 +4,13 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  ogType?: 'website' | 'article';
 }
 
 const {
   title = '9592 Solutions',
-  description = 'AI systems and software development by Christo Wilken'
+  description = 'AI systems and software development by Christo Wilken',
+  ogType = 'website'
 } = Astro.props;
 ---
 
