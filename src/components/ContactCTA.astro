@@ -1,0 +1,240 @@
+---
+interface Props {
+  headline?: string;
+  description?: string;
+  buttonText?: string;
+  placeholder?: string;
+}
+
+const {
+  headline = "Have a project in mind?",
+  description = "Tell me what you're working on. I'll get back to you within a day.",
+  buttonText = "Tell me about it",
+  placeholder = "I'm building... / I need help with... / I'm looking for..."
+} = Astro.props;
+
+// Web3Forms access key (same as BlogCTA)
+const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
+---
+
+<section class="contact-cta" id="contact-cta-container">
+  <h2 class="cta-headline">{headline}</h2>
+  <p class="cta-description">{description}</p>
+
+  <form
+    class="cta-form"
+    id="contact-cta-form"
+    action="https://api.web3forms.com/submit"
+    method="POST"
+  >
+    <!-- Web3Forms access key -->
+    <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
+
+    <!-- Context fields -->
+    <input type="hidden" name="subject" value="New project inquiry from 9592.tech" />
+    <input type="hidden" name="from_name" value="9592.tech Contact Form" />
+
+    <!-- Honeypot for spam -->
+    <input type="checkbox" name="botcheck" class="hidden" style="display:none" />
+
+    <div class="cta-fields">
+      <div class="form-field">
+        <label for="contact-email">Email</label>
+        <input
+          type="email"
+          id="contact-email"
+          name="email"
+          placeholder="you@company.com"
+          required
+        />
+      </div>
+
+      <div class="form-field">
+        <label for="contact-message">What are you working on?</label>
+        <textarea
+          id="contact-message"
+          name="message"
+          placeholder={placeholder}
+          rows="3"
+          required
+        ></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="cta-submit" id="contact-submit-btn">{buttonText}</button>
+  </form>
+
+  <!-- Success message (hidden by default) -->
+  <div class="cta-success" id="contact-success" style="display: none;">
+    <p class="success-message">Thanks! I'll get back to you soon.</p>
+  </div>
+
+  <p class="cta-fallback" id="contact-fallback">
+    Or email me directly at <a href="mailto:christo@9592.tech">christo@9592.tech</a>
+  </p>
+</section>
+
+<style>
+  .contact-cta {
+    background: var(--color-bg-secondary);
+    border-radius: 10px;
+    padding: 28px 28px 24px;
+  }
+
+  .cta-headline {
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .cta-description {
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  .cta-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .cta-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-field label {
+    display: block;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-bottom: 5px;
+    letter-spacing: 0.01em;
+  }
+
+  .form-field input,
+  .form-field textarea {
+    width: 100%;
+    background: var(--color-bg-primary);
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: var(--color-text-primary);
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.15s;
+    resize: vertical;
+  }
+
+  .form-field textarea {
+    min-height: 80px;
+  }
+
+  .form-field input:focus,
+  .form-field textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  .form-field input::placeholder,
+  .form-field textarea::placeholder {
+    color: #4a4a4a;
+  }
+
+  .cta-submit {
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+    align-self: flex-start;
+  }
+
+  .cta-submit:hover {
+    background: var(--color-accent-hover);
+  }
+
+  .cta-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .cta-fallback {
+    margin-top: 20px;
+    font-size: 13px;
+    color: #555;
+  }
+
+  .cta-fallback a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .cta-fallback a:hover {
+    text-decoration: underline;
+  }
+
+  /* Success state */
+  .cta-success {
+    padding: 20px 0;
+  }
+
+  .success-message {
+    color: #22c55e;
+    font-size: 15px;
+    font-weight: 500;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contact-cta-form') as HTMLFormElement;
+    const submitBtn = document.getElementById('contact-submit-btn') as HTMLButtonElement;
+    const successDiv = document.getElementById('contact-success') as HTMLDivElement;
+    const fallbackP = document.getElementById('contact-fallback') as HTMLParagraphElement;
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Show success, hide form
+          form.style.display = 'none';
+          fallbackP.style.display = 'none';
+          successDiv.style.display = 'block';
+        } else {
+          throw new Error(result.message || 'Submission failed');
+        }
+      } catch (error) {
+        console.error('Form submission error:', error);
+        submitBtn.textContent = 'Error - try again';
+        submitBtn.disabled = false;
+
+        // Reset button text after 3 seconds
+        setTimeout(() => {
+          submitBtn.textContent = originalText;
+        }, 3000);
+      }
+    });
+  });
+</script>

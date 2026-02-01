@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ContactCTA from '../components/ContactCTA.astro';
 ---
 
 <Layout>
@@ -108,7 +109,7 @@ import Layout from '../layouts/Layout.astro';
     </section>
 
     <!-- Blog -->
-    <section>
+    <section class="mb-14">
       <h2 class="font-mono text-sm text-text-secondary mb-4 uppercase tracking-wider">Writing</h2>
       <a href="/blog" class="group flex items-center justify-between p-4 -mx-4 rounded-lg hover:bg-bg-secondary transition-colors">
         <div>
@@ -123,6 +124,11 @@ import Layout from '../layouts/Layout.astro';
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
         </svg>
       </a>
+    </section>
+
+    <!-- Contact CTA -->
+    <section>
+      <ContactCTA />
     </section>
 
   </main>
