@@ -22,42 +22,46 @@ Wanted programmatic access to website analytics. Investigated Vercel Analytics f
 ## What Was Done
 
 1. **Created Mixpanel project** via browser automation (Chrome MCP)
-   - Project: "9592-website" (ID: 3986099)
-   - Data residency: EU
+   - Initially created in EU region (ID: 3986099)
+   - Discovered MCP regional restriction issue
+   - Deleted EU project and recreated in US for simpler MCP access
+
+2. **Final project configuration (US)**
+   - Project: "9592-website" (ID: 3986106)
+   - Data residency: US
    - Timezone: Europe/Berlin
    - Organization: 9592
-   - Token: `595d752a2d50d0b7585c6aee33d30bc7`
+   - Token: `7bf933aa178f53606b6072703d1d86d9`
 
-2. **Integrated tracking in Layout.astro**
+3. **Integrated tracking in Layout.astro**
    - Initially used legacy snippet loader (bloated, ugly)
    - User questioned why it was so complex
    - Checked Context7 for modern approach
    - Replaced with clean ES module pattern using importmap
 
-3. **Deployed to production** and verified events flowing
+4. **Deployed to production** and verified events flowing
 
 ## Technical Details
 
-**Clean ES module approach:**
+**Clean ES module approach (US region, no api_host needed):**
 ```html
 <script type="importmap">
   { "imports": { "mixpanel-browser": "https://cdn.mxpnl.com/libs/mixpanel-js/dist/mixpanel.module.js" } }
 </script>
 <script type="module">
   import mixpanel from 'mixpanel-browser';
-  mixpanel.init('TOKEN', {
-    api_host: 'https://api-eu.mixpanel.com',  // Required for EU data residency
+  mixpanel.init('7bf933aa178f53606b6072703d1d86d9', {
     track_pageview: true,
     persistence: 'localStorage'
   });
 </script>
 ```
 
-**Key gotcha discovered:** Mixpanel MCP is US-only by default. EU projects return "Regional access restriction" error. Need to configure `mcp-eu.mixpanel.com` for EU projects.
+**Key gotcha discovered:** Mixpanel MCP is US-only by default. EU projects return "Regional access restriction" error. Since 9592.tech has no GDPR requirement for EU data residency, recreated in US for simpler setup.
 
 ## Implications
 
-- Can now query analytics programmatically via Mixpanel MCP (once EU region configured)
-- Dashboard: https://eu.mixpanel.com/project/3986099
+- Can now query analytics programmatically via Mixpanel MCP (standard US endpoint)
+- Dashboard: https://mixpanel.com/project/3986106
 - Events tracked: page views with geo, device, browser info
 - Free tier sufficient for personal website traffic
