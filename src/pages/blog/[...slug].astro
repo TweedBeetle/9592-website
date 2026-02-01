@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import BlogCTA from '../../components/BlogCTA.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -96,6 +97,14 @@ const articleStructuredData = {
       <div class="prose prose-invert prose-lg max-w-none">
         <Content />
       </div>
+
+      <!-- CTA -->
+      <BlogCTA
+        headline={post.data.cta.headline}
+        description={post.data.cta.description}
+        buttonText={post.data.cta.buttonText}
+        fields={post.data.cta.fields}
+      />
     </article>
 
     <!-- Footer -->
