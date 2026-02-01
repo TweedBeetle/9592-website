@@ -232,24 +232,33 @@ const articleStructuredData = {
     font-weight: 600;
   }
 
-  /* Footnote styling */
-  .prose .footnotes {
-    margin-top: 3em;
+  /* Footnote styling - moved after CTA via JS */
+  .footnotes {
+    margin-top: 2.5em;
     padding-top: 1.5em;
     border-top: 1px solid var(--color-bg-secondary);
     font-size: 0.9em;
+    color: var(--color-text-secondary);
   }
 
-  .prose .footnotes-sep {
+  .footnotes-sep {
     display: none;
   }
 
-  .prose .footnotes ol {
+  .footnotes ol {
     padding-left: 1.5em;
   }
 
-  .prose .footnotes li {
+  .footnotes li {
     margin-bottom: 0.75em;
+  }
+
+  .footnotes a {
+    color: var(--color-accent);
+  }
+
+  .footnotes a:hover {
+    text-decoration: underline;
   }
 
   /* Footnote reference in text */
@@ -265,7 +274,7 @@ const articleStructuredData = {
   }
 
   /* Back-reference link */
-  .prose .footnotes a[href^="#fnref"] {
+  .footnotes a[href^="#fnref"] {
     text-decoration: none;
     margin-left: 0.25em;
   }
@@ -309,6 +318,13 @@ const articleStructuredData = {
   const HIGHLIGHT_DURATION_MS = 2500;
 
   document.addEventListener('DOMContentLoaded', () => {
+    // Move footnotes after CTA so readers scroll past CTA to see them
+    const footnotes = document.querySelector('.prose .footnotes');
+    const cta = document.querySelector('.blog-cta');
+    if (footnotes && cta) {
+      cta.after(footnotes);
+    }
+
     const footnoteLinks = document.querySelectorAll('a[href^="#user-content-fn"]');
 
     function onScrollEnd(callback) {
