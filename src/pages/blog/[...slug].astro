@@ -51,6 +51,7 @@ const articleStructuredData = {
 <Layout
   title={`${post.data.title} | 9592 Solutions`}
   description={post.data.description}
+  ogType="article"
 >
   <!-- Article structured data (JSON-LD can go in body) -->
   <script type="application/ld+json" set:html={JSON.stringify(articleStructuredData)} />
@@ -260,30 +261,23 @@ const articleStructuredData = {
     margin-left: 0.25em;
   }
 
-  /* Highlight animation for targets */
+  /* Footnote highlight settings - single source of truth */
+  :root {
+    --footnote-highlight-duration: 2.5s;
+    --footnote-highlight-color: rgba(59, 130, 246, 0.25);
+  }
+
   @keyframes highlight-flash {
-    0% { background-color: rgba(59, 130, 246, 0.3); }
+    0% { background-color: transparent; }
+    3% { background-color: var(--footnote-highlight-color); }
+    40% { background-color: var(--footnote-highlight-color); }
     100% { background-color: transparent; }
   }
 
-  .prose .footnotes li:target {
-    animation: highlight-flash 1.5s ease-out;
+  .footnote-highlight {
+    animation: highlight-flash var(--footnote-highlight-duration) ease-out !important;
     border-radius: 0.25em;
-    padding: 0.25em;
-    margin-left: -0.25em;
-  }
-
-  .prose sup:target,
-  .prose sup:has(a:target) {
-    animation: highlight-flash 1.5s ease-out;
-    border-radius: 0.25em;
-  }
-
-  /* Alternative: highlight the parent paragraph when returning */
-  .prose p:has(sup a:target),
-  .prose li:has(sup a:target) {
-    animation: highlight-flash 1.5s ease-out;
-    border-radius: 0.25em;
+    background-color: var(--footnote-highlight-color);
   }
 </style>
 
@@ -301,9 +295,31 @@ const articleStructuredData = {
 </style>
 
 <script>
-  // Smooth scroll with delayed highlight
+  // Footnote scroll + highlight behavior
+  // Duration must match --footnote-highlight-duration in CSS above
+  const HIGHLIGHT_DURATION_MS = 2500;
+
   document.addEventListener('DOMContentLoaded', () => {
-    const footnoteLinks = document.querySelectorAll('a[href^="#fn"], a[href^="#fnref"]');
+    const footnoteLinks = document.querySelectorAll('a[href^="#user-content-fn"]');
+
+    function onScrollEnd(callback) {
+      let lastY = window.scrollY;
+      let stableFrames = 0;
+      function check() {
+        if (window.scrollY === lastY) {
+          stableFrames++;
+          if (stableFrames >= 5) {
+            callback();
+            return;
+          }
+        } else {
+          stableFrames = 0;
+          lastY = window.scrollY;
+        }
+        requestAnimationFrame(check);
+      }
+      requestAnimationFrame(check);
+    }
 
     footnoteLinks.forEach(link => {
       link.addEventListener('click', (e) => {
@@ -312,35 +328,27 @@ const articleStructuredData = {
         const target = document.getElementById(targetId || '');
 
         if (target) {
-          // Smooth scroll to center
           target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-          // Update URL hash
           history.pushState(null, '', link.getAttribute('href') || '');
 
-          // Add highlight after small delay (let scroll settle)
-          setTimeout(() => {
-            target.classList.add('footnote-highlight');
-          }, 300);
+          // For backlinks (target is an <a> inside <sup>), highlight the parent li/p instead
+          let highlightTarget = target;
+          if (target.tagName === 'A' && target.closest('sup')) {
+            const parent = target.closest('li') || target.closest('p');
+            if (parent) {
+              highlightTarget = parent;
+            }
+          }
 
-          // Remove highlight after animation (300ms delay + 2.25s duration)
-          setTimeout(() => {
-            target.classList.remove('footnote-highlight');
-          }, 2550);
+          onScrollEnd(() => {
+            highlightTarget.classList.add('footnote-highlight');
+            setTimeout(() => {
+              highlightTarget.classList.remove('footnote-highlight');
+            }, HIGHLIGHT_DURATION_MS);
+          });
         }
       });
     });
   });
 </script>
 
-<style is:global>
-  .footnote-highlight {
-    animation: highlight-flash 2.25s ease-out !important;
-    border-radius: 0.25em;
-  }
-
-  .prose li.footnote-highlight {
-    padding: 0.25em;
-    margin-left: -0.25em;
-  }
-</style>
