@@ -83,52 +83,54 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
 <style>
   .blog-cta {
     background: var(--color-bg-secondary);
-    border-radius: 12px;
-    padding: 32px;
+    border-radius: 10px;
+    padding: 28px 28px 24px;
     margin-top: 48px;
   }
 
   .cta-headline {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 600;
     color: var(--color-text-primary);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
   }
 
   .cta-description {
     color: var(--color-text-secondary);
-    font-size: 15px;
-    line-height: 1.6;
-    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 20px;
   }
 
   .cta-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
   }
 
   .cta-fields {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 
   .form-field label {
     display: block;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--color-text-secondary);
-    margin-bottom: 6px;
+    margin-bottom: 5px;
+    letter-spacing: 0.01em;
   }
 
   .form-field input {
     width: 100%;
     background: var(--color-bg-primary);
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 12px 14px;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    padding: 10px 12px;
     color: var(--color-text-primary);
-    font-size: 15px;
+    font-size: 14px;
     font-family: inherit;
     transition: border-color 0.15s;
   }
@@ -139,16 +141,16 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
   }
 
   .form-field input::placeholder {
-    color: #555;
+    color: #4a4a4a;
   }
 
   .cta-submit {
     background: var(--color-accent);
     color: white;
     border: none;
-    border-radius: 8px;
-    padding: 12px 24px;
-    font-size: 15px;
+    border-radius: 6px;
+    padding: 9px 18px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: background 0.15s;
@@ -165,9 +167,9 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
   }
 
   .cta-fallback {
-    margin-top: 16px;
-    font-size: 14px;
-    color: #666;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #555;
   }
 
   .cta-fallback a {
@@ -181,12 +183,12 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
 
   /* Success state */
   .cta-success {
-    padding: 24px 0;
+    padding: 20px 0;
   }
 
   .success-message {
     color: #22c55e;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
   }
 </style>
