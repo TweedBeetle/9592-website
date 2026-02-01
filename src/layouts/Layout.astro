@@ -115,6 +115,16 @@ const {
         else if (href.startsWith('/') && href !== '/') {
           mixpanel.track('CTA Click', { type: 'internal', path: href });
         }
+        // Footnote clicks (shows engagement with deeper content)
+        else if (href.startsWith('#user-content-fn')) {
+          const fnId = href.replace('#user-content-fn-', '');
+          mixpanel.track('Footnote Click', { footnote_id: fnId, direction: 'to_footnote' });
+        }
+        // Back-to-text from footnote
+        else if (href.startsWith('#user-content-fnref')) {
+          const fnId = href.replace('#user-content-fnref-', '');
+          mixpanel.track('Footnote Click', { footnote_id: fnId, direction: 'back_to_text' });
+        }
       });
     </script>
   </body>
