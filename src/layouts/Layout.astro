@@ -81,6 +81,41 @@ const {
         track_pageview: true,
         persistence: 'localStorage'
       });
+
+      // Register UTM parameters as super properties (persist across all events)
+      const params = new URLSearchParams(window.location.search);
+      const utmProps = {};
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(key => {
+        const val = params.get(key);
+        if (val) utmProps[key] = val;
+      });
+      if (Object.keys(utmProps).length) mixpanel.register(utmProps);
+
+      // Track CTA clicks
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        // Email CTA
+        if (href.startsWith('mailto:')) {
+          mixpanel.track('CTA Click', { type: 'email', email: href.replace('mailto:', '') });
+        }
+        // External project links
+        else if (href.startsWith('http') && !href.includes('9592.tech')) {
+          mixpanel.track('CTA Click', { type: 'external', url: href, text: link.textContent?.trim().slice(0, 50) });
+        }
+        // PDF download
+        else if (href.endsWith('.pdf')) {
+          mixpanel.track('CTA Click', { type: 'download', file: href });
+        }
+        // Internal navigation (blog, etc)
+        else if (href.startsWith('/') && href !== '/') {
+          mixpanel.track('CTA Click', { type: 'internal', path: href });
+        }
+      });
     </script>
   </body>
 </html>
