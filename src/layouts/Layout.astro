@@ -70,5 +70,18 @@ const {
   </head>
   <body class="min-h-screen">
     <slot />
+
+    <!-- Mixpanel Analytics -->
+    <script type="importmap">
+      { "imports": { "mixpanel-browser": "https://cdn.mxpnl.com/libs/mixpanel-js/dist/mixpanel.module.js" } }
+    </script>
+    <script type="module">
+      import mixpanel from 'mixpanel-browser';
+      mixpanel.init('595d752a2d50d0b7585c6aee33d30bc7', {
+        api_host: 'https://api-eu.mixpanel.com',
+        track_pageview: true,
+        persistence: 'localStorage'
+      });
+    </script>
   </body>
 </html>
