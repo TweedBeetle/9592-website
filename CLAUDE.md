@@ -103,11 +103,43 @@ public/
 ### Current Pages
 
 - `/` - Homepage with hero, services, selected work
+- `/blog` - Blog index and posts (MDX)
 
 ### Planned
 
-- `/blog` - Blog posts (MDX)
 - `/work` - Case studies
+
+## Blog Infrastructure
+
+- **Content**: MDX files in `src/content/blog/`
+- **Schema**: Defined in `src/content/config.ts` with Zod validation
+- **CTA required**: Every blog post must have a `cta` frontmatter block (headline, description, buttonText). Build fails without it.
+
+### Blog Post Frontmatter
+
+```yaml
+---
+title: "Post Title"
+description: "Meta description"
+publishedAt: 2026-01-28
+author: "Christo Wilken"
+tags: ["tag1", "tag2"]
+cta:
+  headline: "CTA headline"
+  description: "CTA description"
+  buttonText: "Button text"
+---
+```
+
+## Forms
+
+**Web3Forms** for serverless form handling (free tier: 250/mo).
+
+- **Dashboard**: https://app.web3forms.com
+- **Access key**: In `src/components/BlogCTA.astro`
+- **Submissions**: Stored 30 days on free plan
+
+**⚠️ Gmail spam issue**: First Web3Forms notification may land in spam. Mark as "not spam" or create filter for `from:notify@web3forms.com`. <!-- added: 2026-02-01 -->
 
 ## Development
 
