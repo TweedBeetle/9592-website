@@ -149,6 +149,21 @@ npm run build    # Build for production
 npm run preview  # Preview production build
 ```
 
+## Infrastructure
+
+**Hosting**: Vercel (auto-deploys from `main`)
+**CDN/Proxy**: Cloudflare (nameservers: anahi/rodrigo.ns.cloudflare.com) <!-- added: 2026-02-02 -->
+**Domain**: 9592.tech (managed in Cloudflare)
+
+Traffic flow: User → Cloudflare → Vercel
+
+**Cloudflare features available:**
+- Bot protection (Security → Bots)
+- Rate limiting (Security → WAF → Rate limiting rules)
+- Turnstile (CAPTCHA for specific actions - doesn't require domain move, can be added standalone)
+
+**Verify Cloudflare is proxying:** Check for `cf-ray` and `server: cloudflare` headers.
+
 ## Deployment
 
 Vercel auto-deploys from `main` branch.
