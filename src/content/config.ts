@@ -20,6 +20,7 @@ const blog = defineCollection({
       description: z.string(),
       buttonText: z.string(),
       fields: z.array(z.enum(['email', 'website'])).default(['email', 'website']),
+      href: z.string().url().optional(),
     }),
   }),
 });

@@ -5,13 +5,16 @@ interface Props {
   buttonText: string;
   /** What fields to collect. Defaults to email + website. */
   fields?: ('email' | 'website')[];
+  /** External URL. When set, renders a link button instead of a form. */
+  href?: string;
 }
 
 const {
   headline,
   description,
   buttonText,
-  fields = ['email', 'website']
+  fields = ['email', 'website'],
+  href
 } = Astro.props;
 
 const showWebsite = fields.includes('website');
@@ -24,60 +27,61 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
   <h3 class="cta-headline">{headline}</h3>
   <p class="cta-description">{description}</p>
 
-  <form
-    class="cta-form"
-    id="blog-cta-form"
-    action="https://api.web3forms.com/submit"
-    method="POST"
-  >
-    <!-- Web3Forms access key -->
-    <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
+  {href ? (
+    <a href={href} class="cta-submit cta-link" target="_blank" rel="noopener">{buttonText}</a>
+    <p class="cta-fallback">
+      Or just email me at <a href="mailto:christo@9592.tech">christo@9592.tech</a>
+    </p>
+  ) : (
+    <form
+      class="cta-form"
+      id="blog-cta-form"
+      action="https://api.web3forms.com/submit"
+      method="POST"
+    >
+      <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
+      <input type="hidden" name="subject" id="cta-subject" value="" />
+      <input type="hidden" name="from_page" id="cta-from-page" value="" />
+      <input type="hidden" name="page_url" id="cta-page-url" value="" />
+      <input type="checkbox" name="botcheck" class="hidden" style="display:none" />
 
-    <!-- Context fields -->
-    <input type="hidden" name="subject" id="cta-subject" value="" />
-    <input type="hidden" name="from_page" id="cta-from-page" value="" />
-    <input type="hidden" name="page_url" id="cta-page-url" value="" />
-
-    <!-- Honeypot for spam -->
-    <input type="checkbox" name="botcheck" class="hidden" style="display:none" />
-
-    <div class="cta-fields">
-      <div class="form-field">
-        <label for="cta-email">Email</label>
-        <input
-          type="email"
-          id="cta-email"
-          name="email"
-          placeholder="you@company.com"
-          required
-        />
-      </div>
-
-      {showWebsite && (
+      <div class="cta-fields">
         <div class="form-field">
-          <label for="cta-website">Business website</label>
+          <label for="cta-email">Email</label>
           <input
-            type="url"
-            id="cta-website"
-            name="website"
-            placeholder="https://yourbusiness.com"
+            type="email"
+            id="cta-email"
+            name="email"
+            placeholder="you@company.com"
             required
           />
         </div>
-      )}
+
+        {showWebsite && (
+          <div class="form-field">
+            <label for="cta-website">Business website</label>
+            <input
+              type="url"
+              id="cta-website"
+              name="website"
+              placeholder="https://yourbusiness.com"
+              required
+            />
+          </div>
+        )}
+      </div>
+
+      <button type="submit" class="cta-submit" id="cta-submit-btn">{buttonText}</button>
+    </form>
+
+    <div class="cta-success" id="cta-success" style="display: none;">
+      <p class="success-message">Thanks! I'll take a look and get back to you soon.</p>
     </div>
 
-    <button type="submit" class="cta-submit" id="cta-submit-btn">{buttonText}</button>
-  </form>
-
-  <!-- Success message (hidden by default) -->
-  <div class="cta-success" id="cta-success" style="display: none;">
-    <p class="success-message">Thanks! I'll take a look and get back to you soon.</p>
-  </div>
-
-  <p class="cta-fallback" id="cta-fallback">
-    Or just email me at <a href="mailto:christo@9592.tech">christo@9592.tech</a>
-  </p>
+    <p class="cta-fallback" id="cta-fallback">
+      Or just email me at <a href="mailto:christo@9592.tech">christo@9592.tech</a>
+    </p>
+  )}
 </div>
 
 <style>
@@ -161,6 +165,12 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
     background: var(--color-accent-hover);
   }
 
+  .cta-link {
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+  }
+
   .cta-submit:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -196,6 +206,8 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('blog-cta-form') as HTMLFormElement;
+    if (!form) return; // href mode - no form to wire up
+
     const submitBtn = document.getElementById('cta-submit-btn') as HTMLButtonElement;
     const successDiv = document.getElementById('cta-success') as HTMLDivElement;
     const fallbackP = document.getElementById('cta-fallback') as HTMLParagraphElement;
@@ -206,7 +218,7 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
     (document.getElementById('cta-from-page') as HTMLInputElement).value = pageTitle;
     (document.getElementById('cta-page-url') as HTMLInputElement).value = window.location.href;
 
-    form?.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const originalText = submitBtn.textContent;
