@@ -354,6 +354,71 @@ const articleStructuredData = {
 </style>
 
 <script>
+  // Mermaid: render fenced ```mermaid``` code blocks into SVG diagrams client-side
+  import mermaid from 'mermaid';
+
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'dark',
+    themeVariables: {
+      darkMode: true,
+      background: '#0a0a0a',
+      primaryColor: '#141414',
+      primaryTextColor: '#fafafa',
+      primaryBorderColor: '#3b82f6',
+      lineColor: '#a1a1a1',
+      secondaryColor: '#1f2937',
+      tertiaryColor: '#141414',
+      mainBkg: '#141414',
+      secondBkg: '#1f2937',
+      textColor: '#fafafa',
+      labelTextColor: '#fafafa',
+      nodeTextColor: '#fafafa',
+      actorTextColor: '#fafafa',
+      noteTextColor: '#fafafa',
+      sequenceNumberColor: '#fafafa',
+    },
+    flowchart: { htmlLabels: true, curve: 'basis' },
+    sequence: { actorMargin: 50, boxMargin: 10, messageMargin: 35 },
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Astro/Shiki wraps mermaid blocks as <pre data-language="mermaid">...</pre>
+    // with each line split across many spans. textContent reassembles the source.
+    const blocks = document.querySelectorAll('pre[data-language="mermaid"]');
+    for (let i = 0; i < blocks.length; i++) {
+      const pre = blocks[i] as HTMLElement;
+      const source = pre.textContent || '';
+      const id = `mermaid-svg-${i}`;
+      try {
+        const { svg } = await mermaid.render(id, source);
+        const wrapper = document.createElement('div');
+        wrapper.className = 'mermaid-diagram';
+        wrapper.innerHTML = svg;
+        pre.replaceWith(wrapper);
+      } catch (e) {
+        console.error('mermaid render failed for block', i, e);
+      }
+    }
+  });
+</script>
+
+<style is:global>
+  .mermaid-diagram {
+    margin: 2em 0;
+    padding: 1.5em;
+    background-color: var(--color-bg-secondary);
+    border-radius: 0.5em;
+    overflow-x: auto;
+    text-align: center;
+  }
+  .mermaid-diagram svg {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+
+<script>
   // Footnote scroll + highlight behavior
   // Duration must match --footnote-highlight-duration in CSS above
   const HIGHLIGHT_DURATION_MS = 2500;
