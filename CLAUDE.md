@@ -182,3 +182,7 @@ For pixel-perfect adjustments, use Playwright's `browser_evaluate()` to tweak st
 ## Reference Material
 
 For profile content and project details: `~/memex/2_Areas/Self/Profile/`
+
+## Gotchas
+
+**Mermaid diagrams in blog posts** <!-- added: 2026-05-21 -->: Client-side Mermaid is wired in `src/pages/blog/[...slug].astro` and triggers on any fenced `mermaid` block in MDX. **Selector caveat**: Astro's default Shiki syntax-highlighter rewrites fenced blocks and strips the `language-mermaid` class from the `<code>` element. The standard `pre > code.language-mermaid` selector returns 0 nodes. Use `pre[data-language="mermaid"]` instead and read `textContent` from the `<pre>` itself (Shiki splits source across many spans; `textContent` reassembles cleanly). Theme variables in the `mermaid.initialize` config match the site's dark palette; if you re-theme the site, update those too. Quote node labels containing `=`, `:`, or `@` (Mermaid 11+ parser sees them as link-IDs otherwise).
