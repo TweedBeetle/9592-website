@@ -1,0 +1,138 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ContactCTA from '../../components/ContactCTA.astro';
+import { legal } from '../../i18n/legal';
+
+// Procurement-facing capabilities page (PLAN D1), EN mirror of /de/leistungen.
+// Copy source: findings §4.4, restructured to remove em dashes (site voice rule).
+// AI is framed as the enabling method, never the headline. Entity facts come from
+// src/i18n/legal.ts (register fact = Amtsgericht München); the location bridge uses
+// the legal seat/city verbatim so there is a single source of truth.
+
+const practiceAreas = [
+  {
+    title: 'Application development for web and iOS',
+    body: 'Custom web and iOS applications across the stack.',
+  },
+  {
+    title: 'Internal tools',
+    body: 'Tools for internal processes and teams.',
+  },
+  {
+    title: 'Data pipelines',
+    body: 'Extracting, preparing, and processing data.',
+  },
+  {
+    title: 'Integration work',
+    body: 'Connecting to existing systems and interfaces.',
+  },
+];
+
+const notOffered = [
+  'Training and workshop delivery',
+  "Staff augmentation in someone else's process",
+  'Large-team integration projects with named-associate fictions',
+  'Hardware procurement',
+];
+---
+
+<Layout
+  pageKey="leistungen"
+  title="Services · 9592 Solutions"
+  description="Custom working software for structured buyers. Single-principal software practice, direct contracting, EU/DE data handling, accessibility."
+>
+  <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <!-- Header -->
+    <section class="mb-16">
+      <p class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Services</p>
+      <h1 class="text-3xl md:text-4xl font-semibold text-text-primary leading-tight mb-6">
+        Working software, built for your process
+      </h1>
+      <p class="text-lg text-text-secondary leading-relaxed">
+        {legal.legalName} is a single-principal software practice that uses AI
+        orchestration to deliver custom working software at the throughput of a
+        small team.
+      </p>
+    </section>
+
+    <!-- Practice areas -->
+    <section class="mb-16">
+      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Practice areas</h2>
+      <ul class="grid sm:grid-cols-2 gap-px bg-bg-secondary rounded-lg overflow-hidden border border-bg-secondary">
+        {practiceAreas.map((area) => (
+          <li class="bg-bg-primary p-5">
+            <h3 class="text-text-primary font-medium mb-1">{area.title}</h3>
+            <p class="text-text-secondary text-sm leading-relaxed">{area.body}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- How an engagement works -->
+    <section class="mb-16">
+      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">How an engagement works</h2>
+      <div class="space-y-4 text-text-secondary leading-relaxed">
+        <p>
+          A typical engagement starts with a deployed, functioning prototype of the
+          requested system, seeded with your domain language, sample data, and
+          realistic workflows. It begins with working software, not slide decks or
+          capability statements.
+        </p>
+        <p>
+          The prototype is the instrument for agreeing on the specification, not the
+          deliverable itself.
+        </p>
+        <p>
+          Direct contracting with the buying entity, no intermediaries. Work is
+          delivered remotely, in German or English.
+        </p>
+      </div>
+    </section>
+
+    <!-- Data handling and accessibility -->
+    <section class="mb-16">
+      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Data handling and accessibility</h2>
+      <div class="space-y-4 text-text-secondary leading-relaxed">
+        <p>
+          We build for EU data handling: EU/DE hosting, processor agreements with
+          sub-processors, and no US-cloud dependency where it can be avoided.
+        </p>
+        <p>
+          We design for accessibility, oriented to WCAG 2.1 AA and recognised
+          self-assessment methods.
+        </p>
+      </div>
+    </section>
+
+    <!-- What we do not do -->
+    <section class="mb-16">
+      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">What we do not do</h2>
+      <div class="bg-bg-secondary rounded-lg p-6">
+        <ul class="divide-y divide-white/5">
+          {notOffered.map((item) => (
+            <li class="py-2.5 first:pt-0 last:pb-0 text-text-secondary">{item}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Location -->
+    <section class="mb-16">
+      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Location</h2>
+      <p class="text-text-secondary leading-relaxed">
+        Registered office in {legal.seat}, business address in {legal.city},
+        operating from {legal.operativeCity}.
+      </p>
+    </section>
+
+    <!-- Contact -->
+    <section>
+      <ContactCTA
+        headline="Have a defined need?"
+        description="Tell me what you'd like to build. I'll get back to you within a day."
+        buttonText="Describe your need"
+        placeholder="We need... / We're looking for... / We'd like to..."
+      />
+    </section>
+  </main>
+</Layout>

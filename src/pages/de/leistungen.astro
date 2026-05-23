@@ -1,0 +1,138 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ContactCTA from '../../components/ContactCTA.astro';
+import { legal } from '../../i18n/legal';
+
+// Procurement-facing capabilities page (PLAN D1). Copy source: findings §4.4,
+// restructured to remove em dashes (site voice rule). AI is framed as the
+// enabling method, never the headline. Entity facts come from src/i18n/legal.ts
+// (register fact = Amtsgericht München; the bridge sentence and (haftungsbeschränkt)
+// are sourced once from that constant).
+
+const practiceAreas = [
+  {
+    title: 'Anwendungsentwicklung für Web und iOS',
+    body: 'Individuelle Web- und iOS-Anwendungen über den gesamten Stack.',
+  },
+  {
+    title: 'Interne Werkzeuge',
+    body: 'Werkzeuge für interne Abläufe und Teams.',
+  },
+  {
+    title: 'Datenpipelines',
+    body: 'Extraktion, Aufbereitung und Verarbeitung von Daten.',
+  },
+  {
+    title: 'Integrationsarbeit',
+    body: 'Anbindung an bestehende Systeme und Schnittstellen.',
+  },
+];
+
+const notOffered = [
+  'Schulungen und Workshops',
+  'Personal-Augmentation in fremden Prozessen',
+  'Großteam-Integrationsprojekte mit Schein-Personal-Profilen',
+  'Hardware-Beschaffung',
+];
+---
+
+<Layout
+  pageKey="leistungen"
+  title="Leistungen · 9592 Solutions"
+  description="Lauffähige Software für strukturierte Auftraggeber. Einzel-Prinzipal-Softwarepraxis, Direktvertrag, EU/DE-Datenschutz, Barrierefreiheit."
+>
+  <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <!-- Header -->
+    <section class="mb-16">
+      <p class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Leistungen</p>
+      <h1 class="text-3xl md:text-4xl font-semibold text-text-primary leading-tight mb-6">
+        Lauffähige Software, auf Ihren Prozess zugeschnitten
+      </h1>
+      <p class="text-lg text-text-secondary leading-relaxed">
+        Die {legal.legalName} ist eine Einzel-Prinzipal-Softwarepraxis, die
+        AI-Orchestrierung nutzt, um individuelle, lauffähige Software mit dem
+        Durchsatz eines kleinen Teams zu liefern.
+      </p>
+    </section>
+
+    <!-- Tätigkeitsfelder -->
+    <section class="mb-16">
+      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Tätigkeitsfelder</h2>
+      <ul class="grid sm:grid-cols-2 gap-px bg-bg-secondary rounded-lg overflow-hidden border border-bg-secondary">
+        {practiceAreas.map((area) => (
+          <li class="bg-bg-primary p-5">
+            <h3 class="text-text-primary font-medium mb-1">{area.title}</h3>
+            <p class="text-text-secondary text-sm leading-relaxed">{area.body}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- Zusammenarbeit -->
+    <section class="mb-16">
+      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Zusammenarbeit</h2>
+      <div class="space-y-4 text-text-secondary leading-relaxed">
+        <p>
+          Ein typischer Auftrag beginnt mit einem lauffähig bereitgestellten Prototyp
+          des angefragten Systems, befüllt mit Ihrer Fachsprache, Beispieldaten und
+          realistischen Arbeitsabläufen. Er beginnt mit lauffähiger Software, nicht
+          mit Foliensätzen oder reinen Eignungsdarstellungen.
+        </p>
+        <p>
+          Der Prototyp ist das Instrument, um sich auf die Spezifikation zu
+          verständigen, nicht die Leistung selbst.
+        </p>
+        <p>
+          Direktvertrag mit dem Auftraggeber, keine Mittler. Die Leistungserbringung
+          erfolgt remote, in deutscher oder englischer Sprache.
+        </p>
+      </div>
+    </section>
+
+    <!-- Datenschutz und Barrierefreiheit -->
+    <section class="mb-16">
+      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Datenschutz und Barrierefreiheit</h2>
+      <div class="space-y-4 text-text-secondary leading-relaxed">
+        <p>
+          Wir arbeiten EU-datenschutzkonform: EU/DE-Hosting,
+          Auftragsverarbeitungs-Verträge mit Sub-Prozessoren und keine
+          US-Cloud-Bindung, wo sie vermeidbar ist.
+        </p>
+        <p>
+          Wir entwickeln barrierearm, orientiert an WCAG 2.1 AA und anerkannten
+          Selbstbewertungsverfahren.
+        </p>
+      </div>
+    </section>
+
+    <!-- Was wir nicht anbieten -->
+    <section class="mb-16">
+      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Was wir nicht anbieten</h2>
+      <div class="bg-bg-secondary rounded-lg p-6">
+        <ul class="divide-y divide-white/5">
+          {notOffered.map((item) => (
+            <li class="py-2.5 first:pt-0 last:pb-0 text-text-secondary">{item}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Standort -->
+    <section class="mb-16">
+      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Standort</h2>
+      <p class="text-text-secondary leading-relaxed">
+        Sitz {legal.seat}, Geschäftsanschrift {legal.city}, operativ in {legal.operativeCity}.
+      </p>
+    </section>
+
+    <!-- Kontakt -->
+    <section>
+      <ContactCTA
+        headline="Sie haben einen konkreten Bedarf?"
+        description="Beschreiben Sie kurz, was Sie umsetzen möchten. Ich melde mich innerhalb eines Tages."
+        buttonText="Bedarf beschreiben"
+        placeholder="Wir brauchen... / Wir möchten... / Wir suchen..."
+      />
+    </section>
+  </main>
+</Layout>
