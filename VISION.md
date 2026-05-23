@@ -20,12 +20,17 @@ These four were settled with the user before planning:
 2. **KNE demo writeup — anonymized now.**
    - KNE (Tender 27) is submitted but NOT yet awarded. Do not name the buyer or narrate "we bid for X."
    - Frame generically: e.g. "an accessibility-focused offer map + editorial CMS for a national counseling network."
-   - Link the already-public live demos (`https://kne-demo.9592.tech`, `https://kne-cms-demo.9592.tech`).
    - Leave a clear upgrade path to a named version if/when the contract is won.
+
+   **Live-demo handling (resolved 2026-05-23):** the live demos are heavily buyer-branded (~900 KNE/ISS/"gegen Einsamkeit" strings across the two repos; the loneliness topic itself is identifying). Therefore, pre-award:
+   - Case-study pages use **anonymized screenshots / walkthrough only** — choose crops that demonstrate capability (map marker-clustering, category-aware cluster counts, filter sidebar, radius search, the CMS four-eyes editorial workflow, accessible list view) WITHOUT the identifying title/topic text. Crop or blur any "KNE" / "Kompetenznetz" / "gegen Einsamkeit" chrome.
+   - **Do NOT publicly link or index the live demo URLs** pre-award. The live URLs stay shareable privately inside bids. A "live demo available on request" line is fine.
+   - On win: flip to public live links + a named version of the case studies. Architect the case-study pages so this is a content swap, not a rebuild (e.g. a frontmatter flag or a clearly-marked anonymized block).
+   - This adds a screenshot-capture + light-image-edit task to implementation.
 
 3. **Language — full bilingual DE + EN**, with a language switcher; blog posts translated. User accepted the higher maintenance burden knowingly.
 
-4. **Demo presentation — wrapped `/work` case-study pages** (problem / approach / screenshots / what it demonstrates) that link out to the live demos. Not raw direct links.
+4. **Demo presentation — wrapped `/work` case-study pages** (problem / approach / screenshots / what it demonstrates). Pre-award these show anonymized screenshots and a "live demo on request" line rather than a public link (see decision 2). Not raw direct links to the buyer-branded apps.
 
 ## Known constraints
 
