@@ -45,6 +45,8 @@ Personal/business website for Christo Wilken / 9592 Solutions.
 | `accent` | `#3b82f6` | Links, highlights |
 | `accent-hover` | `#60a5fa` | Hover states |
 
+**Contrast: avoid `/NN` opacity modifiers on `text-secondary` for small text** <!-- added: 2026-05-23 -->: `text-text-secondary/70` composites to ~4.3:1 on `#0a0a0a` (below WCAG2AA's 4.5:1 small-text threshold) and Pa11y/axe flags it. Use full `text-text-secondary` (~7.7:1) for muted small labels (mono uppercase eyebrow labels, captions). Known latent instance: the `/arbeiten` ↔ `/en/work` index demonstrator-label eyebrow still uses `text-text-secondary/70` (the homepage demonstrator labels were moved to full `text-text-secondary` in D4); G2 should reconcile.
+
 ### Typography
 
 - **Headings**: Inter, semibold/bold
@@ -124,7 +126,7 @@ public/
 
 ### Planned
 
-- (no page-level items outstanding; remaining work is the D3 blog writeup, D4 homepage reframe, and G2/G3 verification per PLAN.md)
+- (no page-level items outstanding; D1-D4 + E1 content built. Remaining is F1 nav/footer wiring + route audit and the G1/G2/G3 publish gates per PLAN.md)
 
 ## Blog Infrastructure
 
