@@ -62,3 +62,20 @@ Queried `/websites/astro_build_en` (i18n routing, on-demand rendering, `astro:i1
   hero/selected-work *reframe* is D4; this session ports the existing homepage content
   (EN as-is; DE a faithful translation) and wires it into the new bilingual shell.
   Authoritative voice-playbook pass on homepage body copy is D4's gate.
+
+### A2 empirical findings (verified against `astro dev` + build)
+
+- **Physical unprefixed routes still generate under `prefixDefaultLocale: true`.** The
+  Context7 doc warned a bare root content file "would 404"; in practice `src/pages/blog/*`
+  still prerenders to static `/blog/...index.html` in the build. The docs' 404 caveat is
+  about i18n *content fallback resolution*, not physical file routing.
+- **`/blog` 404s in `astro dev` but not in the build.** The astro-dev i18n layer enforces
+  the locale prefix at request time and 404s unprefixed `/blog`; the production build still
+  emits `/blog/index.html` as a static asset (Vercel serves static files before the
+  on-demand function, so inbound `/blog` links keep working in prod). Known, acceptable
+  interim state: **E1 relocates the blog under `/de/blog` + `/en/blog` and adds 301
+  redirects from the legacy `/blog/<slug>` URLs.** Phase A does not touch the blog.
+- **Root `/` redirect verified** in dev with curl:
+  `Accept-Language: de-DE,...` -> 302 `/de/`; `en-US` -> `/en/`;
+  `fr-FR,fr;q=0.9,de;q=0.5` -> `/en/` (faithful to the override, not `/de/`);
+  no header -> `/en/`. `Vary: Accept-Language` + `Cache-Control: no-store` present.
