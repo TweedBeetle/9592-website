@@ -109,14 +109,14 @@ public/
 
 - `/` - On-demand redirect by browser language to `/de/` or `/en/`
 - `/de/`, `/en/` - Bilingual homepage (hero, services, selected work)
+- `/leistungen` ↔ `/en/services` - Capabilities page (procurement-facing) + homepage teaser
 - `/blog` - Blog index and posts (MDX, English; E1 relocates under `/de/blog` + `/en/blog`)
+- `/impressum`, `/datenschutz` (both locales) - Legal pages (§5 DDG Impressum, minimised Datenschutz)
+- `/kontakt` ↔ `/en/contact` - Contact page (Web3Forms; email + form is the Impressum's second contact)
 
 ### Planned
 
-- `/leistungen` ↔ `/en/services` - Capabilities (D1)
 - `/arbeiten` ↔ `/en/work` - Case studies (D2)
-- `/impressum`, `/datenschutz` (both locales) - Legal pages (B1/B2)
-- `/kontakt` ↔ `/en/contact` - Contact form page
 
 ## Blog Infrastructure
 
