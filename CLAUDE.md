@@ -94,7 +94,10 @@ src/
     index.astro       # On-demand Accept-Language redirector (/ -> /de/ or /en/)
     de/index.astro    # German homepage
     en/index.astro    # English homepage
-    blog/             # Blog (English, unprefixed for now; E1 relocates under locales)
+    [lang]/blog/      # Locale-aware blog: index + [...slug] (/de/blog, /en/blog)
+  content/
+    config.ts         # Content Layer glob loader + Zod schema (mandatory cta)
+    blog/{de,en}/     # MDX posts; locale = first path segment of the entry id
   components/         # Header, Footer, LanguageSwitcher, BlogCTA, ContactCTA
   i18n/               # routes.ts (route-map), utils.ts, ui.ts (chrome dict), legal.ts
   styles/
@@ -110,7 +113,7 @@ public/
 - `/` - On-demand redirect by browser language to `/de/` or `/en/`
 - `/de/`, `/en/` - Bilingual homepage (hero, services, selected work)
 - `/leistungen` ↔ `/en/services` - Capabilities page (procurement-facing) + homepage teaser
-- `/blog` - Blog index and posts (MDX, English; E1 relocates under `/de/blog` + `/en/blog`)
+- `/de/blog` ↔ `/en/blog` - Blog index + posts (MDX). EN lists all posts; DE lists translated posts plus an "only in English" affordance for unpaired ones
 - `/impressum`, `/datenschutz` (both locales) - Legal pages (§5 DDG Impressum, minimised Datenschutz)
 - `/kontakt` ↔ `/en/contact` - Contact page (Web3Forms; email + form is the Impressum's second contact)
 
@@ -120,8 +123,8 @@ public/
 
 ## Blog Infrastructure
 
-- **Content**: MDX files in `src/content/blog/`
-- **Schema**: Defined in `src/content/config.ts` with Zod validation
+- **Content**: MDX files in `src/content/blog/{de,en}/` (locale = first path segment of the entry id)
+- **Schema**: Defined in `src/content/config.ts` (Content Layer glob loader) with Zod validation; `translationKey` is optional and pairs locale siblings
 - **CTA required**: Every blog post must have a `cta` frontmatter block (headline, description, buttonText). Build fails without it.
 
 ### Blog Post Frontmatter
@@ -194,6 +197,8 @@ For profile content and project details: `~/memex/2_Areas/Self/Profile/`
 
 ## Gotchas
 
-**Astro i18n routing (`prefixDefaultLocale: true`)** <!-- added: 2026-05-23 -->: Both locales are explicitly prefixed (`/de/...`, `/en/...`); all content pages live under `src/pages/<locale>/`. There is no content page at the bare root: `src/pages/index.astro` is an on-demand (`export const prerender = false`) redirector that reads `Accept-Language` and 302s to `/de/` or `/en/` (real per-request decision, so `redirectToDefaultLocale: false` in `astro.config.mjs`). **Gotcha:** a physical unprefixed route (e.g. legacy `src/pages/blog/*`) still PRERENDERS to a static file in `npm run build` even though `astro dev` returns 404 for it at the locale-prefix check. So such routes work in production (Vercel serves the static file) but appear broken in dev. Don't "fix" a dev-only 404 on an unprefixed legacy route by panicking; check the build output. i18n single-source-of-truth lives in `src/i18n/`: `routes.ts` (page-key -> per-locale slug map; localized slugs leistungen/services, arbeiten/work), `utils.ts` (`getLangFromUrl`, `localizedPath`, `pickLocaleFromAcceptLanguage`, `useTranslations`), `ui.ts` (chrome-string dictionary), `legal.ts` (the ONE legal-entity constant consumed by Impressum, footer, and JSON-LD; register fact = Amtsgericht München, no public phone). `<html lang>`, hreflang (x-default -> /en), and og:locale are set in `Layout.astro` from the active locale + an optional `pageKey` prop.
+**Astro i18n routing (`prefixDefaultLocale: true`)** <!-- added: 2026-05-23 -->: Both locales are explicitly prefixed (`/de/...`, `/en/...`); all content pages live under `src/pages/<locale>/`. There is no content page at the bare root: `src/pages/index.astro` is an on-demand (`export const prerender = false`) redirector that reads `Accept-Language` and 302s to `/de/` or `/en/` (real per-request decision, so `redirectToDefaultLocale: false` in `astro.config.mjs`). **Gotcha:** a physical unprefixed route (a file directly under `src/pages/` rather than under a locale folder) still PRERENDERS to a static file in `npm run build` even though `astro dev` returns 404 for it at the locale-prefix check. So such routes work in production (Vercel serves the static file) but appear broken in dev. Don't "fix" a dev-only 404 on an unprefixed legacy route by panicking; check the build output. i18n single-source-of-truth lives in `src/i18n/`: `routes.ts` (page-key -> per-locale slug map; localized slugs leistungen/services, arbeiten/work), `utils.ts` (`getLangFromUrl`, `localizedPath`, `pickLocaleFromAcceptLanguage`, `useTranslations`), `ui.ts` (chrome-string dictionary), `legal.ts` (the ONE legal-entity constant consumed by Impressum, footer, and JSON-LD; register fact = Amtsgericht München, no public phone). `<html lang>`, hreflang (x-default -> /en), and og:locale are set in `Layout.astro` from the active locale + an optional `pageKey` prop.
 
-**Mermaid diagrams in blog posts** <!-- added: 2026-05-21 -->: Client-side Mermaid is wired in `src/pages/blog/[...slug].astro` and triggers on any fenced `mermaid` block in MDX. **Selector caveat**: Astro's default Shiki syntax-highlighter rewrites fenced blocks and strips the `language-mermaid` class from the `<code>` element. The standard `pre > code.language-mermaid` selector returns 0 nodes. Use `pre[data-language="mermaid"]` instead and read `textContent` from the `<pre>` itself (Shiki splits source across many spans; `textContent` reassembles cleanly). Theme variables in the `mermaid.initialize` config match the site's dark palette; if you re-theme the site, update those too. Quote node labels containing `=`, `:`, or `@` (Mermaid 11+ parser sees them as link-IDs otherwise).
+**Mermaid diagrams in blog posts** <!-- added: 2026-05-21 -->: Client-side Mermaid is wired in `src/pages/[lang]/blog/[...slug].astro` and triggers on any fenced `mermaid` block in MDX. **Selector caveat**: Astro's default Shiki syntax-highlighter rewrites fenced blocks and strips the `language-mermaid` class from the `<code>` element. The standard `pre > code.language-mermaid` selector returns 0 nodes. Use `pre[data-language="mermaid"]` instead and read `textContent` from the `<pre>` itself (Shiki splits source across many spans; `textContent` reassembles cleanly). Theme variables in the `mermaid.initialize` config match the site's dark palette; if you re-theme the site, update those too. Quote node labels containing `=`, `:`, or `@` (Mermaid 11+ parser sees them as link-IDs otherwise).
+
+**Blog i18n / content collection (E1)** <!-- added: 2026-05-23 -->: The blog collection uses the **Astro 5 Content Layer glob loader** (`src/content/config.ts`), NOT legacy `type: 'content'`. This matters: under the glob loader the entry `id` is **extensionless** with the locale as its first path segment (`en/<slug>`, `de/<slug>`), so `const [lang, ...slug] = post.id.split('/')` and `render(post)` (top-level import from `astro:content`, not `post.render()`) work per the official Astro i18n recipe. Legacy `type: 'content'` keeps the `.mdx` extension in `post.id`, which would break that split. Posts live under `src/content/blog/{de,en}/`; routes are the dynamic `src/pages/[lang]/blog/{index,[...slug]}.astro` rendering `/de/blog/<slug>` + `/en/blog/<slug>` (both prefixed; directory build → trailing-slash canonical, so links/redirects use the trailing slash). `translationKey` (optional) pairs siblings: the `LanguageSwitcher` detects a blog-post path itself, queries the collection, and jumps to the sibling or degrades to the localized blog index (never a 404) without any change to the global Header/Footer/Layout chrome. The DE index surfaces English-only posts with the `blog.onlyEnglish` ui key (there is no `blog.onlyGerman`; add one only if a DE-only post is ever introduced). `BlogCTA.astro` takes an optional `lang` prop for German form chrome (defaults to `'en'`, so EN posts are unchanged). The remark footnotes heading ("Footnotes") is localized to "Quellen" on DE pages via the footnote script in `[...slug].astro` (the global markdown `footnoteLabel` can't vary per locale). Legacy `/blog/<slug>` URLs 301 to `/en/blog/<slug>/` via `redirects` in `astro.config.mjs` (the Vercel adapter emits real 301s; the sitemap excludes the redirect stubs). hreflang is NOT emitted on blog *posts* (Layout builds hreflang from `pageKey`, and posts have none); the blog *index* pages do emit it.
