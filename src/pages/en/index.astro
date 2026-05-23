@@ -2,8 +2,26 @@
 import Layout from '../../layouts/Layout.astro';
 import ContactCTA from '../../components/ContactCTA.astro';
 import { localizedPath, getLangFromUrl } from '../../i18n/utils';
+import { caseStudies, caseStudyPath } from '../../data/work';
 
 const lang = getLangFromUrl(Astro.url);
+
+// Selected-work demonstrators (D4): surfaced first, each linking to its wrapped case
+// study (internal, not an external live link). Titles/teasers mirror the work index
+// in a homepage-length form. Keyed by stable study key; render order follows
+// `caseStudies` (offer-map, editorial-workflow).
+const cards: Record<string, { title: string; teaser: string }> = {
+  'offer-map': {
+    title: 'Offer map for an advisory network',
+    teaser:
+      'An accessible, self-updating map application with filters, radius search, and an equal-rank list view.',
+  },
+  'editorial-workflow': {
+    title: 'Editorial workflow for a public dataset',
+    teaser:
+      'A two-stage review with a diff view, an audit log, and automated reminders.',
+  },
+};
 ---
 
 <Layout pageKey="home">
@@ -24,7 +42,8 @@ const lang = getLangFromUrl(Astro.url);
         </div>
       </div>
       <p class="text-xl text-text-secondary leading-relaxed mb-6">
-        I build AI systems that pay for themselves many times over.
+        I build custom working software. Rather than only describing a solution, I
+        build a working demonstrator you can inspect for yourself before you commit.
       </p>
       <a
         href="mailto:christo@9592.tech"
@@ -40,13 +59,16 @@ const lang = getLangFromUrl(Astro.url);
       <h2 class="font-mono text-sm text-text-secondary mb-4 uppercase tracking-wider">What I do</h2>
       <div class="space-y-4 text-text-secondary leading-relaxed">
         <p>
-          I build software across the stack: backends, mobile apps, AI systems,
-          and the infrastructure to make them work in production.
+          I'm Christo Wilken, and I run 9592 Solutions, an owner-led software
+          provider. You work directly with the person who holds technical
+          responsibility, and you have a single contracting party with no
+          intermediaries.
         </p>
         <p>
-          Most of my work involves LLMs. Conversational agents, retrieval systems,
-          data extraction. But I focus on whatever creates real value for you,
-          your users, or your audience.
+          I build across the stack: backends, web and mobile applications, data
+          processing, and the infrastructure to run it in production. If a project
+          doesn't make sense in the form you have in mind, I'll tell you honestly,
+          even when the answer is no.
         </p>
       </div>
     </section>
@@ -80,6 +102,29 @@ const lang = getLangFromUrl(Astro.url);
     <section class="mb-14">
       <h2 class="font-mono text-sm text-text-secondary mb-4 uppercase tracking-wider">Selected work</h2>
       <ul class="space-y-4">
+        {caseStudies.map((study) => (
+          <li class="group">
+            <a
+              href={caseStudyPath(study, lang)}
+              class="flex items-start justify-between gap-4 p-4 -mx-4 rounded-lg hover:bg-bg-secondary transition-colors"
+            >
+              <div>
+                <p class="font-mono text-[11px] text-text-secondary uppercase tracking-wider mb-1.5">
+                  Demonstrator / work sample
+                </p>
+                <h3 class="text-text-primary font-medium mb-1 group-hover:text-accent transition-colors">
+                  {cards[study.key].title}
+                </h3>
+                <p class="text-text-secondary text-sm leading-relaxed">
+                  {cards[study.key].teaser}
+                </p>
+              </div>
+              <svg class="w-4 h-4 text-text-secondary/40 shrink-0 ml-4 mt-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </li>
+        ))}
         <li class="group">
           <a href="https://askjeevesny.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 -mx-4 rounded-lg hover:bg-bg-secondary transition-colors">
             <div>
