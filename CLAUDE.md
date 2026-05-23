@@ -19,7 +19,8 @@ Personal/business website for Christo Wilken / 9592 Solutions.
 - **Styling**: Tailwind CSS v4
 - **TypeScript**: Strict mode
 - **Hosting**: Vercel
-- **Fonts**: Inter (body), JetBrains Mono (code)
+- **Fonts**: Inter (body), JetBrains Mono (code), self-hosted via `@fontsource/*` (no Google Fonts CDN)
+- **i18n**: Astro built-in routing, bilingual DE/EN (`prefixDefaultLocale: true`); see Gotchas
 
 ## Design Philosophy
 
@@ -88,10 +89,14 @@ Generous whitespace. Use Tailwind's scale:
 ```
 src/
   layouts/
-    Layout.astro      # Base HTML layout
+    Layout.astro      # Base layout: html lang, hreflang, og:locale, JSON-LD, Header/Footer
   pages/
-    index.astro       # Homepage
-  components/         # Reusable components (as needed)
+    index.astro       # On-demand Accept-Language redirector (/ -> /de/ or /en/)
+    de/index.astro    # German homepage
+    en/index.astro    # English homepage
+    blog/             # Blog (English, unprefixed for now; E1 relocates under locales)
+  components/         # Header, Footer, LanguageSwitcher, BlogCTA, ContactCTA
+  i18n/               # routes.ts (route-map), utils.ts, ui.ts (chrome dict), legal.ts
   styles/
     global.css        # Tailwind imports + theme tokens
 public/
@@ -102,12 +107,16 @@ public/
 
 ### Current Pages
 
-- `/` - Homepage with hero, services, selected work
-- `/blog` - Blog index and posts (MDX)
+- `/` - On-demand redirect by browser language to `/de/` or `/en/`
+- `/de/`, `/en/` - Bilingual homepage (hero, services, selected work)
+- `/blog` - Blog index and posts (MDX, English; E1 relocates under `/de/blog` + `/en/blog`)
 
 ### Planned
 
-- `/work` - Case studies
+- `/leistungen` ↔ `/en/services` - Capabilities (D1)
+- `/arbeiten` ↔ `/en/work` - Case studies (D2)
+- `/impressum`, `/datenschutz` (both locales) - Legal pages (B1/B2)
+- `/kontakt` ↔ `/en/contact` - Contact form page
 
 ## Blog Infrastructure
 
@@ -184,5 +193,7 @@ For pixel-perfect adjustments, use Playwright's `browser_evaluate()` to tweak st
 For profile content and project details: `~/memex/2_Areas/Self/Profile/`
 
 ## Gotchas
+
+**Astro i18n routing (`prefixDefaultLocale: true`)** <!-- added: 2026-05-23 -->: Both locales are explicitly prefixed (`/de/...`, `/en/...`); all content pages live under `src/pages/<locale>/`. There is no content page at the bare root: `src/pages/index.astro` is an on-demand (`export const prerender = false`) redirector that reads `Accept-Language` and 302s to `/de/` or `/en/` (real per-request decision, so `redirectToDefaultLocale: false` in `astro.config.mjs`). **Gotcha:** a physical unprefixed route (e.g. legacy `src/pages/blog/*`) still PRERENDERS to a static file in `npm run build` even though `astro dev` returns 404 for it at the locale-prefix check. So such routes work in production (Vercel serves the static file) but appear broken in dev. Don't "fix" a dev-only 404 on an unprefixed legacy route by panicking; check the build output. i18n single-source-of-truth lives in `src/i18n/`: `routes.ts` (page-key -> per-locale slug map; localized slugs leistungen/services, arbeiten/work), `utils.ts` (`getLangFromUrl`, `localizedPath`, `pickLocaleFromAcceptLanguage`, `useTranslations`), `ui.ts` (chrome-string dictionary), `legal.ts` (the ONE legal-entity constant consumed by Impressum, footer, and JSON-LD; register fact = Amtsgericht München, no public phone). `<html lang>`, hreflang (x-default -> /en), and og:locale are set in `Layout.astro` from the active locale + an optional `pageKey` prop.
 
 **Mermaid diagrams in blog posts** <!-- added: 2026-05-21 -->: Client-side Mermaid is wired in `src/pages/blog/[...slug].astro` and triggers on any fenced `mermaid` block in MDX. **Selector caveat**: Astro's default Shiki syntax-highlighter rewrites fenced blocks and strips the `language-mermaid` class from the `<code>` element. The standard `pre > code.language-mermaid` selector returns 0 nodes. Use `pre[data-language="mermaid"]` instead and read `textContent` from the `<pre>` itself (Shiki splits source across many spans; `textContent` reassembles cleanly). Theme variables in the `mermaid.initialize` config match the site's dark palette; if you re-theme the site, update those too. Quote node labels containing `=`, `:`, or `@` (Mermaid 11+ parser sees them as link-IDs otherwise).
