@@ -1,0 +1,85 @@
+---
+title: "Was es heißt, einen lauffähigen Demonstrator statt eines Foliensatzes abzugeben"
+description: "Für einen strukturierten Beschaffer mit einer konkreten Software-Anforderung schlägt ein lauffähiger Demonstrator den Foliensatz. Er lässt beide Seiten die Leistung festlegen und den Beschaffer die Aussagen vor der Bindung prüfen."
+publishedAt: 2026-05-23
+author: "Christo Wilken"
+tags: ["prototyping", "accessibility", "procurement"]
+translationKey: "working-demo-not-slide-deck"
+cta:
+  headline: "Haben Sie eine Anforderung, die einen lauffähigen Prototyp verdient?"
+  description: "Beschreiben Sie mir kurz, was Sie bauen möchten. Ich sage Ihnen ehrlich, ob ein lauffähiger Demonstrator der richtige nächste Schritt ist und was er zeigen würde."
+  buttonText: "Anforderung schildern"
+  fields: ["email"]
+---
+
+**Kurz gesagt:** Für einen strukturierten Beschaffer mit einer konkreten Software-Anforderung ist ein lauffähiger Prototyp das bessere erste Arbeitsergebnis als ein Foliensatz. Ein Foliensatz beschreibt, was man bauen würde. Ein laufender Demonstrator zeigt es: im Browser, befüllt mit der Fachsprache des Beschaffers und realistischen Arbeitsabläufen. Beide Seiten können dann auf dasselbe zeigen und sich darauf verständigen, was die Leistung sein soll. Und der Beschaffer kann die Aussagen prüfen, bevor er sich bindet.
+
+Ich habe kürzlich zwei solche Demonstratoren gebaut. Im Folgenden beschreibe ich, was das umfasste und warum ich den Ansatz für tragfähig halte.
+
+---
+
+## Der Auslöser war ein konkretes Problem, nicht "Digitalisierung"
+
+Der Ausgangspunkt war kein abstrakter Wunsch zu "modernisieren" oder "digitaler zu werden". Es war ein konkreter, wiedererkennbarer Schmerzpunkt.
+
+Ein bundesweites Beratungsnetzwerk betrieb eine öffentliche, interaktive Karte seiner Unterstützungsangebote. Es waren weit über tausend Einträge. Die Aktualität hing an einer manuellen Strecke: Eintragende füllten ein Formular aus, das Team prüfte jeden Eintrag von Hand, und das Ergebnis wurde in eine Excel-Datei überführt, die die Karte speiste. Bei dieser Menge skalierte die Strecke nicht mehr. Jede Aktualisierung kostete redaktionelle Zeit, die das Team nicht hatte, und auf der öffentlichen Karte stand zeitweise der sichtbare Hinweis, dass sich Aktualisierungen verzögern.
+
+Dieses letzte Detail ist wichtig. Der Hinweis "Aktualisierungen verzögern sich" ist ein Symptom, das ein Beschaffer sehen und ein Nutzer spüren kann. Es ist konkret. Dagegen lässt sich bauen. Abstrakte Ziele wie "unsere digitale Präsenz verbessern" geben einem nichts, wogegen man bauen könnte.
+
+---
+
+## Drei Anforderungen, die eigentlich ein Problem waren
+
+Die Anforderung las sich wie drei Dinge: bessere Benutzerführung, eine mobiltaugliche Karte und Barrierefreiheit. Es ist verlockend, das als drei getrennte Funktionen zu behandeln, die man abhakt. Das sind sie nicht. Es ist ein gekoppeltes Problem.
+
+Eine Karte, die auf dem Telefon schwer zu bedienen ist, ist meist auch per Tastatur schwer zu bedienen. Ein unbeschriftetes Filterelement scheitert bei Screenreader-Nutzenden und verwirrt sehende Nutzende auf kleinem Bildschirm. Wenn man das Daten- und Interaktionsmodell sauber löst, bewegen sich Benutzerführung, Mobiltauglichkeit und Barrierefreiheit gemeinsam. Schraubt man die Barrierefreiheit am Ende an, kämpft man mit allen dreien.
+
+Also habe ich es als ein Gestaltungsproblem behandelt: ein klares Datenmodell, beschriftete und per Tastatur bedienbare Bedienelemente und ein Layout, das auf dem Telefon genauso funktioniert wie auf dem Schreibtisch.
+
+---
+
+## Warum zwei Demonstratoren, nicht einer
+
+Das System hat zwei Hälften: die öffentliche Karte, die Besucher nutzen, und den redaktionellen Arbeitsablauf, der die Daten dahinter aktuell hält. Das sind unterschiedliche Zielgruppen mit unterschiedlichen Bedürfnissen, also habe ich für jede einen eigenen, unmittelbar testbaren Demonstrator gebaut.
+
+Der erste ist die öffentliche Karte. Sie stellt die Angebote auf einer interaktiven Karte dar und lässt nach Kategorie, Unterkategorie, Thema und Postleitzahl-Umkreis filtern. Sie zeigt dieselben Ergebnisse auch als einfache Liste, sodass Screenreader-Nutzende einen gleichwertigen Weg durch die Daten haben und keinen schlechteren. Sie funktioniert auf dem Telefon so wie auf dem Schreibtisch.
+
+Der zweite ist das redaktionelle Backoffice. Eintragende pflegen ihre eigenen Einträge über ein passwortloses Login. Jeder Eintrag durchläuft einen definierten Lebenszyklus: Entwurf, eingereicht, veröffentlicht, Änderungswunsch, archiviert. Eintragende reichen ein, die Redaktion prüft und veröffentlicht, und ein veröffentlichter Eintrag ändert sich nur über einen geprüften Wunsch mit Vorher-Nachher-Vergleich. Ein periodischer Lauf markiert Einträge, die seit sechs Monaten nicht bestätigt wurden, und startet eine gestufte Erinnerung, sodass die Daten aktuell bleiben, ohne dass jemand im Team hinterherlaufen muss. Jede Aktion wird in einem Audit-Log festgehalten.
+
+Jeder Demonstrator ist eine Arbeitsprobe für eine Hälfte des Systems. Man muss sich nicht vorstellen, wie sich die Eingangsliste der Redaktion anfühlt. Man kann sie öffnen, als eintragende Person ein Angebot einreichen, es in der Liste erscheinen sehen, es veröffentlichen und einen Änderungswunsch stellen.
+
+---
+
+## Barrierefreiheit war der Nachweis, kein Häkchen
+
+Für einen Beschaffer, der einen barrierearmen öffentlichen Dienst braucht, ist ein Demonstrator, der selbst barrierearm ist, schwer zu widerlegen. Barrierefreiheit auf einer Folie zu behaupten ist billig. Einen Demonstrator abzugeben, der die Prüfungen besteht, ist es nicht.
+
+Barrierefreiheit war daher von Anfang an ein Abnahmekriterium, kein abschließender Durchgang. Der Orientierungsrahmen war WCAG 2.1 AA. Der wesentliche Nachweis war eine strukturierte Selbstbewertung nach BIK-BITV, dem anerkannten deutschen Verfahren. Automatisierte Prüfungen (Pa11y-CI) und ein Mobile-Performance-Budget liefen als Gates: Tastaturbedienbarkeit, beschriftete Bedienelemente, die Liste als gleichwertige Alternative zur Karte, ausreichender Kontrast, sinnvolle Überschriftenstruktur.
+
+Es geht nicht darum, dass automatisierte Prüfungen die vollständige Konformität beweisen. Das tun sie nicht. Es geht darum, dass der barrierearme Bau des Demonstrators, samt vorzeigbaren Prüfergebnissen, selbst der Nachweis der Kompetenz ist.
+
+---
+
+## Die Haltung zum Datenumgang
+
+Wohin die Daten fließen, ist für einen Beschaffer der öffentlichen Hand oft wichtiger als für einen kommerziellen. Die Karte stellt daher auf OpenStreetMap-Kacheln dar, nicht über einen US-Cloud-Kartendienst, und die Adresssuche nutzt einen europäischen Geocoder. Das Ergebnis ist eine öffentliche Karte ohne eingebaute Abhängigkeit von einem US-Cloud-Anbieter. Das ist ein deutlich kürzeres Gespräch, wenn der Datenschutzbeauftragte des Beschaffers fragt, wohin die Besucherdaten gehen.
+
+Dieselbe Disziplin gilt für die Werkzeuge, die ich intern nutze. KI-gestützte Werkzeuge bleiben ein internes Entwicklungs- und Qualitätssicherungsinstrument: Es werden keine personenbezogenen Daten aus dem Projekt an externe KI-Dienste übertragen. Die Datenhaltung ist keine Funktion, die ich für einen einzelnen Beschaffer anbaue. Sie ist Teil der Arbeitsweise.
+
+---
+
+## Es sind Arbeitsproben, und genau das ist der Punkt
+
+Ich möchte genau sein, was diese Demonstratoren sind. Es sind Arbeitsproben, gebaut, um einen Ansatz zu zeigen. Es sind kein fertiges Produkt und kein Live-System eines zahlenden Kunden. Sie ehrlich zu benennen ist kein Kleingedrucktes zum Wegschauen. Es ist der eigentliche Wert.
+
+Weil es echte, laufende Software ist, kann ein Beschaffer die Aussagen direkt prüfen. Nicht "vertrauen Sie mir, ich kann eine barrierearme, selbstaktualisierende Karte bauen", sondern "hier ist eine, öffnen Sie sie, führen Sie die Barrierefreiheits-Prüfungen selbst aus, versuchen Sie, den Redaktions-Workflow zu brechen".
+
+---
+
+## Der Demonstrator ist das Instrument, nicht die Leistung
+
+Ein Demonstrator ist nicht die Leistung. Er ist das Instrument, mit dem sich beide Seiten darauf verständigen, was die Leistung sein soll.
+
+Ein Foliensatz zwingt den Beschaffer, sich das Ergebnis vorzustellen und darauf zu vertrauen, dass die Worte zu funktionierender Software passen. Ein laufender Demonstrator nimmt das Vorstellen weg. Beide Seiten schauen auf denselben Bildschirm, zeigen auf das, was funktioniert, und auf das, was sich ändern soll, und verständigen sich auf eine Spezifikation, die auf etwas Realem beruht. Bis es einen Vertrag gibt, ist die größte Unsicherheit (lässt sich das überhaupt bauen, und tut es, was gemeint war?) bereits beantwortet.
+
+Software günstig genug zu bauen, um das vor einem Vertrag zu tun, ist nicht mehr ungewöhnlich. Für einen strukturierten Beschaffer mit einer konkreten Anforderung halte ich es für den besseren Einstieg.

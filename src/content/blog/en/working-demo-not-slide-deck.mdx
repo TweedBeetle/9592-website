@@ -1,0 +1,85 @@
+---
+title: "What it takes to ship a working demo instead of a slide deck"
+description: "For a structured buyer with a real software requirement, a working demonstrator beats a slide deck. It lets both sides agree on the deliverable, and it lets the buyer verify the claims before committing."
+publishedAt: 2026-05-23
+author: "Christo Wilken"
+tags: ["prototyping", "accessibility", "procurement"]
+translationKey: "working-demo-not-slide-deck"
+cta:
+  headline: "Have a requirement that deserves a working prototype?"
+  description: "Tell me briefly what you are trying to build. I will tell you honestly whether a working demonstrator is the right next step, and what it would show."
+  buttonText: "Describe your requirement"
+  fields: ["email"]
+---
+
+**The short version:** For a structured buyer with a real software requirement, a working prototype is a better first artifact than a slide deck. A deck describes what you would build. A running demonstrator shows it, in the browser, seeded with the buyer's own domain language and realistic workflows. Both sides can then point at the same thing and agree on what the deliverable should be. And the buyer can check the claims before committing to anything.
+
+I recently built two such demonstrators. Here is what that involved, and why I think the working-demo approach holds up.
+
+---
+
+## The trigger was a concrete problem, not "digitalization"
+
+The starting point was not an abstract wish to "modernize" or "go digital". It was a specific, recognizable pain.
+
+A national counseling network ran a public, interactive map of its support offers. There were well over a thousand entries. Keeping the map current depended on a manual chain: people submitted an online form, the team reviewed each entry by hand, and the result was copied into a spreadsheet that fed the map. At that volume the chain had stopped scaling. Every update cost editorial time the team did not have, and the public map had been carrying a visible notice that updates were delayed.
+
+That last detail matters. An "updates are delayed" notice is the kind of symptom a buyer can see and a user can feel. It is concrete. You can build against it. Abstract goals like "improve our digital presence" give you nothing to build against.
+
+---
+
+## Three requirements that were really one problem
+
+The requirement read as three things: better usability, a mobile-friendly map, and accessibility. It is tempting to treat those as three separate features to tick off. They are not. They are one coupled problem.
+
+A map that is hard to use on a phone is usually also hard to use with a keyboard. An unlabelled filter control fails a screen-reader user and confuses a sighted user on a small screen. If you solve the data and interaction model properly, usability, mobile, and accessibility move together. If you bolt accessibility on at the end, you fight all three.
+
+So I treated it as one design problem: a clear data model, labelled and keyboard-operable controls, and a layout that works the same way on a phone as on a desktop.
+
+---
+
+## Why two demonstrators, not one
+
+The system has two halves: the public-facing map that visitors use, and the editorial workflow that keeps the data behind it current. These are different audiences with different needs, so I built a separate, directly-testable demonstrator for each.
+
+The first is the public map. It renders the offers on an interactive map and lets you filter by category, sub-category, topic, and postal-code radius. It also presents the same results as a plain list, so a screen-reader user has an equal-rank way through the data rather than a degraded one. It works on a phone the way it works on a desktop.
+
+The second is the editorial back-office. Contributors maintain their own entries through a passwordless login. Every entry moves through a defined lifecycle: draft, submitted, published, change requested, archived. Contributors submit, the editorial team reviews and publishes, and a published entry can only change through a reviewed request with a before-and-after diff. A periodic check flags entries that have not been confirmed in six months and runs a staged reminder, so the data stays current without anyone on the team having to chase it. Every action is written to an audit log.
+
+Each demonstrator is a work sample for one half of the system. You do not have to imagine how the editor's review queue would feel. You can open it, submit an offer as a contributor, watch it appear in the queue, publish it, and request a change.
+
+---
+
+## Accessibility was the proof, not a checkbox
+
+For a buyer who needs an accessible public service, a demonstrator that is itself accessible is hard to argue with. Claiming accessibility competence on a slide is cheap. Shipping a demo that passes the checks is not.
+
+So accessibility was an acceptance criterion from the start, not a final pass. The orientation frame was WCAG 2.1 AA. The main evidence was a structured self-assessment using BIK-BITV, the recognized German method. Automated checks (Pa11y-CI) and a mobile performance budget ran as gates: keyboard operability, labelled controls, the list view as an equal alternative to the map, sufficient contrast, sensible heading structure.
+
+The point is not that automated checks prove full conformance. They do not. The point is that building the demo accessibly, and being able to show the test results, is itself the evidence of the competence.
+
+---
+
+## The data-handling stance
+
+Where the data goes matters to a public-sector buyer, often more than to a commercial one. So the map renders on OpenStreetMap tiles rather than a US-cloud mapping service, and address lookup uses a European geocoder. The result is a public map with no built-in dependency on a US cloud provider. That is a much shorter conversation when the buyer's data protection officer asks where visitor data flows.
+
+The same discipline applies to the tools I use internally. AI-assisted tooling stays an internal development and quality-assurance instrument: no personal data from the project is sent to external AI services. The data stance is not a feature I bolt on for one buyer. It is how the work is done.
+
+---
+
+## These are work samples, and that is the point
+
+I want to be precise about what these demonstrators are. They are work samples, built to show an approach. They are not a finished product, and they are not a paying client's live system. Labelling them honestly is not a disclaimer to bury. It is the whole value.
+
+Because they are real, running software, a buyer can verify the claims directly. Not "trust me, I can build an accessible, self-updating map", but "here is one, open it, run the accessibility checks yourself, try to break the review workflow".
+
+---
+
+## The demo is the instrument, not the deliverable
+
+A demonstrator is not the deliverable. It is the instrument that lets both sides agree on what the deliverable should be.
+
+A slide deck forces the buyer to imagine the result and trust that the words map to working software. A running demonstrator removes the imagining. Both sides look at the same screen, point at what works and what should change, and converge on a specification grounded in something real. By the time there is a contract, the largest uncertainty (can this actually be built, and does it do what we meant?) has already been answered.
+
+Building software cheaply enough to do this before a contract is no longer unusual. For a structured buyer with a real requirement, I think it is the better way to start.
