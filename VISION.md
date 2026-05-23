@@ -52,6 +52,8 @@ The planning + content sessions should mine these rather than writing from scrat
 
 Synthesized research backing this VISION (legal requirements, buyer-evaluation signals, Astro i18n approach, anonymized copy source + strip-list) lives in `research/presence-findings.md`. Read it before planning.
 
+The ordered, dependency-gated build plan derived from this VISION + the findings lives in `PLAN.md` (phases A-G, with concrete gates and reversible planner's calls). Read it before implementing.
+
 ## Out of scope (this iteration)
 
 - Naming KNE or any buyer publicly (revisit on award).
