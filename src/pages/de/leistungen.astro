@@ -4,8 +4,10 @@ import ContactCTA from '../../components/ContactCTA.astro';
 import { legal } from '../../i18n/legal';
 
 // Procurement-facing capabilities page (PLAN D1). Copy source: findings §4.4,
-// restructured to remove em dashes (site voice rule). AI is framed as the
-// enabling method, never the headline. Entity facts come from src/i18n/legal.ts
+// restructured to remove em dashes (site voice rule). Positioning per the PLAN
+// "POSITIONING CORRECTION": owner-led provider with direct technical
+// responsibility; the edge is the inspectable working demonstrator. AI is NOT a
+// value proposition and is not named here. Entity facts come from src/i18n/legal.ts
 // (register fact = Amtsgericht München; the bridge sentence and (haftungsbeschränkt)
 // are sourced once from that constant).
 
@@ -49,9 +51,10 @@ const notOffered = [
         Lauffähige Software, auf Ihren Prozess zugeschnitten
       </h1>
       <p class="text-lg text-text-secondary leading-relaxed">
-        Die {legal.legalName} ist eine Einzel-Prinzipal-Softwarepraxis, die
-        AI-Orchestrierung nutzt, um individuelle, lauffähige Software mit dem
-        Durchsatz eines kleinen Teams zu liefern.
+        Die {legal.legalName} ist ein inhabergeführter Softwareanbieter mit
+        direkter technischer Gesamtverantwortung durch die Geschäftsführung.
+        Zentrale Ergebnisse des angefragten Systems sind vor der Vergabe prüfbar,
+        nicht erst nach Zuschlag.
       </p>
     </section>
 
