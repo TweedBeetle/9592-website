@@ -1,0 +1,172 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import { localizedPath, useTranslations } from '../../../i18n/utils';
+import { locales, type Locale } from '../../../i18n/routes';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Locale;
+const t = useTranslations(lang);
+
+function slugOf(id: string): string {
+  return id.split('/').slice(1).join('/');
+}
+
+interface Item {
+  href: string;
+  title: string;
+  description: string;
+  tags: string[];
+  publishedAt: Date;
+  onlyEnglish: boolean;
+}
+
+const all = await getCollection('blog', ({ data }) => !data.draft);
+const inLang = all.filter((p) => p.id.startsWith(`${lang}/`));
+
+const items: Item[] = inLang.map((p) => ({
+  href: `/${lang}/blog/${slugOf(p.id)}/`,
+  title: p.data.title,
+  description: p.data.description,
+  tags: p.data.tags,
+  publishedAt: p.data.publishedAt,
+  onlyEnglish: false,
+}));
+
+// On the German index, surface English-only posts (no German sibling) with the
+// "nur auf Englisch verfügbar" affordance, linking to the English version. The
+// English index is the superset, so it carries no equivalent affordance.
+if (lang === 'de') {
+  const deKeys = new Set(
+    inLang.map((p) => p.data.translationKey).filter((k): k is string => Boolean(k))
+  );
+  const enOnly = all.filter(
+    (p) =>
+      p.id.startsWith('en/') &&
+      !(p.data.translationKey && deKeys.has(p.data.translationKey))
+  );
+  for (const p of enOnly) {
+    items.push({
+      href: `/en/blog/${slugOf(p.id)}/`,
+      title: p.data.title,
+      description: p.data.description,
+      tags: p.data.tags,
+      publishedAt: p.data.publishedAt,
+      onlyEnglish: true,
+    });
+  }
+}
+
+items.sort((a, b) => b.publishedAt.valueOf() - a.publishedAt.valueOf());
+
+const copy =
+  lang === 'de'
+    ? {
+        title: 'Blog',
+        intro:
+          'Gedanken zu KI-Systemen, Sprachmodellen und Software, die im echten Betrieb funktioniert.',
+        back: 'Zurück',
+        empty: 'Noch keine Beiträge. Schauen Sie bald wieder vorbei.',
+      }
+    : {
+        title: 'Blog',
+        intro:
+          'Thoughts on AI systems, LLMs, and building software that works in production.',
+        back: 'Back',
+        empty: 'No posts yet. Check back soon.',
+      };
+
+function formatDate(date: Date): string {
+  return date.toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+const homeHref = localizedPath('home', lang);
+---
+
+<Layout
+  title="Blog | 9592 Solutions"
+  description={copy.intro}
+  pageKey="blog"
+  lang={lang}
+>
+  <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <!-- Header -->
+    <header class="mb-12">
+      <a
+        href={homeHref}
+        class="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors mb-8"
+      >
+        <span aria-hidden="true">&larr;</span>
+        <span>{copy.back}</span>
+      </a>
+      <h1 class="text-3xl md:text-4xl font-semibold text-text-primary mb-4">
+        {copy.title}
+      </h1>
+      <p class="text-text-secondary text-lg">
+        {copy.intro}
+      </p>
+    </header>
+
+    <!-- Posts -->
+    {items.length === 0 ? (
+      <p class="text-text-secondary">{copy.empty}</p>
+    ) : (
+      <ul class="space-y-6">
+        {items.map((post) => (
+          <li class="group">
+            <a
+              href={post.href}
+              class="block p-4 -mx-4 rounded-lg hover:bg-bg-secondary transition-colors"
+            >
+              <div class="flex items-center gap-3 flex-wrap">
+                <time
+                  datetime={post.publishedAt.toISOString()}
+                  class="font-mono text-sm text-text-secondary"
+                >
+                  {formatDate(post.publishedAt)}
+                </time>
+                {post.onlyEnglish && (
+                  <span class="only-english" lang="en">{t('blog.onlyEnglish')}</span>
+                )}
+              </div>
+              <h2 class="text-xl font-medium text-text-primary mt-1 group-hover:text-accent transition-colors">
+                {post.title}
+              </h2>
+              <p class="text-text-secondary mt-2 line-clamp-2">
+                {post.description}
+              </p>
+              {post.tags.length > 0 && (
+                <div class="flex flex-wrap gap-2 mt-3">
+                  {post.tags.map((tag) => (
+                    <span class="text-xs font-mono text-text-secondary bg-bg-secondary px-2 py-1 rounded">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </main>
+</Layout>
+
+<style>
+  .only-english {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-bg-secondary);
+    border-radius: 999px;
+    padding: 0.1rem 0.5rem;
+  }
+</style>

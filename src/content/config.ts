@@ -1,7 +1,11 @@
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
+// Astro 5 Content Layer (glob loader). Locale is the first path segment of each
+// entry id: src/content/blog/en/<slug>.mdx -> id "en/<slug>", de/<slug>.mdx -> "de/<slug>".
+// Pages derive `lang` via `post.id.split('/')` (the official Astro i18n recipe shape).
 const blog = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/[^_]*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -14,6 +18,9 @@ const blog = defineCollection({
     ogImage: z.string().optional(),
     // Tags for categorization
     tags: z.array(z.string()).default([]),
+    // Pairs a post with its sibling in the other locale (same value in de/ and en/).
+    // Optional: single-language posts are legal and must not break the build.
+    translationKey: z.string().optional(),
     // CTA configuration - required for each post
     cta: z.object({
       headline: z.string(),

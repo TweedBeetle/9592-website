@@ -1,28 +1,40 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import BlogCTA from '../../components/BlogCTA.astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import BlogCTA from '../../../components/BlogCTA.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { localizedPath } from '../../../i18n/utils';
+import type { Locale } from '../../../i18n/routes';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: post,
-  }));
+  return posts.map((post) => {
+    // Locale is the first path segment of the entry id (en/<slug>, de/<slug>).
+    const [lang, ...slug] = post.id.split('/');
+    return { params: { lang, slug: slug.join('/') }, props: post };
+  });
 }
 
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
-const { Content } = await post.render();
+const lang = post.id.split('/')[0] as Locale;
+const { Content } = await render(post);
+
+// Page-body copy lives per-locale in the page file (not the shared chrome dict).
+const copy =
+  lang === 'de'
+    ? { all: 'Alle Beiträge', backAll: 'Zurück zu allen Beiträgen' }
+    : { all: 'All posts', backAll: 'Back to all posts' };
 
 function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString(lang === 'de' ? 'de-DE' : 'en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 }
+
+const blogIndexHref = localizedPath('blog', lang);
 
 // Structured data for article
 const articleStructuredData = {
@@ -30,6 +42,7 @@ const articleStructuredData = {
   "@type": "Article",
   "headline": post.data.title,
   "description": post.data.description,
+  "inLanguage": lang === 'de' ? 'de-DE' : 'en-US',
   "author": {
     "@type": "Person",
     "name": post.data.author,
@@ -53,7 +66,7 @@ const articleStructuredData = {
   title={`${post.data.title} | 9592 Solutions`}
   description={post.data.description}
   ogType="article"
-  lang="en"
+  lang={lang}
 >
   <!-- Article structured data (JSON-LD can go in body) -->
   <script type="application/ld+json" set:html={JSON.stringify(articleStructuredData)} />
@@ -61,11 +74,11 @@ const articleStructuredData = {
   <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
     <!-- Back link -->
     <a
-      href="/blog"
+      href={blogIndexHref}
       class="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors mb-8"
     >
       <span aria-hidden="true">&larr;</span>
-      <span>All posts</span>
+      <span>{copy.all}</span>
     </a>
 
     <article>
@@ -106,17 +119,18 @@ const articleStructuredData = {
         buttonText={post.data.cta.buttonText}
         fields={post.data.cta.fields}
         href={post.data.cta.href}
+        lang={lang}
       />
     </article>
 
     <!-- Footer -->
     <footer class="mt-16 pt-8 border-t border-bg-secondary">
       <a
-        href="/blog"
+        href={blogIndexHref}
         class="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors"
       >
         <span aria-hidden="true">&larr;</span>
-        <span>Back to all posts</span>
+        <span>{copy.backAll}</span>
       </a>
     </footer>
   </main>
@@ -432,6 +446,13 @@ const articleStructuredData = {
       cta.after(footnotes);
     }
 
+    // remark renders the footnotes label in English ("Footnotes"). Localize the
+    // heading on German pages so the section reads in the page language.
+    if (document.documentElement.lang === 'de') {
+      const fnHeading = document.querySelector('.footnotes h2');
+      if (fnHeading) fnHeading.textContent = 'Quellen';
+    }
+
     const footnoteLinks = document.querySelectorAll('a[href^="#user-content-fn"]');
 
     function onScrollEnd(callback) {
@@ -483,4 +504,3 @@ const articleStructuredData = {
     });
   });
 </script>
-

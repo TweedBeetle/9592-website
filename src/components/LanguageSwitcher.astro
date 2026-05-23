@@ -1,5 +1,7 @@
 ---
+import { getCollection } from 'astro:content';
 import { localizedPath, stripLocale, useTranslations } from '../i18n/utils';
+import { isLocale } from '../i18n/routes';
 import type { Locale, PageKey } from '../i18n/routes';
 
 interface Props {
@@ -10,10 +12,35 @@ interface Props {
 const { lang, pageKey } = Astro.props;
 const t = useTranslations(lang);
 
+// Blog posts route as /{locale}/blog/{slug}. The slug is not in the route-map, so a
+// post page carries no pageKey. Resolve the switch target from the post's
+// translationKey: jump to the sibling in the other locale, or degrade to that locale's
+// blog index (never a 404). Kept self-contained here so the global chrome stays untouched.
+const segs = Astro.url.pathname.split('/').filter(Boolean);
+const isBlogPost = segs.length >= 3 && isLocale(segs[0]) && segs[1] === 'blog';
+
+let blogHrefs: Record<Locale, string> | null = null;
+if (isBlogPost) {
+  const currentSlug = segs.slice(2).join('/');
+  const posts = await getCollection('blog');
+  const current = posts.find((p) => p.id === `${lang}/${currentSlug}`);
+  const key = current?.data.translationKey;
+  blogHrefs = { de: localizedPath('blog', 'de'), en: localizedPath('blog', 'en') };
+  if (key) {
+    for (const p of posts) {
+      const [pl, ...rest] = p.id.split('/');
+      if (isLocale(pl) && p.data.translationKey === key) {
+        blogHrefs[pl] = `/${pl}/blog/${rest.join('/')}/`;
+      }
+    }
+  }
+}
+
 // Preserve the current page when switching. With a pageKey we use the route-map
 // (handles localized slugs leistungen<->services). Without one, fall back to
 // re-prefixing the current path (correct for identical-slug pages, never a 404 to home).
 function hrefFor(target: Locale): string {
+  if (blogHrefs) return blogHrefs[target];
   if (pageKey) return localizedPath(pageKey, target);
   const rest = stripLocale(Astro.url.pathname); // e.g. "/" or "/foo/"
   return rest === '/' ? `/${target}/` : `/${target}${rest}`;
