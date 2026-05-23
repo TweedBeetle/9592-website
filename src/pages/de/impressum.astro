@@ -1,0 +1,77 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { legal } from '../../i18n/legal';
+import { localizedPath } from '../../i18n/utils';
+
+const kontaktPath = localizedPath('kontakt', 'de');
+---
+
+<Layout title="Impressum | 9592 Solutions" pageKey="impressum">
+  <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <h1 class="text-3xl md:text-4xl font-semibold text-text-primary mb-12">Impressum</h1>
+
+    <div class="space-y-10 leading-relaxed">
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Angaben gemäß § 5 DDG</h2>
+        <p class="text-text-primary">
+          {legal.legalName}<br />
+          {legal.street}<br />
+          {legal.postalCode} {legal.city}<br />
+          Deutschland
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Vertreten durch</h2>
+        <p class="text-text-secondary">
+          Geschäftsführer: <span class="text-text-primary">{legal.managingDirector}</span>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Kontakt</h2>
+        <p class="text-text-secondary">
+          E-Mail:
+          <a href={`mailto:${legal.email}`} class="text-accent hover:text-accent-hover transition-colors">{legal.email}</a>
+          <br />
+          Kontaktformular:
+          <a href={kontaktPath} class="text-accent hover:text-accent-hover transition-colors">9592.tech/kontakt</a>
+        </p>
+        <p class="text-text-secondary text-sm mt-3">
+          Als zweites Mittel zur schnellen elektronischen Kontaktaufnahme gemäß § 5 Abs. 1 Nr. 2 DDG steht
+          das Kontaktformular zur Verfügung.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Registereintrag</h2>
+        <p class="text-text-secondary">
+          Registergericht: <span class="text-text-primary">{legal.registerCourt}</span><br />
+          Registernummer: <span class="text-text-primary">{legal.registerNumber}</span>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Umsatzsteuer-Identifikationsnummer</h2>
+        <p class="text-text-secondary">
+          USt-IdNr. gemäß § 27a UStG: <span class="text-text-primary">{legal.vatId}</span>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+        <p class="text-text-secondary">
+          <span class="text-text-primary">{legal.managingDirector}</span>, Anschrift wie oben.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Sitz, Geschäftsanschrift und operative Leitung</h2>
+        <p class="text-text-secondary">
+          Sitz der Gesellschaft: {legal.seat} ({legal.registerCourt}, {legal.registerNumber}).
+          Geschäftsanschrift: {legal.city}. Operativ geleitet aus {legal.operativeCity}.
+        </p>
+      </section>
+    </div>
+  </main>
+</Layout>

@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { legal } from '../../i18n/legal';
+import { localizedPath } from '../../i18n/utils';
+
+const contactPath = localizedPath('kontakt', 'en');
+---
+
+<Layout title="Imprint | 9592 Solutions" pageKey="impressum">
+  <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <h1 class="text-3xl md:text-4xl font-semibold text-text-primary mb-12">Imprint</h1>
+
+    <div class="space-y-10 leading-relaxed">
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Information pursuant to § 5 DDG</h2>
+        <p class="text-text-primary">
+          <span lang="de">{legal.legalName}</span><br />
+          {legal.street}<br />
+          {legal.postalCode} {legal.city}<br />
+          Germany
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Represented by</h2>
+        <p class="text-text-secondary">
+          Managing director: <span class="text-text-primary">{legal.managingDirector}</span>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Contact</h2>
+        <p class="text-text-secondary">
+          Email:
+          <a href={`mailto:${legal.email}`} class="text-accent hover:text-accent-hover transition-colors">{legal.email}</a>
+          <br />
+          Contact form:
+          <a href={contactPath} class="text-accent hover:text-accent-hover transition-colors">9592.tech/en/contact</a>
+        </p>
+        <p class="text-text-secondary text-sm mt-3">
+          The contact form serves as the second means of fast electronic contact pursuant to § 5 (1) no. 2 DDG.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Register entry</h2>
+        <p class="text-text-secondary">
+          Registering court: <span class="text-text-primary" lang="de">{legal.registerCourt}</span><br />
+          Registration number: <span class="text-text-primary">{legal.registerNumber}</span>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">VAT identification number</h2>
+        <p class="text-text-secondary">
+          <span lang="de">USt-IdNr.</span> pursuant to § 27a UStG: <span class="text-text-primary">{legal.vatId}</span>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Responsible for content pursuant to § 18 (2) MStV</h2>
+        <p class="text-text-secondary">
+          <span class="text-text-primary">{legal.managingDirector}</span>, address as above.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Registered seat, business address, and operations</h2>
+        <p class="text-text-secondary">
+          Registered seat of the company: {legal.seat} (<span lang="de">{legal.registerCourt}</span>, {legal.registerNumber}).
+          Business address: {legal.city}. Operated from {legal.operativeCity}.
+        </p>
+      </section>
+
+      <p class="text-sm text-[#6a6a6a] pt-2">
+        This English imprint is a courtesy translation. The German version is the legally binding one.
+      </p>
+    </div>
+  </main>
+</Layout>

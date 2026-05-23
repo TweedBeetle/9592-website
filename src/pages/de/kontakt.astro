@@ -1,0 +1,28 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ContactCTA from '../../components/ContactCTA.astro';
+---
+
+<Layout title="Kontakt | 9592 Solutions" pageKey="kontakt">
+  <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <h1 class="text-3xl md:text-4xl font-semibold text-text-primary mb-4">Kontakt</h1>
+    <p class="text-text-secondary leading-relaxed mb-10 max-w-2xl">
+      Sie haben ein Projekt im Kopf oder eine Frage? Beschreiben Sie kurz, worum es geht.
+      Ich antworte in der Regel innerhalb eines Werktags.
+    </p>
+
+    <ContactCTA
+      headline="Schreiben Sie mir"
+      description="Eine kurze Beschreibung genügt: woran Sie arbeiten und wobei ich helfen kann."
+      buttonText="Senden"
+      placeholder="Ich baue... / Ich brauche Hilfe bei... / Ich suche..."
+      emailLabel="E-Mail"
+      messageLabel="Worum geht es?"
+      successMessage="Danke. Ich melde mich in Kürze."
+      fallbackBefore="Oder schreiben Sie mir direkt an"
+      sendingText="Wird gesendet..."
+      errorText="Fehler, bitte erneut versuchen"
+      subject="Neue Anfrage über 9592.tech/kontakt"
+    />
+  </main>
+</Layout>

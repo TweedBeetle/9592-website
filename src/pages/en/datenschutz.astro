@@ -1,0 +1,107 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { legal } from '../../i18n/legal';
+import { localizedPath } from '../../i18n/utils';
+
+const imprintPath = localizedPath('impressum', 'en');
+---
+
+<Layout title="Privacy Policy | 9592 Solutions" pageKey="datenschutz">
+  <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <h1 class="text-3xl md:text-4xl font-semibold text-text-primary mb-3">Privacy Policy</h1>
+    <p class="text-text-secondary text-sm mb-12">Last updated: May 2026</p>
+
+    <div class="space-y-10 leading-relaxed text-text-secondary">
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">1. Controller</h2>
+        <p>
+          The controller responsible for data processing on this website is:
+        </p>
+        <p class="text-text-primary mt-3">
+          <span lang="de">{legal.legalName}</span><br />
+          {legal.street}<br />
+          {legal.postalCode} {legal.city}<br />
+          Germany
+        </p>
+        <p class="mt-3">
+          Managing director: {legal.managingDirector}<br />
+          Email: <a href={`mailto:${legal.email}`} class="text-accent hover:text-accent-hover transition-colors">{legal.email}</a>
+        </p>
+        <p class="text-sm mt-3">
+          Further mandatory details are in the
+          <a href={imprintPath} class="text-accent hover:text-accent-hover transition-colors">imprint</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">2. Data processing when visiting the website</h2>
+        <p>
+          When you access this website, the hosting provider automatically records information in server log
+          files that your browser transmits. This usually includes your IP address, the date and time of
+          access, the page requested, and your browser type and operating system. This data serves the secure
+          and stable operation of the website and is not combined with other data sources. The legal basis is
+          Art. 6(1)(f) GDPR (legitimate interest in secure operation). The log data is retained only as long
+          as it is needed for these purposes.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">3. Hosting and content delivery network</h2>
+        <p>
+          This website is hosted by Vercel Inc. (340 S Lemon Ave #4133, Walnut, CA 91789, USA). Delivery and
+          protection additionally rely on the content delivery and proxy service of Cloudflare, Inc. (101
+          Townsend St, San Francisco, CA 94107, USA). Both providers process the technically required
+          connection data, in particular the IP address, on our behalf as processors. This can involve a
+          transfer to the USA. Both providers are certified under the EU-US Data Privacy Framework, which
+          ensures an adequate level of data protection for this. The legal basis is Art. 6(1)(f) GDPR.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">4. Cookies and § 25 TDDDG</h2>
+        <p>
+          This website uses no non-essential cookies and no tracking. No information is stored on or read from
+          your device for advertising or analytics purposes that would require consent under § 25 TDDDG. For
+          this reason there is no cookie banner on this website.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">5. Reach measurement</h2>
+        <p>
+          For reach measurement we use Vercel Web Analytics, a service of our hosting provider Vercel.
+          Collection is cookieless: no cookies are set and no cross-device identifiers are formed. Accesses
+          are turned into aggregated, anonymous statistics, for example on pages visited and the approximate
+          region of origin, which do not allow conclusions about individual people. The legal basis is
+          Art. 6(1)(f) GDPR (legitimate interest in data-minimising reach measurement).
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">6. Contact and form</h2>
+        <p>
+          When you contact us through the contact form or by email, we process the data you provide, in
+          particular your email address and the content of your message, in order to answer your enquiry. The
+          form submission is handled technically by the service Web3Forms (web3forms.com), which processes the
+          data on our behalf. The provider stores form submissions for about 30 days. The legal basis is
+          Art. 6(1)(b) GDPR (pre-contractual measures) and Art. 6(1)(f) GDPR (legitimate interest in answering
+          enquiries).
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">7. Your rights</h2>
+        <p>
+          Within the limits of the law you have the right to access the data stored about you (Art. 15 GDPR),
+          and to rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), and data
+          portability (Art. 20). You have a right to object to processing based on a legitimate interest
+          (Art. 21 GDPR). Where processing is based on consent, you can withdraw it at any time with effect for
+          the future. To exercise your rights, an informal message to
+          <a href={`mailto:${legal.email}`} class="text-accent hover:text-accent-hover transition-colors">{legal.email}</a>
+          is enough. Independently of this, you have the right to lodge a complaint with a data protection
+          supervisory authority (Art. 77 GDPR).
+        </p>
+      </section>
+    </div>
+  </main>
+</Layout>

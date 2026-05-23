@@ -1,0 +1,113 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { legal } from '../../i18n/legal';
+import { localizedPath } from '../../i18n/utils';
+
+const impressumPath = localizedPath('impressum', 'de');
+---
+
+<Layout title="Datenschutzerklärung | 9592 Solutions" pageKey="datenschutz">
+  <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <h1 class="text-3xl md:text-4xl font-semibold text-text-primary mb-3">Datenschutzerklärung</h1>
+    <p class="text-text-secondary text-sm mb-12">Stand: Mai 2026</p>
+
+    <div class="space-y-10 leading-relaxed text-text-secondary">
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">1. Verantwortlicher</h2>
+        <p>
+          Verantwortlich für die Datenverarbeitung auf dieser Website ist:
+        </p>
+        <p class="text-text-primary mt-3">
+          {legal.legalName}<br />
+          {legal.street}<br />
+          {legal.postalCode} {legal.city}<br />
+          Deutschland
+        </p>
+        <p class="mt-3">
+          Geschäftsführer: {legal.managingDirector}<br />
+          E-Mail: <a href={`mailto:${legal.email}`} class="text-accent hover:text-accent-hover transition-colors">{legal.email}</a>
+        </p>
+        <p class="text-sm mt-3">
+          Die weiteren Pflichtangaben finden Sie im
+          <a href={impressumPath} class="text-accent hover:text-accent-hover transition-colors">Impressum</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">2. Datenverarbeitung beim Websitebesuch</h2>
+        <p>
+          Beim Aufruf dieser Website werden durch den Hosting-Anbieter automatisch Informationen in
+          Server-Logfiles erfasst, die Ihr Browser übermittelt. Dazu gehören in der Regel die IP-Adresse,
+          Datum und Uhrzeit des Zugriffs, die aufgerufene Seite sowie Browsertyp und Betriebssystem. Diese
+          Daten dienen dem sicheren und stabilen Betrieb der Website und werden nicht mit anderen
+          Datenquellen zusammengeführt. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes
+          Interesse am sicheren Betrieb). Die Logdaten werden nur so lange gespeichert, wie es für diese
+          Zwecke erforderlich ist.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">3. Hosting und Content Delivery Network</h2>
+        <p>
+          Diese Website wird bei Vercel Inc. (340 S Lemon Ave #4133, Walnut, CA 91789, USA) gehostet. Der
+          Auslieferung und Absicherung dient zusätzlich der Content-Delivery- und Proxy-Dienst von
+          Cloudflare, Inc. (101 Townsend St, San Francisco, CA 94107, USA). Beide Anbieter verarbeiten die
+          technisch erforderlichen Verbindungsdaten, insbesondere die IP-Adresse, in unserem Auftrag als
+          Auftragsverarbeiter. Dabei kann es zu einer Übermittlung in die USA kommen. Beide Anbieter sind
+          unter dem EU-US Data Privacy Framework zertifiziert, das hierfür ein angemessenes Datenschutzniveau
+          gewährleistet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">4. Cookies und § 25 TDDDG</h2>
+        <p>
+          Diese Website setzt keine nicht notwendigen Cookies und kein Tracking ein. Es werden keine
+          Informationen zu Werbe- oder Analysezwecken auf Ihrem Endgerät gespeichert oder ausgelesen, die
+          eine Einwilligung nach § 25 TDDDG erfordern würden. Aus diesem Grund gibt es auf dieser Website
+          kein Cookie-Banner.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">5. Reichweitenmessung</h2>
+        <p>
+          Zur Reichweitenmessung nutzen wir Vercel Web Analytics, einen Dienst unseres Hosting-Anbieters
+          Vercel. Die Erfassung erfolgt cookielos: Es werden keine Cookies gesetzt und keine
+          geräteübergreifenden Kennungen gebildet. Aus den Zugriffen werden aggregierte, anonyme Statistiken
+          erstellt, etwa zu aufgerufenen Seiten und zur ungefähren Herkunftsregion, die keinen Rückschluss
+          auf einzelne Personen zulassen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes
+          Interesse an einer datensparsamen Reichweitenmessung).
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">6. Kontaktaufnahme und Formular</h2>
+        <p>
+          Wenn Sie uns über das Kontaktformular oder per E-Mail kontaktieren, verarbeiten wir die von Ihnen
+          angegebenen Daten, insbesondere Ihre E-Mail-Adresse und den Inhalt Ihrer Nachricht, um Ihre Anfrage
+          zu beantworten. Die Übermittlung des Formulars wickelt der Dienst Web3Forms (web3forms.com)
+          technisch ab und verarbeitet die Daten in unserem Auftrag. Beim Anbieter werden
+          Formularübermittlungen für etwa 30 Tage gespeichert. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO
+          (vorvertragliche Maßnahmen) sowie Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der
+          Beantwortung von Anfragen).
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">7. Ihre Rechte</h2>
+        <p>
+          Sie haben im Rahmen der gesetzlichen Vorgaben das Recht auf Auskunft über die zu Ihrer Person
+          gespeicherten Daten (Art. 15 DSGVO) sowie auf Berichtigung (Art. 16), Löschung (Art. 17),
+          Einschränkung der Verarbeitung (Art. 18) und Datenübertragbarkeit (Art. 20). Gegen Verarbeitungen,
+          die auf einem berechtigten Interesse beruhen, steht Ihnen ein Widerspruchsrecht zu (Art. 21 DSGVO).
+          Soweit eine Verarbeitung auf einer Einwilligung beruht, können Sie diese jederzeit mit Wirkung für
+          die Zukunft widerrufen. Zur Ausübung Ihrer Rechte genügt eine formlose Nachricht an
+          <a href={`mailto:${legal.email}`} class="text-accent hover:text-accent-hover transition-colors">{legal.email}</a>.
+          Unabhängig davon haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren
+          (Art. 77 DSGVO).
+        </p>
+      </section>
+    </div>
+  </main>
+</Layout>
