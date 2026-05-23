@@ -7,22 +7,45 @@ import '@fontsource/inter/latin-700.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import '../styles/global.css';
+import { getLangFromUrl, localizedPath } from '../i18n/utils';
+import type { Locale, PageKey } from '../i18n/routes';
+import { legal } from '../i18n/legal';
 
 interface Props {
   title?: string;
   description?: string;
   ogType?: 'website' | 'article';
+  /** Enables hreflang alternates built from the route-map (PC1). */
+  pageKey?: PageKey;
+  /** Explicit locale override; otherwise derived from the URL prefix. */
+  lang?: Locale;
 }
+
+const lang: Locale = Astro.props.lang ?? getLangFromUrl(Astro.url);
 
 const {
   title = '9592 Solutions',
-  description = 'AI systems and software development by Christo Wilken',
-  ogType = 'website'
+  description = lang === 'de'
+    ? 'KI-Systeme und Softwareentwicklung von Christo Wilken'
+    : 'AI systems and software development by Christo Wilken',
+  ogType = 'website',
+  pageKey,
 } = Astro.props;
+
+const ogLocale = lang === 'de' ? 'de_DE' : 'en_US';
+const ogLocaleAlt = lang === 'de' ? 'en_US' : 'de_DE';
+
+// hreflang alternates (PC1 route-map). x-default -> /en per the USER OVERRIDE.
+const alternates = pageKey
+  ? {
+      de: new URL(localizedPath(pageKey, 'de'), Astro.site).href,
+      en: new URL(localizedPath(pageKey, 'en'), Astro.site).href,
+    }
+  : null;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -34,13 +57,23 @@ const {
     <!-- Canonical URL -->
     <link rel="canonical" href={Astro.url.href} />
 
+    <!-- hreflang alternates (x-default -> /en) -->
+    {alternates && (
+      <>
+        <link rel="alternate" hreflang="de" href={alternates.de} />
+        <link rel="alternate" hreflang="en" href={alternates.en} />
+        <link rel="alternate" hreflang="x-default" href={alternates.en} />
+      </>
+    )}
+
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={Astro.url.href} />
     <meta property="og:site_name" content="9592 Solutions" />
     <meta property="og:type" content={ogType} />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlt} />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
@@ -50,22 +83,27 @@ const {
     <!-- Theme color -->
     <meta name="theme-color" content="#0a0a0a" />
 
-    <!-- Structured Data -->
+    <!-- Structured Data (entity facts sourced from src/i18n/legal.ts) -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "name": "9592 Solutions",
+      "legalName": legal.legalName,
       "url": "https://9592.tech",
       "description": "AI systems and software development",
+      "email": legal.email,
+      "vatID": legal.vatId,
       "founder": {
         "@type": "Person",
         "name": "Christo Wilken",
-        "email": "christo@9592.tech"
+        "email": legal.email
       },
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Berlin",
-        "addressCountry": "DE"
+        "streetAddress": legal.street,
+        "postalCode": legal.postalCode,
+        "addressLocality": legal.city,
+        "addressCountry": legal.countryCode
       },
       "areaServed": "Worldwide"
     })} />
