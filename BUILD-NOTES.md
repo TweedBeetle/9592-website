@@ -130,3 +130,32 @@ dependency added, per constraint #5). Results:
 - **Runtime `/` redirect** is a Vercel serverless function (on-demand). Not exercised by
   `astro preview` (Vercel adapter); verified in `astro dev`. Confirm on the real deploy in
   G3 (out of this session's scope; do NOT deploy here).
+
+## Phase C — Demo screenshots (C1)
+
+Session scope: C1 only (independent; gates D2). Touched only `public/work/` (new PNGs +
+`INVENTORY.md`) and `scripts/capture-work-screenshots.mjs`. No `src/`, config, or demo-repo
+source modified. Full per-image captions + bilingual alt text + the anonymization rationale
+live in `public/work/INVENTORY.md` (the case-study session D2 should mine that file).
+
+- **11 retina PNGs shipped:** offer map (5) — `overview` (category-aware marker clustering),
+  `filters`, `radius` (PLZ + Umkreis), `list` (accessible list view), `mobile`; editorial CMS
+  (6) — `personas`, `submit` (5-step contributor form), `intake-queue`, `diff`, `audit-log`,
+  `reminders` (preview outbox). Captured via the demos' own Playwright/local servers
+  (offer-map `npm run preview` :4173; CMS `npm run db:reset && npm run pages:dev` :8788).
+- **Anonymization (no blurring).** Offer map: the buyer-named header + ~1.600-entry
+  disclosure footer are excluded by clipping each shot to the filter-strip+map region (header
+  above the clip, footer below). CMS: identifying tokens are interleaved with content the shot
+  must show (header `KNE CMS Demo`, persona `KNE-Redakteurin`, audit actor `KNE-REDAKTION`),
+  so the capture script rewrites them to the generic framing (`KNE-`→`` , `Kompetenznetz
+  Einsamkeit`→`Beratungsnetzwerk`, internal `(Konzept §x)` refs dropped) in the rendered DOM
+  text nodes at capture time. Not a demo-repo edit; it is VISION decision 2's sanctioned
+  anonymization. A per-shot residual-token check ran clean; every PNG was visually inspected.
+- **Deviation — `offer-map-nationwide.png` not produced.** The requested
+  "nationwide-offers surface" does not exist as a distinct UI in the offer-map prototype
+  (no such surface/string in the built app; all seeded offers carry an address). Absent
+  feature, not an anonymization failure. **Orchestrator:** if the case study needs it, it
+  must be built in the demo first. The other five offer-map shots cover the demonstrated
+  capabilities.
+- **Win-flip note for D2:** these are the anonymized assets. On award, re-capture against a
+  rebranded demo (or drop the anonymization transform) and swap in named versions.
