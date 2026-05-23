@@ -1,4 +1,11 @@
 ---
+// Self-hosted fonts (no Google Fonts CDN; latin subset covers DE + EN, incl. äöüß).
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-700.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
 import '../styles/global.css';
 
 interface Props {
@@ -43,11 +50,6 @@ const {
     <!-- Theme color -->
     <meta name="theme-color" content="#0a0a0a" />
 
-    <!-- Preload fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
     <!-- Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
@@ -70,62 +72,5 @@ const {
   </head>
   <body class="min-h-screen">
     <slot />
-
-    <!-- Mixpanel Analytics -->
-    <script type="importmap">
-      { "imports": { "mixpanel-browser": "https://cdn.mxpnl.com/libs/mixpanel-js/dist/mixpanel.module.js" } }
-    </script>
-    <script type="module">
-      import mixpanel from 'mixpanel-browser';
-      mixpanel.init('7bf933aa178f53606b6072703d1d86d9', {
-        track_pageview: true,
-        persistence: 'localStorage'
-      });
-
-      // Register UTM parameters as super properties (persist across all events)
-      const params = new URLSearchParams(window.location.search);
-      const utmProps = {};
-      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(key => {
-        const val = params.get(key);
-        if (val) utmProps[key] = val;
-      });
-      if (Object.keys(utmProps).length) mixpanel.register(utmProps);
-
-      // Track CTA clicks
-      document.addEventListener('click', (e) => {
-        const link = e.target.closest('a');
-        if (!link) return;
-
-        const href = link.getAttribute('href');
-        if (!href) return;
-
-        // Email CTA
-        if (href.startsWith('mailto:')) {
-          mixpanel.track('CTA Click', { type: 'email', email: href.replace('mailto:', '') });
-        }
-        // External project links
-        else if (href.startsWith('http') && !href.includes('9592.tech')) {
-          mixpanel.track('CTA Click', { type: 'external', url: href, text: link.textContent?.trim().slice(0, 50) });
-        }
-        // PDF download
-        else if (href.endsWith('.pdf')) {
-          mixpanel.track('CTA Click', { type: 'download', file: href });
-        }
-        // Internal navigation (blog, etc)
-        else if (href.startsWith('/') && href !== '/') {
-          mixpanel.track('CTA Click', { type: 'internal', path: href });
-        }
-        // Footnote clicks (shows engagement with deeper content)
-        else if (href.startsWith('#user-content-fn')) {
-          const fnId = href.replace('#user-content-fn-', '');
-          mixpanel.track('Footnote Click', { footnote_id: fnId, direction: 'to_footnote' });
-        }
-        // Back-to-text from footnote
-        else if (href.startsWith('#user-content-fnref')) {
-          const fnId = href.replace('#user-content-fnref-', '');
-          mixpanel.track('Footnote Click', { footnote_id: fnId, direction: 'back_to_text' });
-        }
-      });
-    </script>
   </body>
 </html>

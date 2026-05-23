@@ -239,9 +239,6 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
           form.style.display = 'none';
           fallbackP.style.display = 'none';
           successDiv.style.display = 'block';
-
-          // TODO: Add Mixpanel event tracking here
-          // mixpanel.track('Blog CTA Submit', { page: pageTitle });
         } else {
           throw new Error(result.message || 'Submission failed');
         }
