@@ -44,6 +44,52 @@ reversibility constraint.
 
 ---
 
+## ⚠️ POSITIONING CORRECTION (2026-05-23) — AUTHORITATIVE, overrides findings §4.3/§4.4 copy
+
+The research findings' capability copy (§4.4) and the blog-writeup voice note (§4.3) lead with
+"uses AI orchestration to deliver ... at the throughput of a small team" / "die
+AI-Orchestrierung nutzt". **That framing is WRONG and must not ship.** It was lifted from the
+older capability statement, which predates the KNE bid's positioning patch. The KNE work
+(`~/projects/bid-pipeline/notes/research/chatgpt-tender27-framing-2026-05-11.md`, the submitted
+Angebot/Konzept, and chronicle `2026-05-16…tender27-patch-pass-framing`) explicitly REMOVED the
+AI-orchestration self-positioning. Apply that verdict here.
+
+**Lead identity (the correct anchor):**
+- DE: "9592 Solutions UG ist ein inhabergeführter Softwareanbieter mit direkter technischer
+  Gesamtverantwortung durch die Geschäftsführung."
+- EN: "9592 Solutions is an owner-led software provider with direct, end-to-end technical
+  responsibility held by its management."
+
+**The edge is the working, inspectable DEMONSTRATOR** (prototype-first: the buyer can verify
+core deliverables before award) — NOT AI.
+
+**AI handling — bounded to an internal tool only:** mention AI ONLY as a DSGVO-safe internal
+development/QA instrument, with the data-protection reassurance, e.g. "KI-gestützte Werkzeuge
+werden ausschließlich als internes Entwicklungs- und Qualitätssicherungsinstrument eingesetzt;
+keine Übertragung personenbezogener Daten an externe KI-Dienste" (BfDI/DSK orientation). AI is
+NEVER a value proposition, a headline, or a capacity/throughput claim.
+
+**FORBIDDEN (verbatim, from the brief's preserved-language list):** "AI-Orchestrierung nutzt",
+"AI orchestration", "AI-/KI-orchestrierte Arbeitsweise", "Solo-Auftragnehmer mit
+AI-Orchestrierung", "Durchsatz eines kleinen Teams" / "throughput of a small team", and any
+"jung / agil / cheap / startup" framing — plus the already-noted "KI-Agentur" / "KI-Lösungen"
+(findings §2.2).
+
+**Translation table (apply wherever §4.3/§4.4 or the old capability statement used the old framing):**
+- "uses AI orchestration to deliver custom working software at the throughput of a small team"
+  → DROP. Replace with the inhabergeführt + direct-technical-responsibility identity and the
+  working-demonstrator edge. Do not substitute another AI-capacity claim.
+- "die AI-Orchestrierung nutzt, um ... mit dem Durchsatz eines kleinen Teams zu liefern" → DROP
+  likewise.
+- "AI-orchestrierte Arbeitsweise" → "KI-gestützte interne Arbeitsweise".
+- "Solo-Senior-Entwickler" → "alleinverantwortlicher Senior-Entwickler in inhabergeführter Struktur".
+
+This applies to D1 (capabilities), D3 (blog writeup), D4 (homepage hero), and any positioning
+copy. Demo-specific case-study copy (D2, §4.1/§4.2) is about the demonstrators, not the company
+positioning, but must still avoid the forbidden framings.
+
+---
+
 ## What the finished site looks like (end state)
 
 A bilingual (DE-canonical, EN at `/en/`) company site on the existing dark Astro design system.
