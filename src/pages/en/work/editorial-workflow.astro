@@ -1,0 +1,73 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import CaseStudy from '../../../components/CaseStudy.astro';
+import { editorialWorkflow } from '../../../data/work';
+
+// Editorial-CMS demonstrator, EN mirror of /de/arbeiten/redaktions-workflow.
+// Copy source: findings §4.2, em dashes removed (site voice). The buyer is only
+// ever "a national advisory network".
+const lang = 'en' as const;
+const title =
+  "A two-stage editorial workflow that keeps a public dataset current without growing the team's workload";
+---
+
+<Layout
+  lang={lang}
+  pageKey="arbeiten"
+  title="Editorial workflow for a public dataset · 9592 Solutions"
+  description="Demonstrator: a two-stage editorial workflow that keeps a public dataset current. A work sample, not a customer project."
+>
+  <CaseStudy lang={lang} study={editorialWorkflow} title={title}>
+    <Fragment slot="problem">
+      <p>
+        The same network needed contributors to maintain their own entries without the
+        editorial team becoming the bottleneck. At the same time, every change had to
+        stay reviewable and auditable.
+      </p>
+    </Fragment>
+
+    <Fragment slot="approach">
+      <ul class="list-disc pl-5 space-y-3 marker:text-text-secondary/50">
+        <li class="pl-1">
+          A self-service account for contributors with passwordless magic-link login:
+          low friction for volunteer and part-time submitters, and no elevated
+          data-protection risk because only publicly-intended offer data is edited.
+        </li>
+        <li class="pl-1">
+          A five-state lifecycle for every entry (draft, submitted, published,
+          change-requested, archived) implementing a two-stage review: contributors
+          submit, the editorial team reviews and publishes. Published entries can only
+          change via a reviewed change-request with a before-and-after comparison.
+        </li>
+        <li class="pl-1">
+          An editorial back-office with an intake queue, a change queue with diff view,
+          full-text search and bulk actions over published entries, and master-data
+          management.
+        </li>
+        <li class="pl-1">
+          An automated reminder pipeline: a periodic check flags entries not confirmed
+          in six months and runs a three-step escalation with token-signed one-click
+          links (still current, submit a change, withdraw), no login required. Currency
+          is maintained without editorial initiative.
+        </li>
+        <li class="pl-1">
+          A complete audit log: every action timestamped with account and operation.
+        </li>
+      </ul>
+    </Fragment>
+
+    <Fragment slot="demonstrates">
+      <p>
+        The demonstrator is fully interactive: a clearly-labelled demo persona switch
+        moves between the public view, a contributor, and an editor. You can submit an
+        offer, watch it appear in the editor's intake queue, publish it, submit a
+        change request, and resolve it via the diff view.
+      </p>
+      <p>
+        A control to fast-forward six months triggers the full reminder escalation, and
+        the generated reminder emails appear in a preview outbox. Every action is
+        written to the audit log.
+      </p>
+    </Fragment>
+  </CaseStudy>
+</Layout>

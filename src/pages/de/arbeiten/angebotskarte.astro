@@ -1,0 +1,68 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import CaseStudy from '../../../components/CaseStudy.astro';
+import { offerMap } from '../../../data/work';
+
+// Offer-map demonstrator, DE. Slug `angebotskarte` (neutral; avoids the buyer's map
+// title). Copy source: findings §4.1, em dashes removed (site voice), the exact
+// entry-count generalised to "weit über tausend" (strip-list), and the nationwide-
+// offers surface dropped (absent in the prototype per public/work/INVENTORY.md).
+const lang = 'de' as const;
+const title =
+  'Eine barrierearme, selbstaktualisierende Angebotskarte für ein bundesweites Beratungsnetzwerk';
+---
+
+<Layout
+  lang={lang}
+  pageKey="arbeiten"
+  title="Angebotskarte für ein Beratungsnetzwerk · 9592 Solutions"
+  description="Demonstrator: eine barrierearme, selbstaktualisierende Angebotskarte für ein bundesweites Beratungsnetzwerk. Arbeitsprobe, kein Kundenprojekt."
+>
+  <CaseStudy lang={lang} study={offerMap} title={title}>
+    <Fragment slot="problem">
+      <p>
+        Ein bundesweites Beratungsnetzwerk betreibt eine interaktive Karte mit weit
+        über tausend regionalen und bundesweiten Unterstützungsangeboten. Die
+        Aktualität hing an einer manuellen Strecke: Eintragende füllten ein Formular
+        aus, das Team prüfte jeden Eintrag von Hand, und das Ergebnis wurde in eine
+        Tabelle überführt, die die Karte speiste.
+      </p>
+      <p>
+        Bei dieser Menge skalierte die Kette nicht mehr. Jede Aktualisierung kostete
+        redaktionelle Zeit, und auf der öffentlichen Karte stand zeitweise der
+        Hinweis, dass sich Aktualisierungen verzögern.
+      </p>
+    </Fragment>
+
+    <Fragment slot="approach">
+      <ul class="list-disc pl-5 space-y-3 marker:text-text-secondary/50">
+        <li class="pl-1">
+          Datenpfad neu gebaut: An die Stelle der Tabelle trat ein dokumentiertes
+          relationales Schema, automatisiertes Geocoding und eine Eingabemaske, in der
+          Eintragende Datensätze direkt anlegen und ändern.
+        </li>
+        <li class="pl-1">
+          Karte zugänglich und mobile-first: eine externe Single-Page-Anwendung, per
+          iframe eingebunden, Kartendarstellung auf OpenStreetMap-Kacheln ohne
+          US-Cloud-Bindung, mit clientseitiger Filterung nach Kategorie,
+          Unterkategorie, Thema und Umkreis.
+        </li>
+        <li class="pl-1">
+          Orientierung an WCAG 2.1 AA: per Tastatur bedienbare, beschriftete Filter und
+          die Ergebnisliste als gleichwertiger Zugang zur Karte für
+          Screenreader-Nutzende. Nachweis über automatisierte
+          Barrierefreiheits-Prüfungen und ein Mobile-Performance-Gate.
+        </li>
+      </ul>
+    </Fragment>
+
+    <Fragment slot="demonstrates">
+      <p>
+        Der Demonstrator bildet die öffentliche Hälfte des Systems ab: Datenmodell,
+        Such- und Filter-UX, Kartendarstellung mit kategorienbewusster Bündelung,
+        Umkreissuche und die barrierearme Listenansicht. Alles ist im Browser
+        unmittelbar testbar.
+      </p>
+    </Fragment>
+  </CaseStudy>
+</Layout>

@@ -95,10 +95,14 @@ src/
     de/index.astro    # German homepage
     en/index.astro    # English homepage
     [lang]/blog/      # Locale-aware blog: index + [...slug] (/de/blog, /en/blog)
+    de/arbeiten.astro + de/arbeiten/*  # Work index + case studies (DE)
+    en/work.astro + en/work/*          # Work index + case studies (EN)
   content/
     config.ts         # Content Layer glob loader + Zod schema (mandatory cta)
     blog/{de,en}/     # MDX posts; locale = first path segment of the entry id
-  components/         # Header, Footer, LanguageSwitcher, BlogCTA, ContactCTA
+  data/
+    work/             # Per-case-study win-flip data objects (anonymized flag, localized slugs, screenshots)
+  components/         # Header, Footer, LanguageSwitcher, BlogCTA, ContactCTA, CaseStudy
   i18n/               # routes.ts (route-map), utils.ts, ui.ts (chrome dict), legal.ts
   styles/
     global.css        # Tailwind imports + theme tokens
@@ -116,10 +120,11 @@ public/
 - `/de/blog` ↔ `/en/blog` - Blog index + posts (MDX). EN lists all posts; DE lists translated posts plus an "only in English" affordance for unpaired ones
 - `/impressum`, `/datenschutz` (both locales) - Legal pages (§5 DDG Impressum, minimised Datenschutz)
 - `/kontakt` ↔ `/en/contact` - Contact page (Web3Forms; email + form is the Impressum's second contact)
+- `/arbeiten` ↔ `/en/work` - Work index + two anonymized demonstrator case studies (offer-map, editorial-workflow). Data-driven win-flip (see Gotchas)
 
 ### Planned
 
-- `/arbeiten` ↔ `/en/work` - Case studies (D2)
+- (no page-level items outstanding; remaining work is the D3 blog writeup, D4 homepage reframe, and G2/G3 verification per PLAN.md)
 
 ## Blog Infrastructure
 
@@ -202,3 +207,5 @@ For profile content and project details: `~/memex/2_Areas/Self/Profile/`
 **Mermaid diagrams in blog posts** <!-- added: 2026-05-21 -->: Client-side Mermaid is wired in `src/pages/[lang]/blog/[...slug].astro` and triggers on any fenced `mermaid` block in MDX. **Selector caveat**: Astro's default Shiki syntax-highlighter rewrites fenced blocks and strips the `language-mermaid` class from the `<code>` element. The standard `pre > code.language-mermaid` selector returns 0 nodes. Use `pre[data-language="mermaid"]` instead and read `textContent` from the `<pre>` itself (Shiki splits source across many spans; `textContent` reassembles cleanly). Theme variables in the `mermaid.initialize` config match the site's dark palette; if you re-theme the site, update those too. Quote node labels containing `=`, `:`, or `@` (Mermaid 11+ parser sees them as link-IDs otherwise).
 
 **Blog i18n / content collection (E1)** <!-- added: 2026-05-23 -->: The blog collection uses the **Astro 5 Content Layer glob loader** (`src/content/config.ts`), NOT legacy `type: 'content'`. This matters: under the glob loader the entry `id` is **extensionless** with the locale as its first path segment (`en/<slug>`, `de/<slug>`), so `const [lang, ...slug] = post.id.split('/')` and `render(post)` (top-level import from `astro:content`, not `post.render()`) work per the official Astro i18n recipe. Legacy `type: 'content'` keeps the `.mdx` extension in `post.id`, which would break that split. Posts live under `src/content/blog/{de,en}/`; routes are the dynamic `src/pages/[lang]/blog/{index,[...slug]}.astro` rendering `/de/blog/<slug>` + `/en/blog/<slug>` (both prefixed; directory build → trailing-slash canonical, so links/redirects use the trailing slash). `translationKey` (optional) pairs siblings: the `LanguageSwitcher` detects a blog-post path itself, queries the collection, and jumps to the sibling or degrades to the localized blog index (never a 404) without any change to the global Header/Footer/Layout chrome. The DE index surfaces English-only posts with the `blog.onlyEnglish` ui key (there is no `blog.onlyGerman`; add one only if a DE-only post is ever introduced). `BlogCTA.astro` takes an optional `lang` prop for German form chrome (defaults to `'en'`, so EN posts are unchanged). The remark footnotes heading ("Footnotes") is localized to "Quellen" on DE pages via the footnote script in `[...slug].astro` (the global markdown `footnoteLabel` can't vary per locale). Legacy `/blog/<slug>` URLs 301 to `/en/blog/<slug>/` via `redirects` in `astro.config.mjs` (the Vercel adapter emits real 301s; the sitemap excludes the redirect stubs). hreflang is NOT emitted on blog *posts* (Layout builds hreflang from `pageKey`, and posts have none); the blog *index* pages do emit it.
+
+**Work section / case-study win-flip (D2)** <!-- added: 2026-05-23 -->: `/arbeiten` ↔ `/en/work` (index) plus two case studies are STATIC de/en pages (`src/pages/de/arbeiten{,/*}.astro`, `src/pages/en/work{,/*}.astro`), NOT a `[lang]` route. Each case study is driven by a data object in `src/data/work/<key>.ts` rendered through the shared `src/components/CaseStudy.astro` (prose via named slots `problem`/`approach`/`demonstrates`; the section labels live in a local per-locale dict inside that component, NOT `ui.ts`). **WIN-FLIP**: the boolean `anonymized` is the single award-day switch. `true` = generic title (authored in the page) + `Demonstrator/Arbeitsprobe` label + screenshots + a `Live-Demo auf Anfrage` callout that links to the contact page (no buyer URL). To go named + live on award, edit ONLY the data file: set `anonymized:false` and fill `liveUrl`/`buyerName`/`namedTitle`; the page then renders the named title + a live-link button (render branch is `study.anonymized` in `CaseStudy.astro`). Case-study sub-route slugs (`angebotskarte`/`offer-map`, `redaktions-workflow`/`editorial-workflow`) are hardcoded in the data `slug:{de,en}` map, NOT in `routes.ts`; the URL is built by `caseStudyPath()` in `src/data/work/index.ts`. Consequence: case-study pages pass `pageKey="arbeiten"`, so the global `LanguageSwitcher` degrades DE↔EN to the work *index* (never a 404), not the sibling case study, and hreflang points at the index pair (same tradeoff the blog solved with a switcher special-case; mirror that in the switcher if sibling-accurate work switching is ever wanted). The homepage demonstrator links (D4) should import `caseStudyPath` from `src/data/work`. Strip-list discipline carried into this section: the offer-map slug/title use the neutral `Angebotskarte` (never the buyer's `Angebotslandkarte`), the entry count is generalised ("weit über tausend" / "well over a thousand", since `1.600` is a strip token), and the nationwide-offers surface is omitted (absent in the prototype, no screenshot). Screenshot alt text is the single source in the data files (verified clean against `public/work/INVENTORY.md`).

@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ContactCTA from '../../components/ContactCTA.astro';
+import { caseStudies, caseStudyPath } from '../../data/work';
+
+// Work index (EN mirror of /de/arbeiten). Frames the two demonstrators as work
+// samples (not customer projects / not products). No live-demo URLs (win-flip).
+const lang = 'en' as const;
+
+const cards: Record<string, { title: string; teaser: string }> = {
+  'offer-map': {
+    title: 'Offer map for an advisory network',
+    teaser:
+      'An accessible, self-updating offer map for a national advisory network: data model, filters, map rendering, and an equal-rank list view.',
+  },
+  'editorial-workflow': {
+    title: 'Editorial workflow for a public dataset',
+    teaser:
+      'A two-stage editorial workflow with review, a diff view, an audit log, and automated reminders that keeps a public dataset current.',
+  },
+};
+---
+
+<Layout
+  lang={lang}
+  pageKey="arbeiten"
+  title="Work · 9592 Solutions"
+  description="Deployed, browser-testable demonstrators and work samples for structured buyers. Live demo on request."
+>
+  <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <section class="mb-12">
+      <p class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Work</p>
+      <h1 class="text-3xl md:text-4xl font-semibold text-text-primary leading-tight mb-6">
+        Demonstrators and work samples
+      </h1>
+      <p class="text-lg text-text-secondary leading-relaxed">
+        Deployed prototypes you can test in the browser, built as work samples for
+        structured buyers. Not a customer project, not a product. A live demo is
+        available on request.
+      </p>
+    </section>
+
+    <section class="mb-16">
+      <ul class="space-y-4">
+        {caseStudies.map((study) => (
+          <li class="group">
+            <a
+              href={caseStudyPath(study, lang)}
+              class="flex items-start justify-between gap-4 p-5 -mx-5 rounded-lg hover:bg-bg-secondary transition-colors"
+            >
+              <div>
+                <p class="font-mono text-[11px] text-text-secondary/70 uppercase tracking-wider mb-2">
+                  Demonstrator / work sample
+                </p>
+                <h2 class="text-text-primary font-medium text-lg mb-1.5 group-hover:text-accent transition-colors">
+                  {cards[study.key].title}
+                </h2>
+                <p class="text-text-secondary text-sm leading-relaxed">
+                  {cards[study.key].teaser}
+                </p>
+              </div>
+              <svg class="w-4 h-4 text-text-secondary/40 shrink-0 mt-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section>
+      <ContactCTA
+        headline="Have a defined need?"
+        description="Tell me what you'd like to build. I'll get back to you within a day."
+        buttonText="Describe your need"
+        placeholder="We need... / We're looking for... / We'd like to..."
+      />
+    </section>
+  </main>
+</Layout>

@@ -1,0 +1,74 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import CaseStudy from '../../../components/CaseStudy.astro';
+import { editorialWorkflow } from '../../../data/work';
+
+// Editorial-CMS demonstrator, DE. Copy source: findings §4.2, em dashes removed
+// (site voice). The buyer is only ever "ein bundesweites Beratungsnetzwerk".
+const lang = 'de' as const;
+const title =
+  'Ein zweistufiger Redaktions-Workflow, der einen öffentlichen Datenbestand aktuell hält, ohne den Redaktionsaufwand wachsen zu lassen';
+---
+
+<Layout
+  lang={lang}
+  pageKey="arbeiten"
+  title="Redaktions-Workflow für einen öffentlichen Datenbestand · 9592 Solutions"
+  description="Demonstrator: ein zweistufiger Redaktions-Workflow, der einen öffentlichen Datenbestand aktuell hält. Arbeitsprobe, kein Kundenprojekt."
+>
+  <CaseStudy lang={lang} study={editorialWorkflow} title={title}>
+    <Fragment slot="problem">
+      <p>
+        Dasselbe Netzwerk wollte, dass Eintragende ihre eigenen Angebote pflegen, ohne
+        dass die Redaktion zum Engpass wird. Zugleich sollte jede Änderung
+        nachvollziehbar und prüfbar bleiben.
+      </p>
+    </Fragment>
+
+    <Fragment slot="approach">
+      <ul class="list-disc pl-5 space-y-3 marker:text-text-secondary/50">
+        <li class="pl-1">
+          Self-Service-Konto für Eintragende mit passwortlosem Magic-Link-Login:
+          niedrige Hürde für ehren- oder nebenamtliche Anbieter:innen, kein erhöhter
+          Schutzbedarf, da nur öffentlich vorgesehene Angebotsdaten bearbeitet werden.
+        </li>
+        <li class="pl-1">
+          Fünf definierte Zustände je Angebot (Entwurf, Eingereicht, Veröffentlicht,
+          Änderungswunsch, Archiviert) als zweistufige Freigabe: Eintragende reichen
+          ein, die Redaktion prüft und veröffentlicht. Veröffentlichte Einträge ändern
+          sich nur über einen geprüften Änderungswunsch mit Vorher-Nachher-Vergleich.
+        </li>
+        <li class="pl-1">
+          Ein Redaktions-Backoffice mit Eingangs-Queue, Änderungs-Queue mit
+          Diff-Anzeige, Volltextsuche und Bulk-Aktionen über veröffentlichte Angebote
+          sowie Stammdaten-Pflege.
+        </li>
+        <li class="pl-1">
+          Eine automatisierte Reminder-Pipeline: ein periodischer Lauf markiert seit
+          sechs Monaten unbestätigte Angebote und startet eine dreistufige Eskalation
+          mit kryptografisch signierten Ein-Klick-Links (weiterhin aktuell, Änderung
+          einreichen, zurückziehen), ohne Login. So bleibt die Aktualität ohne
+          Initiative der Redaktion erhalten.
+        </li>
+        <li class="pl-1">
+          Ein vollständiges Audit-Log: jede Aktion mit Zeitstempel, Konto und Vorgang.
+        </li>
+      </ul>
+    </Fragment>
+
+    <Fragment slot="demonstrates">
+      <p>
+        Der Demonstrator ist vollständig interaktiv: eine deutlich gekennzeichnete
+        Demo-Persona-Auswahl wechselt zwischen öffentlicher Ansicht, Eintragenden und
+        Redaktion. Man kann ein Angebot einreichen, es in der Eingangs-Queue der
+        Redaktion erscheinen sehen, es veröffentlichen, einen Änderungswunsch
+        einreichen und ihn über die Diff-Anzeige auflösen.
+      </p>
+      <p>
+        Über eine Schaltfläche zum Vorspulen um sechs Monate lässt sich die
+        vollständige Reminder-Eskalation auslösen und die erzeugten Reminder-Mails im
+        Vorschau-Postausgang prüfen. Jede Aktion landet im Audit-Log.
+      </p>
+    </Fragment>
+  </CaseStudy>
+</Layout>

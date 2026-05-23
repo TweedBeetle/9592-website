@@ -1,0 +1,88 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ContactCTA from '../../components/ContactCTA.astro';
+import { caseStudies, caseStudyPath } from '../../data/work';
+
+// Work index (DE). Frames the two demonstrators as Arbeitsproben (not customer
+// projects / not products) and links to each case study. Card copy authored here,
+// keyed by the stable study key. No live-demo URLs (win-flip; on request only).
+const lang = 'de' as const;
+
+const cards: Record<string, { title: string; teaser: string }> = {
+  'offer-map': {
+    title: 'Angebotskarte für ein Beratungsnetzwerk',
+    teaser:
+      'Eine barrierearme, selbstaktualisierende Angebotskarte für ein bundesweites Beratungsnetzwerk: Datenmodell, Filter, Kartendarstellung und eine gleichwertige Listenansicht.',
+  },
+  'editorial-workflow': {
+    title: 'Redaktions-Workflow für einen öffentlichen Datenbestand',
+    teaser:
+      'Ein zweistufiger Redaktions-Workflow mit Freigabe, Diff-Anzeige, Audit-Log und automatisierten Erinnerungen, der einen öffentlichen Datenbestand aktuell hält.',
+  },
+};
+---
+
+<Layout
+  lang={lang}
+  pageKey="arbeiten"
+  title="Arbeiten · 9592 Solutions"
+  description="Bereitgestellte, im Browser testbare Demonstratoren und Arbeitsproben für strukturierte Auftraggeber. Live-Demo auf Anfrage."
+>
+  <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+    <section class="mb-12">
+      <p class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Arbeiten</p>
+      <h1 class="text-3xl md:text-4xl font-semibold text-text-primary leading-tight mb-6">
+        Demonstratoren und Arbeitsproben
+      </h1>
+      <p class="text-lg text-text-secondary leading-relaxed">
+        Bereitgestellte, im Browser testbare Prototypen, gebaut als Arbeitsproben für
+        strukturierte Auftraggeber. Kein Kundenprojekt, kein Produkt. Eine Live-Demo
+        stelle ich Ihnen auf Anfrage bereit.
+      </p>
+    </section>
+
+    <section class="mb-16">
+      <ul class="space-y-4">
+        {caseStudies.map((study) => (
+          <li class="group">
+            <a
+              href={caseStudyPath(study, lang)}
+              class="flex items-start justify-between gap-4 p-5 -mx-5 rounded-lg hover:bg-bg-secondary transition-colors"
+            >
+              <div>
+                <p class="font-mono text-[11px] text-text-secondary/70 uppercase tracking-wider mb-2">
+                  Demonstrator / Arbeitsprobe
+                </p>
+                <h2 class="text-text-primary font-medium text-lg mb-1.5 group-hover:text-accent transition-colors">
+                  {cards[study.key].title}
+                </h2>
+                <p class="text-text-secondary text-sm leading-relaxed">
+                  {cards[study.key].teaser}
+                </p>
+              </div>
+              <svg class="w-4 h-4 text-text-secondary/40 shrink-0 mt-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section>
+      <ContactCTA
+        headline="Sie haben einen konkreten Bedarf?"
+        description="Beschreiben Sie kurz, was Sie umsetzen möchten. Ich melde mich innerhalb eines Tages."
+        buttonText="Bedarf beschreiben"
+        placeholder="Wir brauchen... / Wir möchten... / Wir suchen..."
+        emailLabel="E-Mail"
+        messageLabel="Worum geht es?"
+        successMessage="Danke! Ich melde mich in Kürze."
+        fallbackBefore="Oder schreiben Sie mir direkt an"
+        sendingText="Wird gesendet..."
+        errorText="Fehler, bitte erneut versuchen"
+        subject="Neue Anfrage über 9592.tech"
+      />
+    </section>
+  </main>
+</Layout>

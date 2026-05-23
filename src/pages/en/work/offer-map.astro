@@ -1,0 +1,65 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import CaseStudy from '../../../components/CaseStudy.astro';
+import { offerMap } from '../../../data/work';
+
+// Offer-map demonstrator, EN mirror of /de/arbeiten/angebotskarte. Copy source:
+// findings §4.1, em dashes removed (site voice), the exact entry-count generalised
+// to "well over a thousand" (strip-list), nationwide-offers surface dropped (absent
+// in the prototype per public/work/INVENTORY.md).
+const lang = 'en' as const;
+const title = 'An accessible, self-updating offer map for a national advisory network';
+---
+
+<Layout
+  lang={lang}
+  pageKey="arbeiten"
+  title="Offer map for an advisory network · 9592 Solutions"
+  description="Demonstrator: an accessible, self-updating offer map for a national advisory network. A work sample, not a customer project."
+>
+  <CaseStudy lang={lang} study={offerMap} title={title}>
+    <Fragment slot="problem">
+      <p>
+        A national advisory network publishes an interactive map of well over a
+        thousand local and nationwide support offers. Keeping it current depended on a
+        manual pipeline: people submitted an online form, the team reviewed each entry
+        by hand, and the result was transferred into a spreadsheet that fed the map.
+      </p>
+      <p>
+        At that volume the chain stopped scaling. Every update cost editorial time the
+        team could not spare, and the public map had at times carried a visible notice
+        that updates were delayed.
+      </p>
+    </Fragment>
+
+    <Fragment slot="approach">
+      <ul class="list-disc pl-5 space-y-3 marker:text-text-secondary/50">
+        <li class="pl-1">
+          Rebuilt the data path: the spreadsheet step gave way to a documented
+          relational schema, automated geocoding, and a submission form where
+          contributors create and edit records directly.
+        </li>
+        <li class="pl-1">
+          Made the map accessible and mobile-first: an external single-page app
+          embedded via iframe, rendered on OpenStreetMap tiles with no US-cloud
+          dependency, with client-side filtering by category, sub-category, topic, and
+          radius.
+        </li>
+        <li class="pl-1">
+          Targeted WCAG 2.1 AA: keyboard-operable, labelled filter controls, and the
+          result list as an equal-rank alternative to the map for screen-reader users.
+          Verified through automated accessibility checks and a mobile performance gate.
+        </li>
+      </ul>
+    </Fragment>
+
+    <Fragment slot="demonstrates">
+      <p>
+        The demonstrator covers the public-facing half of the system: data model,
+        search-and-filter UX, map rendering with category-aware clustering, radius
+        search, and the accessible list view. All of it is directly testable in the
+        browser.
+      </p>
+    </Fragment>
+  </CaseStudy>
+</Layout>
