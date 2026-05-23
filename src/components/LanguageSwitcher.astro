@@ -1,0 +1,80 @@
+---
+import { localizedPath, stripLocale, useTranslations } from '../i18n/utils';
+import type { Locale, PageKey } from '../i18n/routes';
+
+interface Props {
+  lang: Locale;
+  pageKey?: PageKey;
+}
+
+const { lang, pageKey } = Astro.props;
+const t = useTranslations(lang);
+
+// Preserve the current page when switching. With a pageKey we use the route-map
+// (handles localized slugs leistungen<->services). Without one, fall back to
+// re-prefixing the current path (correct for identical-slug pages, never a 404 to home).
+function hrefFor(target: Locale): string {
+  if (pageKey) return localizedPath(pageKey, target);
+  const rest = stripLocale(Astro.url.pathname); // e.g. "/" or "/foo/"
+  return rest === '/' ? `/${target}/` : `/${target}${rest}`;
+}
+
+const items: { code: Locale; label: string }[] = [
+  { code: 'de', label: 'DE' },
+  { code: 'en', label: 'EN' },
+];
+---
+
+<nav class="lang-switcher" aria-label={t('switcher.label')}>
+  {items.map((item, i) => (
+    <>
+      {i > 0 && <span class="lang-sep" aria-hidden="true">/</span>}
+      {item.code === lang ? (
+        <span class="lang-item lang-current" aria-current="true" lang={item.code}>{item.label}</span>
+      ) : (
+        <a class="lang-item lang-link" href={hrefFor(item.code)} lang={item.code} hreflang={item.code}>{item.label}</a>
+      )}
+    </>
+  ))}
+</nav>
+
+<style>
+  .lang-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+  }
+
+  .lang-item {
+    padding: 0.15rem 0.1rem;
+    border-radius: 3px;
+  }
+
+  .lang-current {
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .lang-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .lang-link:hover {
+    color: var(--color-text-primary);
+  }
+
+  .lang-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .lang-sep {
+    color: #3a3a3a;
+    user-select: none;
+  }
+</style>

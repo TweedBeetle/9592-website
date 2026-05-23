@@ -1,0 +1,89 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { localizedPath, useTranslations } from '../i18n/utils';
+import { legal } from '../i18n/legal';
+import type { Locale, PageKey } from '../i18n/routes';
+
+interface Props {
+  lang: Locale;
+  pageKey?: PageKey;
+}
+
+const { lang, pageKey } = Astro.props;
+const t = useTranslations(lang);
+
+const legalLinks: { key: PageKey; labelKey: 'footer.impressum' | 'footer.datenschutz' | 'footer.kontakt' }[] = [
+  { key: 'impressum', labelKey: 'footer.impressum' },
+  { key: 'datenschutz', labelKey: 'footer.datenschutz' },
+  { key: 'kontakt', labelKey: 'footer.kontakt' },
+];
+
+// Single-sourced from legal.ts (PC7 / B2). Register fact: Amtsgericht München.
+const entityLine = `${legal.legalName} · ${legal.registerCourt} ${legal.registerNumber} · USt-IdNr. ${legal.vatId}`;
+---
+
+<footer class="site-footer">
+  <div class="footer-inner max-w-3xl mx-auto px-6">
+    <div class="footer-row">
+      <nav aria-label={t('footer.impressum')}>
+        <ul class="footer-links">
+          {legalLinks.map((item) => (
+            <li>
+              <a class="footer-link" href={localizedPath(item.key, lang)}>{t(item.labelKey)}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <LanguageSwitcher lang={lang} pageKey={pageKey} />
+    </div>
+    <p class="entity-line">{entityLine}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-bg-secondary);
+    margin-top: 4rem;
+    padding: 2rem 0 2.5rem;
+  }
+
+  .footer-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-link {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.15s;
+    border-radius: 4px;
+  }
+
+  .footer-link:hover { color: var(--color-text-primary); }
+
+  .footer-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .entity-line {
+    margin-top: 1.25rem;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: #6a6a6a;
+  }
+</style>

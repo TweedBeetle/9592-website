@@ -79,3 +79,54 @@ Queried `/websites/astro_build_en` (i18n routing, on-demand rendering, `astro:i1
   `Accept-Language: de-DE,...` -> 302 `/de/`; `en-US` -> `/en/`;
   `fr-FR,fr;q=0.9,de;q=0.5` -> `/en/` (faithful to the override, not `/de/`);
   no header -> `/en/`. `Vary: Accept-Language` + `Cache-Control: no-store` present.
+
+### A4 shell (Header / Footer / LanguageSwitcher)
+
+- **frontend-design lens:** refined minimalism on the existing dark system (not the
+  skill's maximalist push) — the overriding constraints are design-system consistency
+  (cross-cutting #3) + procurement-evaluator credibility. Hairline borders, established
+  tokens, mono wordmark, subtle hover, accessible-first.
+- **Switcher** preserves the current page via the route-map (`localizedPath(pageKey, target)`),
+  with a stripLocale fallback for pages without a pageKey. Active locale = a non-link
+  `<span aria-current="true">`; the other is a focusable `<a>` with visible focus.
+- **Header** mobile menu: button with `aria-expanded` / `aria-controls`; panel toggles the
+  `hidden` attr; Esc closes and returns focus to the toggle; click-outside closes; a
+  `matchMedia` listener resets state when crossing to desktop width. No focus trap.
+  44x44 touch target on the toggle.
+- **Footer** entity line built from `legal.ts`: "9592 Solutions UG (haftungsbeschränkt) ·
+  Amtsgericht München HRB 287814 · USt-IdNr. DE364316497" (register fact = München, not
+  Düsseldorf). Separators are `·`, not em dashes.
+- **Skip link** in Layout targets `#main`; all page `<main>` elements carry `id="main"`
+  (homepages + blog pages). Visible on `:focus`.
+- **voice-playbook pass (chrome strings, DE+EN):** conventional single-word UI labels,
+  no superlatives / em dashes / emoji; "haftungsbeschränkt" spelled out, "USt-IdNr."
+  canonical. Recorded choice: EN legal labels use "Imprint" / "Privacy" (conventional
+  English renderings of Impressum / Datenschutz). No string changes were needed.
+
+### Phase A verification (isolated headless Chromium against `astro dev`)
+
+The Playwright MCP browser was held by a parallel session (C1 screenshots), so I drove
+an isolated Chromium via `playwright-core` + an explicit `executablePath` (no project
+dependency added, per constraint #5). Results:
+
+- **Network capture (A1 runtime gate):** zero requests to fonts.googleapis / fonts.gstatic
+  / cdn.mxpnl / mixpanel on both `/de/` and `/en/`.
+- **Fonts:** h1 computes to `Inter, ...` (self-hosted, served from localhost).
+- **Mobile menu:** hidden -> open on click (`aria-expanded=true`) -> Esc closes -> focus
+  returns to the toggle.
+- **Switcher:** clicking EN on `/de/` navigates to `/en/` (same page).
+- **Visual:** header + footer render correctly desktop + mobile, both locales; dark theme
+  and Inter/JetBrains Mono intact; no layout regressions. Screenshots in the job dir.
+
+### For the orchestrator / later phases
+
+- **Contact page (`/kontakt` ↔ `/en/contact`)** still needs building (USER OVERRIDE item 1).
+  Footer "Kontakt"/"Contact" already points at it.
+- **Nav targets** (`/{locale}/leistungen|arbeiten|blog`) and **footer legal targets**
+  (`/{locale}/impressum|datenschutz|kontakt`) 404 until B1/B2/D1/D-contact/E1 land. F1 is
+  the route-wiring + audit gate.
+- **Blog** stays at unprefixed `/blog` (English) this phase; E1 relocates it under locales
+  with 301s and per-locale `lang`.
+- **Runtime `/` redirect** is a Vercel serverless function (on-demand). Not exercised by
+  `astro preview` (Vercel adapter); verified in `astro dev`. Confirm on the real deploy in
+  G3 (out of this session's scope; do NOT deploy here).

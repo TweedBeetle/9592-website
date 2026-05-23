@@ -7,9 +7,11 @@ import '@fontsource/inter/latin-700.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import '../styles/global.css';
-import { getLangFromUrl, localizedPath } from '../i18n/utils';
+import { getLangFromUrl, localizedPath, useTranslations } from '../i18n/utils';
 import type { Locale, PageKey } from '../i18n/routes';
 import { legal } from '../i18n/legal';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
@@ -32,6 +34,7 @@ const {
   pageKey,
 } = Astro.props;
 
+const t = useTranslations(lang);
 const ogLocale = lang === 'de' ? 'de_DE' : 'en_US';
 const ogLocaleAlt = lang === 'de' ? 'en_US' : 'de_DE';
 
@@ -108,7 +111,30 @@ const alternates = pageKey
       "areaServed": "Worldwide"
     })} />
   </head>
-  <body class="min-h-screen">
-    <slot />
+  <body class="min-h-screen flex flex-col">
+    <a class="skip-link" href="#main">{t('skip.toContent')}</a>
+    <Header lang={lang} pageKey={pageKey} />
+    <div class="flex-1">
+      <slot />
+    </div>
+    <Footer lang={lang} pageKey={pageKey} />
   </body>
 </html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    background: var(--color-accent);
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 0 0 6px 0;
+    font-size: 0.875rem;
+  }
+
+  .skip-link:focus {
+    left: 0;
+  }
+</style>

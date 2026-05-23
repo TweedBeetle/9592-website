@@ -1,0 +1,261 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { localizedPath, useTranslations } from '../i18n/utils';
+import type { Locale, PageKey } from '../i18n/routes';
+
+interface Props {
+  lang: Locale;
+  pageKey?: PageKey;
+}
+
+const { lang, pageKey } = Astro.props;
+const t = useTranslations(lang);
+
+const navItems: { key: PageKey; labelKey: 'nav.leistungen' | 'nav.arbeiten' | 'nav.blog' }[] = [
+  { key: 'leistungen', labelKey: 'nav.leistungen' },
+  { key: 'arbeiten', labelKey: 'nav.arbeiten' },
+  { key: 'blog', labelKey: 'nav.blog' },
+];
+
+const homeHref = localizedPath('home', lang);
+---
+
+<header class="site-header">
+  <div class="header-inner max-w-3xl mx-auto px-6">
+    <a class="wordmark" href={homeHref} aria-label="9592 Solutions">
+      <span class="wordmark-mark">9592</span><span class="wordmark-rest"> Solutions</span>
+    </a>
+
+    <!-- Desktop -->
+    <div class="header-desktop">
+      <nav aria-label={t('nav.primary')}>
+        <ul class="nav-list">
+          {navItems.map((item) => (
+            <li>
+              <a
+                class="nav-link"
+                href={localizedPath(item.key, lang)}
+                aria-current={item.key === pageKey ? 'page' : undefined}
+              >
+                {t(item.labelKey)}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <LanguageSwitcher lang={lang} pageKey={pageKey} />
+    </div>
+
+    <!-- Mobile -->
+    <div class="header-mobile">
+      <LanguageSwitcher lang={lang} pageKey={pageKey} />
+      <button
+        type="button"
+        id="menu-toggle"
+        class="menu-toggle"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-label-open={t('nav.menu.open')}
+        data-label-close={t('nav.menu.close')}
+        aria-label={t('nav.menu.open')}
+      >
+        <svg class="icon-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <line x1="4" y1="7" x2="20" y2="7" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="17" x2="20" y2="17" />
+        </svg>
+        <svg class="icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <line x1="6" y1="6" x2="18" y2="18" />
+          <line x1="18" y1="6" x2="6" y2="18" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu panel -->
+  <div id="mobile-menu" class="mobile-menu" hidden>
+    <nav aria-label={t('nav.primary')} class="max-w-3xl mx-auto px-6">
+      <ul class="mobile-nav-list">
+        {navItems.map((item) => (
+          <li>
+            <a
+              class="mobile-nav-link"
+              href={localizedPath(item.key, lang)}
+              aria-current={item.key === pageKey ? 'page' : undefined}
+            >
+              {t(item.labelKey)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--color-bg-secondary);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .wordmark {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+
+  .wordmark-mark { color: var(--color-text-primary); font-weight: 600; }
+  .wordmark-rest { color: var(--color-text-secondary); }
+  .wordmark:hover .wordmark-rest { color: var(--color-text-primary); }
+
+  .header-desktop {
+    display: none;
+    align-items: center;
+    gap: 1.75rem;
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.15s;
+    padding: 0.25rem 0;
+    border-radius: 4px;
+  }
+
+  .nav-link:hover { color: var(--color-text-primary); }
+  .nav-link[aria-current='page'] { color: var(--color-text-primary); }
+
+  .header-mobile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    border-radius: 6px;
+  }
+
+  .menu-toggle:hover { color: var(--color-text-primary); }
+  .menu-toggle .icon-close { display: none; }
+  .menu-toggle[aria-expanded='true'] .icon-open { display: none; }
+  .menu-toggle[aria-expanded='true'] .icon-close { display: inline; }
+
+  .mobile-menu {
+    border-top: 1px solid var(--color-bg-secondary);
+    padding: 0.5rem 0 1rem;
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-nav-link {
+    display: block;
+    padding: 0.85rem 0;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .mobile-nav-link:hover { color: var(--color-text-primary); }
+  .mobile-nav-link[aria-current='page'] { color: var(--color-text-primary); }
+
+  /* Visible keyboard focus on all interactive chrome */
+  .wordmark:focus-visible,
+  .nav-link:focus-visible,
+  .mobile-nav-link:focus-visible,
+  .menu-toggle:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  @media (min-width: 768px) {
+    .header-desktop { display: flex; }
+    .header-mobile { display: none; }
+    .mobile-menu { display: none; }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+
+  if (toggle && menu) {
+    const open = () => {
+      menu.hidden = false;
+      toggle.setAttribute('aria-expanded', 'true');
+      const close = toggle.getAttribute('data-label-close');
+      if (close) toggle.setAttribute('aria-label', close);
+    };
+
+    const close = (returnFocus = false) => {
+      menu.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+      const label = toggle.getAttribute('data-label-open');
+      if (label) toggle.setAttribute('aria-label', label);
+      if (returnFocus) toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      if (toggle.getAttribute('aria-expanded') === 'true') close();
+      else open();
+    });
+
+    // Esc closes and returns focus to the toggle (no focus trap).
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        close(true);
+      }
+    });
+
+    // Click outside the header closes the menu.
+    document.addEventListener('click', (e) => {
+      if (
+        toggle.getAttribute('aria-expanded') === 'true' &&
+        !menu.contains(e.target as Node) &&
+        !toggle.contains(e.target as Node)
+      ) {
+        close();
+      }
+    });
+
+    // Leaving mobile width resets state so the desktop nav is never stuck hidden.
+    const mq = window.matchMedia('(min-width: 768px)');
+    mq.addEventListener('change', (e) => {
+      if (e.matches) close();
+    });
+  }
+</script>
