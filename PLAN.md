@@ -10,6 +10,40 @@ the dependency graph shows what gates what; the phases carry the verifiable gate
 
 ---
 
+## ⚠️ USER OVERRIDES (2026-05-23) — AUTHORITATIVE, supersede any contrary line below
+
+Two planner's calls were decided by the user and OVERRIDE the plan text wherever it disagrees:
+
+1. **Impressum second contact = email + monitored contact form. NOT phone (PC4 overruled).**
+   - The mobile `+49 172 767 7643` must NOT appear anywhere public (Impressum, footer, JSON-LD,
+     any page). Remove `phone` from the `legal.ts` constant's public surface (keep it out
+     entirely, or keep it unused/non-rendered).
+   - Add a `/kontakt` ↔ `/en/contact` page (both locales) backed by the existing Web3Forms
+     contact component, with a stated response expectation. The Impressum's "fast electronic
+     contact" second means = email `christo@9592.tech` + a link to that contact form.
+   - Footer "Kontakt" points at `/kontakt` (the form page), not a bare mailto-only.
+
+2. **Root `/` = browser-language detection (overrides the `prefixDefaultLocale: false` / DE-at-root choice).**
+   - **Both locales are explicitly prefixed: `/de/...` and `/en/...`.** There is no unprefixed
+     content tree. Use `prefixDefaultLocale: true`.
+   - **`/` redirects by `Accept-Language`:** browser `de-*` → `/de`, everything else → `/en`.
+     Implement via the mechanism Astro 5 + Vercel best supports (Astro middleware reading the
+     `Accept-Language` header, or a Vercel edge/`vercel.json` redirect) — confirm the current
+     approach via Context7 before coding. The redirect must be a real per-request decision, not
+     a static default.
+   - **`x-default` hreflang → `/en/`** (international/unknown audience). `defaultLocale` may stay
+     `'de'` for Astro's internal fallback, but no locale lives at the unprefixed root.
+   - **Every "DE at `/`" / "EN at `/en/`" / "DE-canonical unprefixed" phrasing below now means
+     "`/de/` and `/en/`, with `/` detecting and redirecting."** This affects the finished-site
+     description, PC1, PC6, A2, A3, A4, D-phase routes, E1, F1, G3.
+   - **Existing blog redirects (PC6):** the three current `/blog/<slug>` URLs → 301 →
+     `/en/blog/<slug>` (they are English). The new DE blog content lives at `/de/blog/<slug>`.
+
+These two are cheap to reverse later (one config flip / one constant), consistent with the
+reversibility constraint.
+
+---
+
 ## What the finished site looks like (end state)
 
 A bilingual (DE-canonical, EN at `/en/`) company site on the existing dark Astro design system.
