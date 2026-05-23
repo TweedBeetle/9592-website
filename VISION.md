@@ -50,6 +50,8 @@ The planning + content sessions should mine these rather than writing from scrat
 - `~/projects/bid-pipeline/CLAUDE.md` — company identity block (legal name, HRB, VAT, addresses), thesis, content-flywheel rationale.
 - Live demos: `https://kne-demo.9592.tech` (Angebotslandkarte) + `https://kne-cms-demo.9592.tech` (editorial CMS).
 
+Synthesized research backing this VISION (legal requirements, buyer-evaluation signals, Astro i18n approach, anonymized copy source + strip-list) lives in `research/presence-findings.md`. Read it before planning.
+
 ## Out of scope (this iteration)
 
 - Naming KNE or any buyer publicly (revisit on award).
