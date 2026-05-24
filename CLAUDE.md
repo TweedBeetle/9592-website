@@ -126,7 +126,7 @@ public/
 
 ### Planned
 
-- (no page-level items outstanding; D1-D4 + E1 content built. F1 nav/footer wiring + route audit DONE; G2 WCAG 2.1 AA pass DONE (Pa11y 24/24 0 errors, Lighthouse a11y=100, see BUILD-NOTES-integration-a11y.md). Remaining: G1 (fresh Handelsregister check before the Impressum goes public) and G3 (final build + `vercel --prod` deploy + post-deploy smoke) per PLAN.md. NOT yet deployed.)
+- (no page-level items outstanding; D1-D4 + E1 content built. F1 nav/footer wiring + route audit DONE; G2 WCAG 2.1 AA pass DONE (Pa11y 24/24 0 errors, Lighthouse a11y=100, see BUILD-NOTES-integration-a11y.md). An independent pre-deploy review (`REVIEW-FINDINGS.md`, 2026-05-23) surfaced 1 BLOCKER + 4 MAJOR that gate G3: the buyer term "Angebotslandkarte 2.0" is baked into 3 editorial-workflow case-study screenshots (invisible to the dist text strip-grep); the loneliness domain is legible in the demo screenshots; the contact form is half-English on `/de/` + `/de/leistungen/`; the "AI Actions" link (ai-actions.app) 404s; the legacy `/blog/<slug>/` trailing-slash redirect 404s in prod. Remaining: fix review BLOCKER/MAJORs, then G1 (fresh Handelsregister check before the Impressum goes public) and G3 (final build + `vercel --prod` deploy + post-deploy smoke) per PLAN.md. NOT yet deployed.)
 
 ## Blog Infrastructure
 
