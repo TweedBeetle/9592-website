@@ -75,7 +75,7 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
       <input type="hidden" name="subject" id="cta-subject" value="" />
       <input type="hidden" name="from_page" id="cta-from-page" value="" />
       <input type="hidden" name="page_url" id="cta-page-url" value="" />
-      <input type="checkbox" name="botcheck" class="hidden" style="display:none" />
+      <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" aria-hidden="true" aria-label="Leave this field empty" />
 
       <div class="cta-fields">
         <div class="form-field">
@@ -181,7 +181,7 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
   }
 
   .cta-submit {
-    background: var(--color-accent);
+    background: var(--color-accent-strong);
     color: white;
     border: none;
     border-radius: 6px;
@@ -194,7 +194,14 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
   }
 
   .cta-submit:hover {
-    background: var(--color-accent-hover);
+    background: var(--color-accent-strong-hover);
+  }
+
+  /* Touch devices: ensure a >=44px tap target. */
+  @media (pointer: coarse) {
+    .cta-submit {
+      min-height: 44px;
+    }
   }
 
   .cta-link {
@@ -211,16 +218,17 @@ const WEB3FORMS_KEY = '99a20438-b99f-4305-a261-e32934e77a2a';
   .cta-fallback {
     margin-top: 20px;
     font-size: 13px;
-    color: #555;
+    color: var(--color-text-secondary);
   }
 
   .cta-fallback a {
     color: var(--color-accent);
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   .cta-fallback a:hover {
-    text-decoration: underline;
+    color: var(--color-accent-hover);
   }
 
   /* Success state */

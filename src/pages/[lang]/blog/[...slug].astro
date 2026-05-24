@@ -77,7 +77,7 @@ const articleStructuredData = {
       href={blogIndexHref}
       class="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors mb-8"
     >
-      <span aria-hidden="true">&larr;</span>
+      <span class="deco-arrow-l" aria-hidden="true"></span>
       <span>{copy.all}</span>
     </a>
 
@@ -129,7 +129,7 @@ const articleStructuredData = {
         href={blogIndexHref}
         class="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors"
       >
-        <span aria-hidden="true">&larr;</span>
+        <span class="deco-arrow-l" aria-hidden="true"></span>
         <span>{copy.backAll}</span>
       </a>
     </footer>
@@ -369,38 +369,42 @@ const articleStructuredData = {
 </style>
 
 <script>
-  // Mermaid: render fenced ```mermaid``` code blocks into SVG diagrams client-side
-  import mermaid from 'mermaid';
-
-  mermaid.initialize({
-    startOnLoad: false,
-    theme: 'dark',
-    themeVariables: {
-      darkMode: true,
-      background: '#0a0a0a',
-      primaryColor: '#141414',
-      primaryTextColor: '#fafafa',
-      primaryBorderColor: '#3b82f6',
-      lineColor: '#a1a1a1',
-      secondaryColor: '#1f2937',
-      tertiaryColor: '#141414',
-      mainBkg: '#141414',
-      secondBkg: '#1f2937',
-      textColor: '#fafafa',
-      labelTextColor: '#fafafa',
-      nodeTextColor: '#fafafa',
-      actorTextColor: '#fafafa',
-      noteTextColor: '#fafafa',
-      sequenceNumberColor: '#fafafa',
-    },
-    flowchart: { htmlLabels: true, curve: 'basis' },
-    sequence: { actorMargin: 50, boxMargin: 10, messageMargin: 35 },
-  });
-
+  // Mermaid renders fenced ```mermaid``` blocks into SVG client-side. The library is
+  // ~0.5MB, so import it dynamically and ONLY on posts that actually contain a diagram
+  // (most posts have none): otherwise every post would ship the bundle as dead weight
+  // and tank LCP. Posts without a diagram fetch nothing here.
   document.addEventListener('DOMContentLoaded', async () => {
     // Astro/Shiki wraps mermaid blocks as <pre data-language="mermaid">...</pre>
     // with each line split across many spans. textContent reassembles the source.
     const blocks = document.querySelectorAll('pre[data-language="mermaid"]');
+    if (blocks.length === 0) return;
+
+    const { default: mermaid } = await import('mermaid');
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#0a0a0a',
+        primaryColor: '#141414',
+        primaryTextColor: '#fafafa',
+        primaryBorderColor: '#3b82f6',
+        lineColor: '#a1a1a1',
+        secondaryColor: '#1f2937',
+        tertiaryColor: '#141414',
+        mainBkg: '#141414',
+        secondBkg: '#1f2937',
+        textColor: '#fafafa',
+        labelTextColor: '#fafafa',
+        nodeTextColor: '#fafafa',
+        actorTextColor: '#fafafa',
+        noteTextColor: '#fafafa',
+        sequenceNumberColor: '#fafafa',
+      },
+      flowchart: { htmlLabels: true, curve: 'basis' },
+      sequence: { actorMargin: 50, boxMargin: 10, messageMargin: 35 },
+    });
+
     for (let i = 0; i < blocks.length; i++) {
       const pre = blocks[i] as HTMLElement;
       const source = pre.textContent || '';
@@ -410,6 +414,14 @@ const articleStructuredData = {
         const wrapper = document.createElement('div');
         wrapper.className = 'mermaid-diagram';
         wrapper.innerHTML = svg;
+        // SVG diagrams are not reliably read by screen readers, so expose the diagram
+        // as a single labelled image: the introducing sentence (the preceding element)
+        // is a faithful text equivalent, and the raw SVG is hidden from assistive tech.
+        const lead = pre.previousElementSibling?.textContent?.trim().replace(/[:.]\s*$/, '');
+        wrapper.setAttribute('role', 'img');
+        wrapper.setAttribute('aria-label', lead && lead.length ? lead : 'Diagram');
+        const svgEl = wrapper.querySelector('svg');
+        if (svgEl) svgEl.setAttribute('aria-hidden', 'true');
         pre.replaceWith(wrapper);
       } catch (e) {
         console.error('mermaid render failed for block', i, e);

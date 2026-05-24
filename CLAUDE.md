@@ -45,7 +45,7 @@ Personal/business website for Christo Wilken / 9592 Solutions.
 | `accent` | `#3b82f6` | Links, highlights |
 | `accent-hover` | `#60a5fa` | Hover states |
 
-**Contrast: avoid `/NN` opacity modifiers on `text-secondary` for small text** <!-- added: 2026-05-23 -->: `text-text-secondary/70` composites to ~4.3:1 on `#0a0a0a` (below WCAG2AA's 4.5:1 small-text threshold) and Pa11y/axe flags it. Use full `text-text-secondary` (~7.7:1) for muted small labels (mono uppercase eyebrow labels, captions). Known latent instance: the `/arbeiten` ↔ `/en/work` index demonstrator-label eyebrow still uses `text-text-secondary/70` (the homepage demonstrator labels were moved to full `text-text-secondary` in D4); G2 should reconcile.
+**Contrast: avoid `/NN` opacity modifiers on `text-secondary` for small text** <!-- added: 2026-05-23 -->: `text-text-secondary/70` composites to ~4.3:1 on `#0a0a0a` (below WCAG2AA's 4.5:1 small-text threshold) and Pa11y/axe flags it. Use full `text-text-secondary` (~7.7:1) for muted small labels (mono uppercase eyebrow labels, captions). The `/arbeiten` ↔ `/en/work` index demonstrator-label eyebrow was reconciled to full `text-text-secondary` in G2 (no `/70` eyebrows remain). For muted text that must stay dimmer than `text-secondary`, use the `text-text-muted` token (`#888`, 5.58:1 on `#0a0a0a`) added in G2; never a darker grey at small sizes. Button fills with white text use `--color-accent-strong` (`#2563eb`, white = 5.17:1), NOT `--color-accent` (`#3b82f6`, white = only 3.68:1).
 
 ### Typography
 

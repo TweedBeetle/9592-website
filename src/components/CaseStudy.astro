@@ -56,7 +56,7 @@ const contactHref = localizedPath('kontakt', lang);
     href={workIndexHref}
     class="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors mb-8"
   >
-    <span aria-hidden="true">&larr;</span>
+    <span class="deco-arrow-l" aria-hidden="true"></span>
     <span>{c.back}</span>
   </a>
 
@@ -128,13 +128,13 @@ const contactHref = localizedPath('kontakt', lang);
     <aside class="demo-callout">
       <p class="demo-headline">{c.requestHeadline}</p>
       <p class="demo-body">{c.requestBody}</p>
-      <a href={contactHref} class="demo-link">{c.requestLink} <span aria-hidden="true">&rarr;</span></a>
+      <a href={contactHref} class="demo-link">{c.requestLink} <span class="deco-arrow-r" aria-hidden="true"></span></a>
     </aside>
   ) : (
     study.liveUrl && (
       <aside class="demo-callout">
         <a href={study.liveUrl} target="_blank" rel="noopener noreferrer" class="demo-button">
-          {c.openLive} <span aria-hidden="true">&rarr;</span>
+          {c.openLive} <span class="deco-arrow-r" aria-hidden="true"></span>
         </a>
       </aside>
     )

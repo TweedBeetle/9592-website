@@ -53,15 +53,12 @@ const items: { code: Locale; label: string }[] = [
 ---
 
 <nav class="lang-switcher" aria-label={t('switcher.label')}>
-  {items.map((item, i) => (
-    <>
-      {i > 0 && <span class="lang-sep" aria-hidden="true">/</span>}
-      {item.code === lang ? (
-        <span class="lang-item lang-current" aria-current="true" lang={item.code}>{item.label}</span>
-      ) : (
-        <a class="lang-item lang-link" href={hrefFor(item.code)} lang={item.code} hreflang={item.code}>{item.label}</a>
-      )}
-    </>
+  {items.map((item) => (
+    item.code === lang ? (
+      <span class="lang-item lang-current" aria-current="true" lang={item.code}>{item.label}</span>
+    ) : (
+      <a class="lang-item lang-link" href={hrefFor(item.code)} lang={item.code} hreflang={item.code}>{item.label}</a>
+    )
   ))}
 </nav>
 
@@ -78,6 +75,15 @@ const items: { code: Locale; label: string }[] = [
   .lang-item {
     padding: 0.15rem 0.1rem;
     border-radius: 3px;
+  }
+
+  /* Decorative separator as generated content: presentational only, not a DOM text
+     node, so it carries no contrast obligation (the visible glyph is non-essential). */
+  .lang-item + .lang-item::before {
+    content: "/";
+    margin-right: 0.4rem;
+    color: #3a3a3a;
+    user-select: none;
   }
 
   .lang-current {
@@ -100,8 +106,15 @@ const items: { code: Locale; label: string }[] = [
     outline-offset: 2px;
   }
 
-  .lang-sep {
-    color: #3a3a3a;
-    user-select: none;
+  /* Touch devices: enlarge each language link to a >=44px tap target (the demos' bar)
+     without changing the compact mouse/desktop layout. */
+  @media (pointer: coarse) {
+    .lang-item {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 </style>
