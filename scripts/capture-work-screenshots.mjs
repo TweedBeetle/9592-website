@@ -197,6 +197,11 @@ const CMS_NEUTRALIZE = () => {
     .replace(/KNE[\s-]?/g, '')           // KNE-REDAKTION→REDAKTION, "KNE CMS"→"CMS"
     .replace(/Einsamkeit/g, 'Isolation')
     .replace(/einsamkeit/g, 'isolation')
+    // "Angebotslandkarte" is the buyer's product name (a strip-list term). It
+    // is distinct from the site's approved neutral "Angebotskarte", so only the
+    // buyer form is rewritten here. (B1: the header band leaked this before.)
+    .replace(/Angebotslandkarte 2\.0/g, 'Demonstrator')
+    .replace(/Angebotslandkarte/g, 'Datenbestand')
     // Drop internal bid-document references ("(Konzept §4.4)") — not buyer-naming
     // but they hint at a formal tender/proposal context the case study avoids.
     .replace(/\s*\(Konzept[^)]*\)/g, '');
@@ -205,7 +210,7 @@ const CMS_NEUTRALIZE = () => {
   const nodes = [];
   while (walker.nextNode()) nodes.push(walker.currentNode);
   for (const n of nodes) {
-    if (n.nodeValue && /Kompetenznetz|kompetenznetz|KNE|[Ee]insamkeit|\(Konzept/.test(n.nodeValue)) {
+    if (n.nodeValue && /Kompetenznetz|kompetenznetz|KNE|[Ee]insamkeit|Angebotslandkarte|\(Konzept/.test(n.nodeValue)) {
       n.nodeValue = repl(n.nodeValue);
     }
   }
@@ -214,7 +219,7 @@ const CMS_NEUTRALIZE = () => {
 // Assert no strip-list token survives in the visible text of the area we shoot.
 const CMS_STRIPCHECK = () => {
   const t = document.body.innerText;
-  const hits = (t.match(/Kompetenznetz|kompetenznetz|KNE|[Ee]insamkeit|\bISS\b|1\.600/g) || []);
+  const hits = (t.match(/Kompetenznetz|kompetenznetz|KNE|[Ee]insamkeit|Angebotslandkarte|\bISS\b|1\.600/g) || []);
   return hits;
 };
 
