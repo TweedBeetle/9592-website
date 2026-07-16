@@ -152,11 +152,13 @@ cta:
 
 ## Forms
 
-**Web3Forms** for serverless form handling (free tier: 250/mo).
+**Web3Forms** for serverless form handling (free tier: 250/mo). Deploy target is Vercel (Cloudflare is only a CDN/proxy in front), so there is no Pages-Function/KV/D1 path; all form capture goes through Web3Forms.
 
 - **Dashboard**: https://app.web3forms.com
-- **Access key**: In `src/components/BlogCTA.astro`
-- **Submissions**: Stored 30 days on free plan
+- **Access key**: In `src/components/BlogCTA.astro` (shared by all three form components)
+- **Submissions**: Stored 30 days on free plan; the notification email to christo@9592.tech is the durable record
+- **Three form components**: `ContactCTA.astro` (contact page inquiry), `BlogCTA.astro` (per-post inquiry, email + website), and `SubscribeCTA.astro` (newsletter email capture, EN/DE, on blog post pages + blog index)
+- **Newsletter seed capture** <!-- added: 2026-07-16 -->: `SubscribeCTA` collects subscriber emails before a real newsletter platform exists. Signups carry stable `subject="Newsletter signup, 9592.tech"` + `from_name="9592.tech Newsletter"` + hidden `list=newsletter` and `locale` fields, so they filter cleanly in Gmail and the whole list is trivially exportable when it migrates to a real newsletter tool. Consent is Art. 6(1)(a) DSGVO (see Datenschutz §7 in both locales). No double opt-in yet (nothing is sent at the seed stage); the eventual newsletter tool handles opt-in on first send.
 
 **⚠️ Gmail spam issue**: First Web3Forms notification may land in spam. Mark as "not spam" or create filter for `from:notify@web3forms.com`. <!-- added: 2026-02-01 -->
 

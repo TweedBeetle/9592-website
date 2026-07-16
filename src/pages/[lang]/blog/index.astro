@@ -1,5 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
+import SubscribeCTA from '../../../components/SubscribeCTA.astro';
 import { getCollection } from 'astro:content';
 import { localizedPath, useTranslations } from '../../../i18n/utils';
 import { locales, type Locale } from '../../../i18n/routes';
@@ -156,6 +157,9 @@ const homeHref = localizedPath('home', lang);
         ))}
       </ul>
     )}
+
+    <!-- Newsletter subscribe (seed email capture) -->
+    <SubscribeCTA lang={lang} />
   </main>
 </Layout>
 

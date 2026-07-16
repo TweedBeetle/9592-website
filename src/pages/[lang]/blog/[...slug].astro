@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import BlogCTA from '../../../components/BlogCTA.astro';
+import SubscribeCTA from '../../../components/SubscribeCTA.astro';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { localizedPath } from '../../../i18n/utils';
 import type { Locale } from '../../../i18n/routes';
@@ -122,6 +123,9 @@ const articleStructuredData = {
         lang={lang}
       />
     </article>
+
+    <!-- Newsletter subscribe (seed email capture) -->
+    <SubscribeCTA lang={lang} />
 
     <!-- Footer -->
     <footer class="mt-16 pt-8 border-t border-bg-secondary">
