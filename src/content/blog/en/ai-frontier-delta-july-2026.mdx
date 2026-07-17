@@ -1,0 +1,52 @@
+---
+title: "What changed at the AI frontier: July 2026"
+description: "A scheduled job refreshes my reference docs on AI capabilities every month and commits the diff. The July edition: OpenAI and Google retiring image and video models on short timelines, Voyage's contextualized chunk embeddings, a speech leaderboard reshuffle, Apple's 20B on-device model, and Mistral OCR 4 pricing."
+publishedAt: 2026-07-17
+author: "Christo Wilken"
+tags: ["frontier-delta", "ai-models", "deprecations", "llm"]
+cta:
+  headline: "Building on model APIs that keep moving?"
+  description: "I design and build LLM-powered systems: agent workflows, retrieval pipelines, and automations that have to survive model deprecations. If something in this digest touches your stack, I'd like to hear about it."
+  buttonText: "Get in touch"
+  href: "mailto:christo@9592.tech"
+---
+
+I keep a set of reference documents on the current state of AI capabilities, one per domain, eighteen at this point: image generation, embeddings, speech, agents, video, OCR, and the rest. They exist because my agents otherwise work from training data that is months out of date. A scheduled job refreshes them monthly with web research and commits the diff.
+
+The interesting byproduct is the diff itself. It's a monthly record of how fast things are moving. This is the July edition, filtered down to the changes I think a practitioner would find most relevant.
+
+## The deprecation wave
+
+A strong theme this cycle is how quickly the big labs now retire models.
+
+OpenAI [retired the DALL·E 2 and 3 API models](https://developers.openai.com/api/docs/deprecations) on May 12, and has already scheduled gpt-image-1-mini, gpt-image-1.5, and chatgpt-image-latest for retirement on December 1, all pointing at gpt-image-2. Google [put shutdown dates on its Imagen model line](https://ai.google.dev/gemini-api/docs/deprecations), rolling from June 30 through August 17, and retired the Veo 2 and Veo 3 model IDs on June 30 in favor of Veo 3.1.
+
+What that means in practice: a pinned model ID in a production pipeline now has a shelf life of months, not years. If your pipeline calls an image or video model by ID, migration is recurring scheduled work. I treat a model migration like a release, with a small bake-off against the replacement before swapping, and this cycle made that feel like the sensible baseline rather than excess caution.
+
+## Embeddings: chunking gets less painful
+
+Voyage [shipped voyage-context-4](https://blog.voyageai.com/2026/06/29/voyage-context-4/) on June 29. It produces contextualized chunk embeddings, meaning each chunk's embedding also encodes context from the whole document. A lot of the fiddly work in RAG is chunking strategy, and this moves a good part of that problem into the model.
+
+It builds on the Voyage 4 family from January, whose shared embedding space already allowed indexing with the large model and querying with a smaller one without re-indexing. The two together make the embedding layer noticeably less brittle than it was a year ago.
+
+## Speech, both directions
+
+The [Artificial Analysis leaderboards](https://artificialanalysis.ai/speech-to-text) reshuffled on both sides of the speech stack in this pull. On transcription, Alibaba's Fun-Realtime-ASR preview leads at roughly 1.7% word error rate, with ElevenLabs Scribe v2 around 2.2% and the best open-weights option (Voxtral Small) around 2.8%. On synthesis, Gemini 3.1 Flash TTS sat on top in my July 1 pull, and Alibaba's Fun-Realtime-TTS family moved into the frontier cluster. The TTS lead has already changed hands since that pull, which tells you how quickly these rankings churn. Treat the exact order as a snapshot.
+
+One thing worth noticing is that Chinese labs now hold frontier positions on both sides of speech. If you last evaluated speech vendors in 2025, the shortlist has changed.
+
+## On-device: a 20B model on the phone
+
+Apple [announced its third generation of foundation models](https://machinelearning.apple.com/research/introducing-third-generation-of-apple-foundation-models) on June 8, with the new capabilities going to developer testing first. The interesting one is AFM 3 Core Advanced, a 20-billion-parameter sparse model that runs on-device by activating only 1 to 4 billion parameters per prompt, with the full weights living in flash storage and routing decided per prompt. Google's Gemma 4 family expanded to five sizes in the same window.
+
+A 20B-class model on a phone changes what "on-device only" product designs can promise. I haven't built against AFM 3 yet, so I'll hold judgment on quality, but the architecture alone makes the category worth re-checking if you dismissed on-device models last year.
+
+## OCR keeps getting cheaper
+
+Mistral [released OCR 4](https://mistral.ai/news/ocr-4/) on June 23 at $4 per thousand pages through the API and $2 per thousand in batch, with bounding boxes, block classification, and inline confidence scores. It also comes as a single self-managed container, though that path is for enterprise customers. Document pipelines that were priced out of LLM-grade OCR a year ago probably aren't anymore.
+
+## How this digest is made, and how much to trust it
+
+These items come out of the monthly refresh of my reference docs. ChatGPT with web search does the sweep, a set of guards catches truncation and silently gutted sections, and I curate what survives. For this post I verified the deprecation dates and release claims above against the providers' own pages. The leaderboard numbers are as of the early-July pull and will drift.
+
+I plan to publish one of these after each monthly refresh. The full set covers eighteen domains, so if there's one you'd want in more depth, tell me which.
