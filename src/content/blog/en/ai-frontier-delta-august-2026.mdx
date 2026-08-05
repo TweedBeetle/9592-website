@@ -1,0 +1,78 @@
+---
+title: "What changed at the AI frontier: August 2026"
+description: "The August edition of my monthly reference-doc diff: Google's Imagen shutdown and the migrations that are no longer model-string swaps, OpenAI's GPT-5.6 price cuts recomputed, MiniMax H3's open weights and the licence that excludes the EU, why video-understanding benchmarks are weaker than they look, and the Munich GEMA ruling against Suno."
+publishedAt: 2026-08-05
+author: "Christo Wilken"
+tags: ["frontier-delta", "ai-models", "deprecations", "llm"]
+cta:
+  headline: "Building on model APIs that keep moving?"
+  description: "I design and build LLM-powered systems: agent workflows, retrieval pipelines, and automations that have to survive model deprecations. If something in this digest touches your stack, I'd like to hear about it."
+  buttonText: "Get in touch"
+  href: "mailto:christo@9592.tech"
+---
+
+I keep a set of reference documents on the current state of AI capabilities, one per domain. They exist because my agents would otherwise work from training data that is months out of date, and a scheduled job refreshes them monthly with web research and commits the diff. Last month there were eighteen of them. There are twenty-four now.
+
+The diff is the interesting part. This is the August edition, covering roughly the last three weeks, filtered down to what I think a practitioner would actually use. There's a note at the end on how it's made and where I found my own documents wrong, which happened three times this cycle.
+
+## Migrations stopped being model-string swaps
+
+Last month's edition made the point that a pinned model ID now has a shelf life of months rather than years. This cycle added something to that, at least for multimodal generation. The replacement increasingly isn't the same kind of API call.
+
+Google's [Imagen 4 endpoints are scheduled to shut down on August 17](https://ai.google.dev/gemini-api/docs/deprecations). All three of them, `imagen-4.0-generate-001`, `imagen-4.0-ultra-generate-001` and `imagen-4.0-fast-generate-001`, with `gemini-3.1-flash-image` named as the migration target. That target sits in a different model family with a different call surface, so code built around `generate_images()` doesn't get there by editing a string. Worth knowing that the deprecation page describes its listed dates as the *earliest possible* shutdown dates, so treat August 17 as the point from which the endpoint may stop answering, not a guarantee that it will keep answering until then.
+
+The video side is the same story. Google's video docs now say plainly: "[Use Gemini Omni Flash as your default model for video generation](https://ai.google.dev/gemini-api/docs/video)." Veo stays for scene extension, last-frame control and existing Veo workflows. But Veo runs as a long-running operation you submit and poll, while Omni Flash goes through the Interactions API and can return the video inline as base64 in a single unary call. Porting a Veo integration to it means rewriting the call, not swapping the model name. Omni Flash is also still labelled preview, and doesn't cover everything Veo does, so this is a case where the recommended default and the production-ready choice aren't obviously the same model yet.
+
+So the advice from July needs an upgrade. For generation APIs, a model migration isn't a config change with a bake-off attached. Budget it as integration work, and go and read the replacement's call surface before you promise anyone a date.
+
+## The cheap tier got much cheaper
+
+On July 30 OpenAI cut two of the three GPT-5.6 models. Luna went from $1.00 and $6.00 per million input and output tokens to $0.20 and $1.20, which is about 80% off. Terra went from $2.50 and $15.00 to $2.00 and $12.00, about 20%. Sol didn't move, at $5.00 and $30.00. Those are the standard short-context rates, and I re-checked all three current figures against [OpenAI's pricing page](https://developers.openai.com/api/docs/pricing) while writing this. The batch, flex, priority and long-context tiers all price differently, so check the row you're actually billed on.
+
+The part worth copying is what the cut did to my own numbers. I keep monthly cost tables for a couple of representative workloads, and recomputing them rather than relabelling them moved Luna on a 100M-input, 20M-output month from $220 to $44. That drops it below models it used to sit above, so the cheapest sensible option for that workload is a different one now. A cut that size reorders the table, and a table that only gets its labels refreshed will keep recommending yesterday's model in a confident voice.
+
+The obvious caveat is that cost per token isn't cost per accepted result. A model that's 80% cheaper and needs two attempts, a longer prompt or a human correction hasn't saved you 80% of anything. The table tells you where to run the comparison, not what the answer is.
+
+## Transcription got cheaper too
+
+OpenAI released GPT Transcribe and GPT Live Transcribe on July 28, at $0.0045 per minute for completed files and $0.017 per minute for the live model. You can pass prompts, keyword hints and multiple language hints, which is the part I'd expect to matter most in practice, since names, acronyms and code-switching are where general transcription usually falls over.
+
+I've left the accuracy numbers out. The launch benchmark figures I could find in circulation are macro-averaged across languages and don't cleanly separate the file model from the live one, and a single word error rate wouldn't tell you much about your audio anyway. If you're moving a Whisper pipeline across, the thing to check first is that the output options aren't a drop-in match for what `whisper-1` returns.
+
+## Open weights, with a map attached
+
+MiniMax launched H3 on July 31: clips of up to 15 seconds at 2K and 24fps, with native stereo audio generated in the same pass as the picture, at $0.13 per second through the API. In the [Artificial Analysis text-to-video arena](https://artificialanalysis.ai/video/leaderboard/text-to-video) snapshot I pulled on August 5, Gemini Omni Flash led the with-audio board at 1,243 and H3 was second at 1,237, with the same ordering on the without-audio board. That's a six-point gap on a continuously updating blind-preference arena, so I'd read it as "effectively tied at the top" rather than as a ranking, and it may well have moved by the time you read this.
+
+The weights went up on Hugging Face on August 3, a 33B model, which already makes the August 1 line in my own reference doc saying they hadn't shipped out of date. The more useful detail is in the licence. The [MiniMax H3 Community License Agreement](https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/LICENSE), effective August 2, defines its "Applicable Territory" as worldwide excluding the Excluded Territories, and defines those as the European Union, the United Kingdom, the Republic of Korea and the United States of America.
+
+I'm in the EU, so those weights aren't licensed for me to run locally, and that will be true for a lot of people reading this. MiniMax's hosted API is a separate service relationship and appeared to still be available here on August 5. Two things follow. It seems worth actually opening the licence file on an open-weights release now, because "the weights are downloadable" and "you may run them" have come apart. And separately, downloadable isn't the same as runnable either: a 33B video model with its own VAEs and text encoder is not a thing most people will be serving on hardware they already own.
+
+## The video-understanding scoreboard is weaker than it looks
+
+This one is a correction to my own reference docs rather than news, and it changed how much weight I give anything in that section.
+
+[VideoReasonBench](https://arxiv.org/abs/2505.23359) ran the control that benchmark reporting usually skips. It asked the questions with no video attached at all. Four widely-cited video benchmarks still scored between 40% and 50% that way: Video-MMMU at 49.7%, Video-MME at 45.6%, MMVU at 44.8%, and TempCompass at 40.2% (Table 3 in the paper). VideoReasonBench's own vision-centric task drops to 1.0% under the same condition, against 27.4% with the video present. That doesn't let you say precisely how much of each benchmark is "really" about video, but it does show those four contain enough language, world-knowledge and answer-distribution signal for a model to get roughly half the questions right without seeing anything. As a measure of video understanding specifically, that's a serious problem.
+
+[VideoZeroBench](https://arxiv.org/abs/2604.01569) comes at it from the other side, with a staged protocol that hands the model progressively less help. Frontier models score under 17% on ordinary video QA, and under 1% when the answer *and* the temporal and spatial grounding all have to be right. Supplying the correct time range and crop lifts scores substantially, so evidence localisation is clearly a large part of the difficulty. It isn't the whole of it though, and I had this wrong in my own notes until I went back to the paper: models stay weak even when they're handed the evidence, so this separates several failure modes rather than reducing them to one.
+
+The practical half is that sampling configuration moves results a lot. When I calibrated the Gemini video tiers directly, raising `media_resolution` to high took small-text reading from 0 out of 3 to 3 out of 3 across every tier I tested, and a higher frame rate fixed an ordering failure the most expensive model couldn't solve at default sampling. That's three items and my own scoring, so treat it as an engineering observation rather than a result. It was enough to convince me that a video benchmark score is hard to compare or reproduce unless the frame sampling, resolution and token budget are reported alongside it, and they usually aren't.
+
+## A ruling worth tracking if you ship generated audio
+
+On July 31 the Munich I Regional Court [ruled against Suno](https://musically.com/2026/07/31/german-collecting-society-gema-wins-its-copyright-infringement-lawsuit-against-suno/) in the case GEMA brought in January 2025, over a set of specific works from GEMA's repertoire. As reported, the court found infringement in the training on those works in the US together with their storage and reproduction in Europe. Damages haven't been quantified. It follows GEMA's November 2025 win against OpenAI over song lyrics.
+
+Two cautions before anyone builds a position on this. It's a first-instance judgment and appealable, as was the OpenAI one, so neither is settled European law yet, and the reasoning is worth reading in full once the written judgment is out rather than taking it from coverage, including mine.
+
+The second is more practical. The liability discussed in these cases attaches to the provider of the model, which is not the same as a safe harbour for people using the output. If you put generated audio into client work you can still be exposed through the specific output you shipped, your contract warranties, collecting-society obligations, or whatever clearance you did or didn't do. I'd treat this as a live area to watch and a reason to check your vendor's indemnity, not as cover.
+
+## How this is made, and how much to trust it
+
+ChatGPT with web search does the monthly sweep of the reference docs, a set of guards catches truncation and silently gutted sections, and I curate what survives. For this post I checked the product facts against first-party documentation where it exists, which is where the prices, the deprecation dates and the licence text come from, and cross-checked the benchmark and legal claims against the papers and the reporting. Where I couldn't get to a first-party source I've either said so or left the claim out. Two things came out of the draft on that basis: a set of transcription accuracy figures I could only trace to secondary coverage, and a benchmark misattribution claim I couldn't produce a source trail for.
+
+Three things came through the refresh wrong this cycle, which is the honest argument for doing the checking at all.
+
+My doc summarised the VideoReasonBench result as benchmarks retaining "50-73% accuracy" with no video input. That's the retention ratio against their full-video scores, not the accuracy, and quoting it as accuracy would have overstated the effect. It also described evidence localisation as *the* bottleneck in VideoZeroBench, which is a stronger claim than the paper makes. And it said MiniMax hadn't released the H3 weights, which was true when it was written on August 1 and stopped being true on August 3.
+
+There's a structural reason for that last one. Each refresh describes what changed in a document since its own last verification date, which can be months, so an item appearing in a changelog is not the same as an item being new. Leaderboard positions drift faster still. The video arena numbers above moved between the August 1 pull and this post four days later, which is why they're dated.
+
+Twenty-four domains, one of these a month. If there's a domain you'd want covered in more depth, tell me which one.
