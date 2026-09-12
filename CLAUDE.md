@@ -124,9 +124,16 @@ public/
 - `/kontakt` ↔ `/en/contact` - Contact page (Web3Forms; email + form is the Impressum's second contact)
 - `/arbeiten` ↔ `/en/work` - Work index + two anonymized demonstrator case studies (offer-map, editorial-workflow). Data-driven win-flip (see Gotchas)
 
-### Planned
+### Status
 
-- (no page-level items outstanding; D1-D4 + E1 content built. F1 nav/footer wiring + route audit DONE; G2 WCAG 2.1 AA pass DONE (Pa11y 24/24 0 errors, Lighthouse a11y=100, see BUILD-NOTES-integration-a11y.md). An independent pre-deploy review (`REVIEW-FINDINGS.md`, 2026-05-23) surfaced 1 BLOCKER + 4 MAJOR that gate G3. **Code/copy fixes DONE** (2026-05-23, see `BUILD-NOTES-fixpass.md`): M2 (contact form now fully German on `/de/` + `/de/leistungen`), M3 (AI Actions link → App Store id6447460842), M4 (legacy `/blog/<slug>/` redirect made trailing-slash tolerant via the `patchLegacyBlogRedirects` integration), plus minors m1 (Impressum displays `9592.tech/de/kontakt`), m3 (Leistungen voice unified to "Ich"), m6 ("Inhabergeführte Praxis"). **Still gating G3 (screenshot session):** B1 (buyer term "Angebotslandkarte 2.0" baked into 3 editorial-workflow screenshots) and M1 (loneliness domain legible in demo screenshots) — both require re-capturing PNGs. Then G1 (fresh Handelsregister check before the Impressum goes public) and G3 (final build + `vercel --prod` deploy + post-deploy smoke) per PLAN.md. NOT yet deployed.)
+The site is live at 9592.tech and has been since the 2026-05 launch sequence; Vercel deploys
+`main` on push. The D1-D4 / E1 / F1 / G1-G3 launch gates are discharged: the pre-deploy review's
+blockers were fixed in `0033995`, and B1/M1 (buyer term and domain legible in demo screenshots)
+in `09304a1`, which re-skinned the editorial screenshots off the buyer domain. Gate-by-gate
+history is in `PLAN.md` + the `BUILD-NOTES-*.md` files; ongoing project state lives in
+`~/memex/Executive/state/queues/9592-website.md`, not here. <!-- rewritten: 2026-09-12; the
+previous block still read "NOT yet deployed" and listed B1/M1/G1/G3 as gating, all of which had
+been discharged months earlier -->
 
 ## Blog Infrastructure
 
@@ -167,7 +174,7 @@ cta:
 ```bash
 npm run dev      # Start dev server (localhost:4321)
 npm run build    # Build for production
-npm run preview  # Preview production build
+npm run preview  # DOES NOT WORK: the Vercel adapter has no preview command. Use `npm run dev`.
 ```
 
 ## Infrastructure
@@ -205,6 +212,9 @@ For pixel-perfect adjustments, use Playwright's `browser_evaluate()` to tweak st
 For profile content and project details: `~/memex/2_Areas/Self/Profile/`
 
 ## Gotchas
+
+**Locale pages are hand-authored twins, not translations** <!-- added: 2026-09-12 -->: `/de/*` and `/en/*` are separate page files whose body copy is written independently (only `src/i18n/` chrome is genuinely shared), so a copy or voice fix in one locale does not reach its sibling and nothing in the build or the a11y gate catches the drift. **Every copy change names both files.** Receipt: the fixpass unified `/de/leistungen` to "Ich" (m3) and left `/en/services` mixing "I deliver" with "We build" and "What we do not do" for months, through a full pre-deploy review, until 2026-09-12. DE copy additionally wants a false-friend read against the DE strings already live elsewhere on the site, which is how the homepage ended up heading its writing section "Schreiben" (the act of writing) and calling production systems "die Produktion" (manufacturing) while the blog index had "im echten Betrieb" right all along.
+
 
 **Astro i18n routing (`prefixDefaultLocale: true`)** <!-- added: 2026-05-23 -->: Both locales are explicitly prefixed (`/de/...`, `/en/...`); all content pages live under `src/pages/<locale>/`. There is no content page at the bare root: `src/pages/index.astro` is an on-demand (`export const prerender = false`) redirector that reads `Accept-Language` and 302s to `/de/` or `/en/` (real per-request decision, so `redirectToDefaultLocale: false` in `astro.config.mjs`). **Gotcha:** a physical unprefixed route (a file directly under `src/pages/` rather than under a locale folder) still PRERENDERS to a static file in `npm run build` even though `astro dev` returns 404 for it at the locale-prefix check. So such routes work in production (Vercel serves the static file) but appear broken in dev. Don't "fix" a dev-only 404 on an unprefixed legacy route by panicking; check the build output. i18n single-source-of-truth lives in `src/i18n/`: `routes.ts` (page-key -> per-locale slug map; localized slugs leistungen/services, arbeiten/work), `utils.ts` (`getLangFromUrl`, `localizedPath`, `pickLocaleFromAcceptLanguage`, `useTranslations`), `ui.ts` (chrome-string dictionary), `legal.ts` (the ONE legal-entity constant consumed by Impressum, footer, and JSON-LD; register fact = Amtsgericht München, no public phone). `<html lang>`, hreflang (x-default -> /en), and og:locale are set in `Layout.astro` from the active locale + an optional `pageKey` prop.
 
