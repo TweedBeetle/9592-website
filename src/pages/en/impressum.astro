@@ -34,11 +34,15 @@ const contactPath = localizedPath('kontakt', 'en');
           Email:
           <a href={`mailto:${legal.email}`} class="text-accent hover:text-accent-hover underline underline-offset-2 transition-colors">{legal.email}</a>
           <br />
+          Phone:
+          <a href={`tel:${legal.phoneE164}`} class="text-accent hover:text-accent-hover underline underline-offset-2 transition-colors">{legal.phone}</a>
+          <br />
           Contact form:
           <a href={contactPath} class="text-accent hover:text-accent-hover underline underline-offset-2 transition-colors">9592.tech/en/contact</a>
         </p>
         <p class="text-text-secondary text-sm mt-3">
-          The contact form serves as the second means of fast electronic contact pursuant to § 5 (1) no. 2 DDG.
+          The telephone number above serves as the second means of fast electronic contact pursuant to
+          § 5 (1) no. 2 DDG; the contact form is available in addition.
         </p>
       </section>
 
