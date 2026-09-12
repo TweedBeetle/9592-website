@@ -14,26 +14,26 @@ import { legal } from '../../i18n/legal';
 const practiceAreas = [
   {
     title: 'Anwendungsentwicklung für Web und iOS',
-    body: 'Individuelle Web- und iOS-Anwendungen über den gesamten Stack.',
+    body: 'Webanwendungen und native iOS-Apps, von der Datenbank bis zur Oberfläche.',
   },
   {
     title: 'Interne Werkzeuge',
-    body: 'Werkzeuge für interne Abläufe und Teams.',
+    body: 'Software für Arbeit, die Ihr Team heute von Hand oder in Tabellen erledigt.',
   },
   {
     title: 'Datenpipelines',
-    body: 'Extraktion, Aufbereitung und Verarbeitung von Daten.',
+    body: 'Daten aus den Systemen holen, in denen sie liegen, sie aufbereiten und aktuell halten.',
   },
   {
     title: 'Integrationsarbeit',
-    body: 'Anbindung an bestehende Systeme und Schnittstellen.',
+    body: 'Neue Software an die Systeme und Schnittstellen anbinden, die Sie bereits betreiben.',
   },
 ];
 
 const notOffered = [
   'Schulungen und Workshops',
-  'Personal-Augmentation in fremden Prozessen',
-  'Großteam-Integrationsprojekte mit Schein-Personal-Profilen',
+  'Entwicklerüberlassung in fremden Prozessen',
+  'Große Integrationsprojekte, besetzt mit Profilen von Personen, die nicht mitarbeiten',
   'Hardware-Beschaffung',
 ];
 ---
@@ -41,7 +41,7 @@ const notOffered = [
 <Layout
   pageKey="leistungen"
   title="Leistungen · 9592 Solutions"
-  description="Lauffähige Software für strukturierte Auftraggeber. Inhabergeführte Softwarepraxis, Direktvertrag, EU/DE-Datenschutz, Barrierefreiheit."
+  description="Individuelle Software für Auftraggeber mit förmlichem Vergabeverfahren. Ein Entwickler, Direktvertrag, EU/DE-Datenschutz, WCAG 2.1 AA."
 >
   <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
     <!-- Header -->
@@ -51,10 +51,9 @@ const notOffered = [
         Lauffähige Software, auf Ihren Prozess zugeschnitten
       </h1>
       <p class="text-lg text-text-secondary leading-relaxed">
-        Die {legal.legalName} ist ein inhabergeführter Softwareanbieter mit
-        direkter technischer Gesamtverantwortung durch die Geschäftsführung.
-        Zentrale Ergebnisse des angefragten Systems sind vor der Vergabe prüfbar,
-        nicht erst nach Zuschlag.
+        Die {legal.legalName} ist mein Unternehmen, und die technische Arbeit mache
+        ich selbst. Die zentralen Teile des angefragten Systems können Sie öffnen und
+        prüfen, bevor Sie den Zuschlag erteilen.
       </p>
     </section>
 
@@ -76,18 +75,17 @@ const notOffered = [
       <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Zusammenarbeit</h2>
       <div class="space-y-4 text-text-secondary leading-relaxed">
         <p>
-          Ein typischer Auftrag beginnt mit einem lauffähig bereitgestellten Prototyp
-          des angefragten Systems, befüllt mit Ihrer Fachsprache, Beispieldaten und
-          realistischen Arbeitsabläufen. Er beginnt mit lauffähiger Software, nicht
-          mit Foliensätzen oder reinen Eignungsdarstellungen.
+          Ein Auftrag beginnt mit einem bereitgestellten, lauffähigen Prototyp des
+          angefragten Systems. Er verwendet Ihre Fachsprache, Beispieldaten, die Ihren
+          echten ähneln, und die Arbeitsabläufe, die bei Ihnen tatsächlich vorkommen.
         </p>
         <p>
-          Der Prototyp ist das Instrument, um sich auf die Spezifikation zu
-          verständigen, nicht die Leistung selbst.
+          Der Prototyp ist das Mittel, um sich auf die Spezifikation zu verständigen.
+          Er ist nicht die Leistung selbst.
         </p>
         <p>
-          Direktvertrag mit dem Auftraggeber, keine Mittler. Die Leistungserbringung
-          erfolgt remote, in deutscher oder englischer Sprache.
+          Ich schließe den Vertrag direkt mit dem Auftraggeber, ohne Agentur oder
+          Mittler dazwischen. Die Arbeit erfolgt remote, auf Deutsch oder Englisch.
         </p>
       </div>
     </section>
@@ -97,12 +95,12 @@ const notOffered = [
       <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Datenschutz und Barrierefreiheit</h2>
       <div class="space-y-4 text-text-secondary leading-relaxed">
         <p>
-          Ich arbeite EU-datenschutzkonform: EU/DE-Hosting,
-          Auftragsverarbeitungs-Verträge mit Sub-Prozessoren und keine
-          US-Cloud-Bindung, wo sie vermeidbar ist.
+          Ich arbeite EU-datenschutzkonform: Hosting in der EU oder in Deutschland,
+          Auftragsverarbeitungsverträge mit allen Sub-Prozessoren und keine Bindung an
+          US-Cloud-Dienste, wo sie vermeidbar ist.
         </p>
         <p>
-          Ich entwickle barrierearm, orientiert an WCAG 2.1 AA und anerkannten
+          Ich entwickle nach WCAG 2.1 AA und prüfe das Ergebnis mit anerkannten
           Selbstbewertungsverfahren.
         </p>
       </div>
@@ -124,7 +122,8 @@ const notOffered = [
     <section class="mb-16">
       <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Standort</h2>
       <p class="text-text-secondary leading-relaxed">
-        Sitz {legal.seat}, Geschäftsanschrift {legal.city}, operativ in {legal.operativeCity}.
+        Das Unternehmen ist in {legal.seat} registriert, die Geschäftsanschrift ist in
+        {legal.city}, gearbeitet wird aus {legal.operativeCity}.
       </p>
     </section>
 
@@ -132,7 +131,7 @@ const notOffered = [
     <section>
       <ContactCTA
         headline="Sie haben einen konkreten Bedarf?"
-        description="Beschreiben Sie kurz, was Sie umsetzen möchten. Ich melde mich innerhalb eines Tages."
+        description="Beschreiben Sie kurz, was Sie umsetzen möchten. Ich antworte in der Regel innerhalb eines Werktags."
         buttonText="Bedarf beschreiben"
         placeholder="Wir brauchen... / Wir möchten... / Wir suchen..."
         emailLabel="E-Mail"

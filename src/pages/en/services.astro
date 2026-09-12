@@ -14,26 +14,26 @@ import { legal } from '../../i18n/legal';
 const practiceAreas = [
   {
     title: 'Application development for web and iOS',
-    body: 'Custom web and iOS applications across the stack.',
+    body: 'Web applications and native iOS apps, from the database up to the interface.',
   },
   {
     title: 'Internal tools',
-    body: 'Tools for internal processes and teams.',
+    body: 'Software for the work your team currently does by hand or in spreadsheets.',
   },
   {
     title: 'Data pipelines',
-    body: 'Extracting, preparing, and processing data.',
+    body: 'Getting data out of the systems that hold it, cleaning it up, and keeping it current.',
   },
   {
     title: 'Integration work',
-    body: 'Connecting to existing systems and interfaces.',
+    body: 'Connecting new software to the systems and interfaces you already run.',
   },
 ];
 
 const notOffered = [
   'Training and workshop delivery',
-  "Staff augmentation in someone else's process",
-  'Large-team integration projects with named-associate fictions',
+  "Renting out developer time inside someone else's process",
+  "Large integration projects staffed with the CVs of people who won't do the work",
   'Hardware procurement',
 ];
 ---
@@ -41,7 +41,7 @@ const notOffered = [
 <Layout
   pageKey="leistungen"
   title="Services · 9592 Solutions"
-  description="Custom working software for structured buyers. Single-principal software practice, direct contracting, EU/DE data handling, accessibility."
+  description="Custom software for buyers with a formal procurement process. One developer, direct contracting, EU/DE data handling, WCAG 2.1 AA."
 >
   <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
     <!-- Header -->
@@ -51,10 +51,9 @@ const notOffered = [
         Working software, built for your process
       </h1>
       <p class="text-lg text-text-secondary leading-relaxed">
-        9592 Solutions is an owner-led software provider with direct, end-to-end
-        technical responsibility held by its management. Core deliverables of the
-        requested system are inspectable before award, not only after the contract
-        is signed.
+        9592 Solutions is my company, and I do the technical work myself. You can
+        open and test the main parts of the system you asked for before you award
+        the contract.
       </p>
     </section>
 
@@ -76,18 +75,17 @@ const notOffered = [
       <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">How an engagement works</h2>
       <div class="space-y-4 text-text-secondary leading-relaxed">
         <p>
-          A typical engagement starts with a deployed, functioning prototype of the
-          requested system, seeded with your domain language, sample data, and
-          realistic workflows. It begins with working software, not slide decks or
-          capability statements.
+          An engagement starts with a deployed, working prototype of the system you
+          asked for. It uses your own vocabulary, sample data that resembles yours,
+          and the workflows your people actually run.
         </p>
         <p>
-          The prototype is the instrument for agreeing on the specification, not the
+          The prototype is how we agree on the specification. It is not the
           deliverable itself.
         </p>
         <p>
-          Direct contracting with the buying entity, no intermediaries. Work is
-          delivered remotely, in German or English.
+          I contract directly with the buying entity, with no agency or intermediary
+          in between. Work is done remotely, in German or English.
         </p>
       </div>
     </section>
@@ -97,19 +95,20 @@ const notOffered = [
       <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Data handling and accessibility</h2>
       <div class="space-y-4 text-text-secondary leading-relaxed">
         <p>
-          We build for EU data handling: EU/DE hosting, processor agreements with
-          sub-processors, and no US-cloud dependency where it can be avoided.
+          I build to EU data-protection requirements: hosting in the EU or Germany,
+          processor agreements with any sub-processors, and no dependency on US cloud
+          services where that can be avoided.
         </p>
         <p>
-          We design for accessibility, oriented to WCAG 2.1 AA and recognised
-          self-assessment methods.
+          I build to WCAG 2.1 AA and check the result with recognised self-assessment
+          methods.
         </p>
       </div>
     </section>
 
-    <!-- What we do not do -->
+    <!-- What I do not do -->
     <section class="mb-16">
-      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">What we do not do</h2>
+      <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">What I do not do</h2>
       <div class="bg-bg-secondary rounded-lg p-6">
         <ul class="divide-y divide-white/5">
           {notOffered.map((item) => (
@@ -123,8 +122,8 @@ const notOffered = [
     <section class="mb-16">
       <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Location</h2>
       <p class="text-text-secondary leading-relaxed">
-        Registered office in {legal.seat}, business address in {legal.city},
-        operating from {legal.operativeCity}.
+        The company is registered in {legal.seat}, has its business address in
+        {legal.city}, and I work from {legal.operativeCity}.
       </p>
     </section>
 
@@ -132,7 +131,7 @@ const notOffered = [
     <section>
       <ContactCTA
         headline="Have a defined need?"
-        description="Tell me what you'd like to build. I'll get back to you within a day."
+        description="Tell me what you'd like to build. I usually reply within one business day."
         buttonText="Describe your need"
         placeholder="We need... / We're looking for... / We'd like to..."
       />
