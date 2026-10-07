@@ -27,7 +27,7 @@ export const courseSync: CaseStudy = {
       height: 1402,
       alt: {
         en: 'Flowchart of the scenario: a MindBody purchase webhook, an override check, a ten-minute wait, a read-only booking check, the date-range list match and a duplicate check, ending in steps 2 to 6. Three side branches stop the run: no session booked (email the parents), no single matching list (flag the admin), and already processed.',
-        de: 'Ablaufdiagramm des Szenarios: Kauf-Webhook aus MindBody, Prüfung des Häkchens, zehn Minuten Wartezeit, lesende Buchungsprüfung, Listenauswahl über den Zeitraum und Duplikatprüfung, am Ende die Schritte 2 bis 6. Drei Seitenzweige beenden den Lauf: kein Termin gebucht (E-Mail an die Eltern), keine eindeutige Liste (Meldung an die Verwaltung) und bereits verarbeitet.',
+        de: 'Ablaufdiagramm des Szenarios: Kauf-Webhook aus MindBody, Prüfung des Häkchens, zehn Minuten Wartezeit, Buchungsabfrage ohne Änderungen in MindBody, Listenauswahl über den Zeitraum und Duplikatprüfung, am Ende die Schritte 2 bis 6. Drei Seitenzweige beenden den Lauf: kein Termin gebucht (E-Mail an die Eltern), keine eindeutige Liste (Meldung an die Verwaltung) und bereits verarbeitet.',
       },
       caption: {
         en: 'The whole flow, with the three places where the scenario stops. Two of them hand the case to a person.',
