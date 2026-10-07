@@ -67,9 +67,7 @@ const title =
           It then adds the course to the contact's course history without overwriting
           earlier courses, adds the contact to the class list, writes a row to a
           Google Sheet as a record outside both systems, and alerts staff when the
-          course rules call for it. It only writes HubSpot properties with its own
-          prefix, so it never overwrites fields that the existing MindBody to HubSpot
-          sync maintains.
+          course rules call for it. It only writes HubSpot properties with its own prefix and leaves every other field alone.
         </li>
         <li class="pl-1">
           The confirmation to the parents is built from a HubSpot template but goes to
