@@ -21,6 +21,7 @@
 // Usage:
 //   OFFERMAP_URL=http://localhost:4173 node capture-work-screenshots.mjs offer-map
 //   CMS_URL=http://localhost:8788      node capture-work-screenshots.mjs cms
+//   node capture-work-screenshots.mjs coursesync   (reads the public demo page)
 
 import { mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -356,6 +357,57 @@ async function captureCms(browser) {
   await ctx.close();
 }
 
+// CourseSync (Make.com) demonstrator. Captured from the PUBLIC demo page
+// (course-sync-demo.9592.tech, invented data). The page was written for the
+// person who posted the spec, so a few tokens tie it to that business: their
+// list naming ("Growth Mindset", "SSS") and second-person wording. Same method
+// as the CMS shots: rewrite text nodes in the rendered DOM before each shot,
+// then refuse to save if any residual token survives.
+const COURSESYNC_URL = process.env.COURSESYNC_URL || 'https://course-sync-demo.9592.tech';
+const COURSESYNC_RESIDUAL = /study ?pro|debbie|lindsey|mclean|reston|growth mindset|\bSSS\b|study skills|appiant|\bHWC\b|AI Workshop|startintegrate|maxmel|\byour\b/i;
+
+async function captureCourseSync(browser) {
+  console.log('COURSESYNC captures');
+  const ctx = await browser.newContext({ viewport: DESKTOP, deviceScaleFactor: DPR, reducedMotion: 'reduce' });
+  const page = await ctx.newPage();
+  await page.goto(COURSESYNC_URL, { waitUntil: 'networkidle' });
+  await page.evaluate(() => {
+    const swaps = [
+      [/Growth Mindset Class/g, 'Art Class'],
+      [/MS SSS/g, 'MS'],
+      [/from your HubSpot template/g, 'from a HubSpot template'],
+    ];
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+      let t = n.nodeValue;
+      for (const [re, to] of swaps) t = t.replace(re, to);
+      if (t !== n.nodeValue) n.nodeValue = t;
+    }
+  });
+  const steps = page.locator('div.wrap > div.step');
+  const stepByLabel = async (label) => {
+    const n = await steps.count();
+    for (let i = 0; i < n; i++) {
+      const head = (await steps.nth(i).innerText()).split('\n')[0].trim();
+      if (head === label) return steps.nth(i);
+    }
+    throw new Error(`step not found: ${label}`);
+  };
+  const shots = [
+    ['coursesync-flow.png', page.locator('svg.diag-flow')],
+    ['coursesync-dedup.png', await stepByLabel('Dedup')],
+    ['coursesync-segment-match.png', page.locator('svg.diag-timeline')],
+    ['coursesync-draft-confirmation.png', await stepByLabel('6')],
+  ];
+  for (const [name, locator] of shots) {
+    const text = await locator.evaluate((el) => el.textContent || '');
+    const hit = text.match(COURSESYNC_RESIDUAL);
+    if (hit) throw new Error(`${name}: residual token "${hit[0]}"`);
+    await shoot(page, name, { locator });
+  }
+  await ctx.close();
+}
+
 async function main() {
   const target = process.argv[2] || 'offer-map';
   await mkdir(OUT_DIR, { recursive: true });
@@ -363,6 +415,7 @@ async function main() {
   try {
     if (target === 'offer-map') await captureOfferMap(browser);
     else if (target === 'cms') await captureCms(browser);
+    else if (target === 'coursesync') await captureCourseSync(browser);
     else if (target === 'all') { await captureOfferMap(browser); await captureCms(browser); }
     else throw new Error(`unknown target: ${target}`);
   } finally {
