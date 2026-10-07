@@ -30,8 +30,8 @@ export const courseSync: CaseStudy = {
         de: 'Ablaufdiagramm des Szenarios: Kauf-Webhook aus MindBody, Prüfung des Häkchens, zehn Minuten Wartezeit, lesende Buchungsprüfung, Listenauswahl über den Zeitraum und Duplikatprüfung, am Ende die Schritte 2 bis 6. Drei Seitenzweige beenden den Lauf: kein Termin gebucht (E-Mail an die Eltern), keine eindeutige Liste (Meldung an die Verwaltung) und bereits verarbeitet.',
       },
       caption: {
-        en: 'The whole flow, with the three places where the scenario stops and hands the case to a person.',
-        de: 'Der ganze Ablauf mit den drei Stellen, an denen das Szenario anhält und den Fall an einen Menschen übergibt.',
+        en: 'The whole flow, with the three places where the scenario stops. Two of them hand the case to a person.',
+        de: 'Der ganze Ablauf mit den drei Stellen, an denen das Szenario anhält. An zwei davon übernimmt ein Mensch.',
       },
     },
     {
