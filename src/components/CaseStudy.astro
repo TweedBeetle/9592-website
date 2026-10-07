@@ -66,7 +66,7 @@ const contactHref = localizedPath('kontakt', lang);
     <h1 class="text-3xl md:text-4xl font-semibold text-text-primary leading-tight mb-4">
       {displayTitle}
     </h1>
-    <p class="text-text-secondary text-sm leading-relaxed">{c.labelDef}</p>
+    <p class="text-text-secondary text-sm leading-relaxed">{study.labelDef?.[lang] ?? c.labelDef}</p>
     {!study.anonymized && study.buyerName && (
       <p class="text-text-secondary text-sm mt-3">
         {c.client}: <span class="text-text-primary">{study.buyerName}</span>

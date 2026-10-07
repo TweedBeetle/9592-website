@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import ContactCTA from '../../components/ContactCTA.astro';
 import { legal } from '../../i18n/legal';
+import { courseSync, caseStudyPath } from '../../data/work';
 
 // Procurement-facing capabilities page (PLAN D1), EN mirror of /de/leistungen.
 // Copy source: findings §4.4, restructured to remove em dashes (site voice rule).
@@ -11,7 +12,7 @@ import { legal } from '../../i18n/legal';
 // src/i18n/legal.ts (register fact = Amtsgericht München); the location bridge uses
 // the legal seat/city verbatim so there is a single source of truth.
 
-const practiceAreas = [
+const practiceAreas: { title: string; body: string; link?: { href: string; text: string } }[] = [
   {
     title: 'Application development for web and iOS',
     body: 'Web applications and native iOS apps, from the database up to the interface.',
@@ -27,6 +28,11 @@ const practiceAreas = [
   {
     title: 'Integration work',
     body: 'Connecting new software to the systems and interfaces you already run.',
+  },
+  {
+    title: 'Make.com automation',
+    body: 'Make.com scenarios between the tools a business already uses, such as a booking system, a CRM and a spreadsheet. I test them by running them in a live Make account.',
+    link: { href: caseStudyPath(courseSync, 'en'), text: 'Example: course enrollments from MindBody to HubSpot' },
   },
 ];
 
@@ -62,9 +68,15 @@ const notOffered = [
       <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Practice areas</h2>
       <ul class="grid sm:grid-cols-2 gap-px bg-bg-secondary rounded-lg overflow-hidden border border-bg-secondary">
         {practiceAreas.map((area) => (
-          <li class="bg-bg-primary p-5">
+          <li class={`bg-bg-primary p-5${area.link ? ' sm:col-span-2' : ''}`}>
             <h3 class="text-text-primary font-medium mb-1">{area.title}</h3>
             <p class="text-text-secondary text-sm leading-relaxed">{area.body}</p>
+            {area.link && (
+              <a href={area.link.href} class="inline-flex items-center gap-2 text-accent hover:text-accent-hover transition-colors text-sm mt-2">
+                <span>{area.link.text}</span>
+                <span class="deco-arrow-r" aria-hidden="true"></span>
+              </a>
+            )}
           </li>
         ))}
       </ul>

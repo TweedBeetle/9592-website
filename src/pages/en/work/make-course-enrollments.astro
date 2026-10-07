@@ -1,0 +1,107 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import CaseStudy from '../../../components/CaseStudy.astro';
+import { courseSync } from '../../../data/work';
+
+// CourseSync (Make.com) demonstrator, EN twin of /de/arbeiten/make-kursanmeldungen.
+// Every claim is true of the public demo page and its build history; the business
+// that posted the spec is never named, and no course names or list names of theirs
+// appear (see the data file for the screenshot neutralization).
+const lang = 'en' as const;
+const title =
+  'CourseSync: a Make.com automation from MindBody course purchases to HubSpot class lists and parent emails';
+---
+
+<Layout
+  lang={lang}
+  pageKey="arbeiten"
+  title="Make.com automation for course enrollments · 9592 Solutions"
+  description="Demonstrator: a Make.com scenario that turns MindBody course purchases into HubSpot updates, class list entries and parent emails that staff approve first. A work sample built to a published specification."
+>
+  <CaseStudy lang={lang} study={courseSync} title={title}>
+    <Fragment slot="problem">
+      <p>
+        A business that sells multi-session courses posted a specification on Make's
+        community board. Parents buy a course in MindBody and then book the sessions
+        themselves, often a few minutes later and not always in order.
+      </p>
+      <p>
+        The specification asked for an automation that then updates the student's
+        contact in HubSpot, adds the student to the right class list, records the enrollment and
+        prepares a confirmation for the parents. The class lists were named
+        inconsistently, and several bookings from one purchase could each start the
+        flow again.
+      </p>
+    </Fragment>
+
+    <Fragment slot="approach">
+      <ul class="list-disc pl-5 space-y-3 marker:text-text-secondary/50">
+        <li class="pl-1">
+          A purchase in MindBody starts the scenario through a webhook, because the
+          MindBody connector for Make has no trigger for sales. The scenario checks
+          the webhook's signature before it uses the data.
+        </li>
+        <li class="pl-1">
+          It waits about ten minutes and then reads whether any session of the course
+          is booked. It only reads from MindBody and never books or changes anything
+          there. If nothing is booked yet, it emails the parents to ask for their
+          dates and stops, and staff finish the booking by hand.
+        </li>
+        <li class="pl-1">
+          Staff can tick a box on the contact to skip the wait and the booking check.
+          The record updates still run.
+        </li>
+        <li class="pl-1">
+          It picks the class list whose date range contains the booked session and
+          whose name matches the course level and format (in person or remote). The
+          list names follow no fixed pattern, so the parsing happens in a small piece
+          of code outside Make that the scenario calls. If no list fits, or more than one does, the
+          scenario emails the admin with the details and changes nothing.
+        </li>
+        <li class="pl-1">
+          Before it writes anything, it checks whether the contact is already on that
+          list. If so, an earlier booking from the same purchase has done the work and
+          the run ends, so the same purchase arriving twice changes nothing.
+        </li>
+        <li class="pl-1">
+          It then adds the course to the contact's course history without overwriting
+          earlier courses, adds the contact to the class list, writes a row to a
+          Google Sheet as a record outside both systems, and alerts staff when the
+          course rules call for it. It only writes HubSpot properties with its own
+          prefix, so it never overwrites fields that the existing MindBody to HubSpot
+          sync maintains.
+        </li>
+        <li class="pl-1">
+          The confirmation to the parents is built from a HubSpot template but goes to
+          an admin as a draft. A person approves the wording before the family sees it.
+        </li>
+      </ul>
+    </Fragment>
+
+    <Fragment slot="demonstrates">
+      <p>
+        A walkthrough page runs the whole flow on an invented student and shows what
+        each step reads and writes. It comes with an importable Make blueprint, twenty
+        modules across three routes, and a runbook that describes every module.
+      </p>
+      <p>
+        I imported the scenario into a live Make account and ran it there. The HubSpot
+        updates, the list membership and the Sheet row were checked against real test
+        accounts. The MindBody reads and the list matching ran against a mock of the
+        MindBody API, and for the emails I checked that each path made the right
+        decision about whether to send.
+      </p>
+      <p>
+        The first live run found two faults that a structural check of the blueprint
+        had passed. Some hand-written HTTP modules failed at runtime, and Make
+        evaluated one filter expression to an empty value, so the filter let
+        everything through. I fixed both in the script that generates the blueprint
+        and ran it again without errors.
+      </p>
+      <p>
+        I built it as a reply to the posting, on invented data and without access to
+        the business's accounts.
+      </p>
+    </Fragment>
+  </CaseStudy>
+</Layout>

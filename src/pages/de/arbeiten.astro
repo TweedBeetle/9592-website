@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import ContactCTA from '../../components/ContactCTA.astro';
 import { caseStudies, caseStudyPath } from '../../data/work';
 
-// Work index (DE). Frames the two demonstrators as Arbeitsproben (not customer
+// Work index (DE). Frames the three demonstrators as Arbeitsproben (not customer
 // projects / not products) and links to each case study. Card copy authored here,
 // keyed by the stable study key. No live-demo URLs (win-flip; on request only).
 const lang = 'de' as const;
@@ -19,6 +19,11 @@ const cards: Record<string, { title: string; teaser: string }> = {
     teaser:
       'Ein zweistufiger Redaktions-Workflow mit Freigabe, Diff-Anzeige, Audit-Log und automatisierten Erinnerungen, der einen öffentlichen Datenbestand aktuell hält.',
   },
+  'course-sync': {
+    title: 'Make.com-Automatisierung für Kursanmeldungen',
+    teaser:
+      'Ein Make.com-Szenario, das aus einem Kurskauf in MindBody Änderungen in HubSpot, einen Eintrag in der Klassenliste, eine Protokollzeile und eine Bestätigung an die Eltern macht, die das Team vorher freigibt.',
+  },
 };
 ---
 
@@ -26,7 +31,7 @@ const cards: Record<string, { title: string; teaser: string }> = {
   lang={lang}
   pageKey="arbeiten"
   title="Arbeiten · 9592 Solutions"
-  description="Zwei bereitgestellte Prototypen, im Browser testbar, gebaut als Arbeitsproben. Live-Demo auf Anfrage."
+  description="Drei Demonstratoren, gebaut als Arbeitsproben: zwei im Browser testbare Webanwendungen und eine Make.com-Automatisierung. Live-Demo auf Anfrage."
 >
   <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
     <section class="mb-12">
@@ -35,9 +40,10 @@ const cards: Record<string, { title: string; teaser: string }> = {
         Demonstratoren und Arbeitsproben
       </h1>
       <p class="text-lg text-text-secondary leading-relaxed">
-        Zwei Prototypen, beide bereitgestellt und im Browser testbar. Es sind
-        Arbeitsproben, die zeigen sollen, wie ich arbeite, keine Kundenprojekte und
-        keine Produkte. Eine Live-Demo stelle ich Ihnen auf Anfrage bereit.
+        Zwei Webanwendungen, die Sie im Browser testen können, und eine
+        Make.com-Automatisierung mit Begleitseite. Es sind Arbeitsproben, die zeigen
+        sollen, wie ich arbeite, keine Kundenprojekte und keine Produkte. Eine
+        Live-Demo stelle ich Ihnen auf Anfrage bereit.
       </p>
     </section>
 

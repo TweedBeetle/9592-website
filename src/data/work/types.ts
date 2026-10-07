@@ -20,7 +20,7 @@ export interface WorkImage {
  */
 export interface CaseStudy {
   /** Stable key (also used to look up per-locale teaser copy on the index). */
-  key: 'offer-map' | 'editorial-workflow';
+  key: 'offer-map' | 'editorial-workflow' | 'course-sync';
   /** Path segment AFTER `/{locale}/{arbeiten|work}/`. Localized; free of strip-list terms. */
   slug: Record<Locale, string>;
   /**
@@ -41,6 +41,9 @@ export interface CaseStudy {
   buyerName?: string;
   /** Used ONLY when `anonymized === false`: overrides the page's generic title. */
   namedTitle?: Record<Locale, string>;
+  /** Optional replacement for the shared label definition under the title, for a
+   *  demonstrator that is not a browser app (e.g. an automation with a walkthrough). */
+  labelDef?: Record<Locale, string>;
   /** Gallery, ordered to follow the case study's approach narrative. */
   images: WorkImage[];
 }

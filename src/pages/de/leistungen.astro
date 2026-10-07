@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import ContactCTA from '../../components/ContactCTA.astro';
 import { legal } from '../../i18n/legal';
+import { courseSync, caseStudyPath } from '../../data/work';
 
 // Procurement-facing capabilities page (PLAN D1). Copy source: findings §4.4,
 // restructured to remove em dashes (site voice rule). Positioning per the PLAN
@@ -11,7 +12,7 @@ import { legal } from '../../i18n/legal';
 // (register fact = Amtsgericht München; the bridge sentence and (haftungsbeschränkt)
 // are sourced once from that constant).
 
-const practiceAreas = [
+const practiceAreas: { title: string; body: string; link?: { href: string; text: string } }[] = [
   {
     title: 'Anwendungsentwicklung für Web und iOS',
     body: 'Webanwendungen und native iOS-Apps, von der Datenbank bis zur Oberfläche.',
@@ -27,6 +28,11 @@ const practiceAreas = [
   {
     title: 'Integrationsarbeit',
     body: 'Neue Software an die Systeme und Schnittstellen anbinden, die Sie bereits betreiben.',
+  },
+  {
+    title: 'Automatisierung mit Make.com',
+    body: 'Make.com-Szenarien zwischen Werkzeugen, die ein Betrieb schon nutzt, etwa einem Buchungssystem, einem CRM und einer Tabelle. Ich teste sie, indem ich sie in einem echten Make-Konto laufen lasse.',
+    link: { href: caseStudyPath(courseSync, 'de'), text: 'Beispiel: Kursanmeldungen von MindBody nach HubSpot' },
   },
 ];
 
@@ -62,9 +68,15 @@ const notOffered = [
       <h2 class="font-mono text-sm text-text-secondary mb-5 uppercase tracking-wider">Tätigkeitsfelder</h2>
       <ul class="grid sm:grid-cols-2 gap-px bg-bg-secondary rounded-lg overflow-hidden border border-bg-secondary">
         {practiceAreas.map((area) => (
-          <li class="bg-bg-primary p-5">
+          <li class={`bg-bg-primary p-5${area.link ? ' sm:col-span-2' : ''}`}>
             <h3 class="text-text-primary font-medium mb-1">{area.title}</h3>
             <p class="text-text-secondary text-sm leading-relaxed">{area.body}</p>
+            {area.link && (
+              <a href={area.link.href} class="inline-flex items-center gap-2 text-accent hover:text-accent-hover transition-colors text-sm mt-2">
+                <span>{area.link.text}</span>
+                <span class="deco-arrow-r" aria-hidden="true"></span>
+              </a>
+            )}
           </li>
         ))}
       </ul>

@@ -9,7 +9,7 @@ const lang = getLangFromUrl(Astro.url);
 // Selected-work demonstrators (D4): surfaced first, each linking to its wrapped case
 // study (internal, not an external live link). Titles/teasers mirror the work index
 // in a homepage-length form. Keyed by stable study key; render order follows
-// `caseStudies` (offer-map, editorial-workflow).
+// `caseStudies` (offer-map, editorial-workflow, course-sync).
 const cards: Record<string, { title: string; teaser: string }> = {
   'offer-map': {
     title: 'Offer map for an advisory network',
@@ -20,6 +20,11 @@ const cards: Record<string, { title: string; teaser: string }> = {
     title: 'Editorial workflow for a public dataset',
     teaser:
       'A two-stage review with a diff view, an audit log, and automated reminders.',
+  },
+  'course-sync': {
+    title: 'Make.com automation for course enrollments',
+    teaser:
+      'From a MindBody course purchase to HubSpot, a class list and a parent email that staff approve first.',
   },
 };
 ---

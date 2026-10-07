@@ -9,7 +9,7 @@ const lang = getLangFromUrl(Astro.url);
 // Selected-work demonstrators (D4): surfaced first, each linking to its wrapped case
 // study (internal, not an external live link). Titles/teasers mirror the work index
 // in a homepage-length form. Keyed by stable study key; render order follows
-// `caseStudies` (offer-map, editorial-workflow).
+// `caseStudies` (offer-map, editorial-workflow, course-sync).
 const cards: Record<string, { title: string; teaser: string }> = {
   'offer-map': {
     title: 'Angebotskarte für ein Beratungsnetzwerk',
@@ -20,6 +20,11 @@ const cards: Record<string, { title: string; teaser: string }> = {
     title: 'Redaktions-Workflow für einen öffentlichen Datenbestand',
     teaser:
       'Zweistufige Freigabe mit Diff-Anzeige, Audit-Log und automatisierten Erinnerungen.',
+  },
+  'course-sync': {
+    title: 'Make.com-Automatisierung für Kursanmeldungen',
+    teaser:
+      'Vom Kurskauf in MindBody bis zu HubSpot, Klassenliste und einer Elternbestätigung, die das Team vorher freigibt.',
   },
 };
 ---

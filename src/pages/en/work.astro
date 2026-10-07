@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import ContactCTA from '../../components/ContactCTA.astro';
 import { caseStudies, caseStudyPath } from '../../data/work';
 
-// Work index (EN mirror of /de/arbeiten). Frames the two demonstrators as work
+// Work index (EN mirror of /de/arbeiten). Frames the three demonstrators as work
 // samples (not customer projects / not products). No live-demo URLs (win-flip).
 const lang = 'en' as const;
 
@@ -18,6 +18,11 @@ const cards: Record<string, { title: string; teaser: string }> = {
     teaser:
       'A two-stage editorial workflow with review, a diff view, an audit log, and automated reminders that keeps a public dataset current.',
   },
+  'course-sync': {
+    title: 'Make.com automation for course enrollments',
+    teaser:
+      'A Make.com scenario that turns a MindBody course purchase into HubSpot updates, a class list entry, an audit row and a parent confirmation that staff approve first.',
+  },
 };
 ---
 
@@ -25,7 +30,7 @@ const cards: Record<string, { title: string; teaser: string }> = {
   lang={lang}
   pageKey="arbeiten"
   title="Work · 9592 Solutions"
-  description="Two deployed prototypes you can test in the browser, built as work samples. Live demo on request."
+  description="Three demonstrators built as work samples: two web applications you can test in the browser and a Make.com automation. Live demo on request."
 >
   <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
     <section class="mb-12">
@@ -34,9 +39,9 @@ const cards: Record<string, { title: string; teaser: string }> = {
         Demonstrators and work samples
       </h1>
       <p class="text-lg text-text-secondary leading-relaxed">
-        Two prototypes, both deployed and testable in the browser. They are work
-        samples built to show how I work, not customer projects and not products. I
-        can give you a live demo on request.
+        Two web applications you can test in the browser and a Make.com automation
+        with a walkthrough page. They are work samples built to show how I work, not
+        customer projects and not products. I can give you a live demo on request.
       </p>
     </section>
 

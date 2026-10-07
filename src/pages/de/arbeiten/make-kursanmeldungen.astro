@@ -1,0 +1,113 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import CaseStudy from '../../../components/CaseStudy.astro';
+import { courseSync } from '../../../data/work';
+
+// CourseSync (Make.com) demonstrator, DE. Eigenständig auf Deutsch geschrieben, EN-
+// Zwilling: /en/work/make-course-enrollments. Jede Aussage gilt für die öffentliche
+// Demo-Seite und ihre Build-Historie; der Anbieter, der die Spezifikation gepostet
+// hat, wird nie genannt, ebenso keine seiner Kurs- oder Listennamen.
+const lang = 'de' as const;
+const title =
+  'CourseSync: eine Make.com-Automatisierung vom Kurskauf in MindBody bis zur Klassenliste in HubSpot und zur Bestätigung an die Eltern';
+---
+
+<Layout
+  lang={lang}
+  pageKey="arbeiten"
+  title="Make.com-Automatisierung für Kursanmeldungen · 9592 Solutions"
+  description="Demonstrator: ein Make.com-Szenario, das aus Kurskäufen in MindBody Änderungen in HubSpot, Einträge in Klassenlisten und Elternbestätigungen macht, die das Team vorher freigibt. Arbeitsprobe nach einer veröffentlichten Spezifikation."
+>
+  <CaseStudy lang={lang} study={courseSync} title={title}>
+    <Fragment slot="problem">
+      <p>
+        Ein Anbieter von Kursen mit mehreren Terminen hat im Community-Forum von Make
+        eine Spezifikation veröffentlicht. Eltern kaufen einen Kurs in MindBody
+        und buchen die Termine danach selbst, oft ein paar Minuten später und nicht
+        immer der Reihe nach.
+      </p>
+      <p>
+        Gesucht war eine Automatisierung, die danach den Kontakt in HubSpot
+        aktualisiert, ihn in die richtige Klassenliste aufnimmt, die Anmeldung
+        festhält und eine Bestätigung an die Eltern vorbereitet. Die Klassenlisten
+        waren uneinheitlich benannt, und mehrere Buchungen aus einem Kauf konnten den
+        Ablauf jeweils neu anstoßen.
+      </p>
+    </Fragment>
+
+    <Fragment slot="approach">
+      <ul class="list-disc pl-5 space-y-3 marker:text-text-secondary/50">
+        <li class="pl-1">
+          Ein Kauf in MindBody startet das Szenario über einen Webhook, weil der
+          MindBody-Connector für Make keinen Auslöser für Verkäufe hat. Bevor das
+          Szenario die Daten verwendet, prüft es die Signatur des Webhooks.
+        </li>
+        <li class="pl-1">
+          Es wartet etwa zehn Minuten und sieht dann nach, ob ein Termin des Kurses
+          gebucht ist. In MindBody liest es nur, es bucht und ändert dort nichts. Ist
+          noch nichts gebucht, bittet es die Eltern per E-Mail um ihre Wunschtermine
+          und hält an. Die Buchung schließt das Team dann von Hand ab.
+        </li>
+        <li class="pl-1">
+          Mit einem Häkchen am Kontakt kann das Team die Wartezeit und die
+          Buchungsprüfung überspringen. Die Datensätze werden trotzdem aktualisiert.
+        </li>
+        <li class="pl-1">
+          Als Klassenliste nimmt es die Liste, deren Zeitraum den gebuchten Termin
+          enthält und deren Name zur Stufe des Kurses passt und dazu, ob er vor Ort oder
+          online stattfindet. Die Listennamen folgen keinem festen Muster. Deshalb
+          wertet ein kleines Programm außerhalb von Make die Namen aus, und das
+          Szenario ruft es auf. Passt
+          keine Liste oder mehr als eine, meldet das Szenario den Fall mit allen
+          Angaben per E-Mail an die Verwaltung und ändert nichts.
+        </li>
+        <li class="pl-1">
+          Bevor es etwas schreibt, prüft es, ob der Kontakt schon auf dieser Liste
+          steht. Dann hat eine frühere Buchung aus demselben Kauf die Arbeit bereits
+          erledigt, und der Lauf endet. Kommt derselbe Kauf zweimal an, ändert sich
+          also nichts.
+        </li>
+        <li class="pl-1">
+          Danach trägt es den Kurs in die Kurshistorie des Kontakts ein, ohne frühere
+          Kurse zu überschreiben, nimmt den Kontakt in die Klassenliste auf, schreibt
+          als Nachweis außerhalb beider Systeme eine Zeile in ein Google Sheet und
+          benachrichtigt das Team, wenn die Regeln des Kurses das vorsehen. In HubSpot
+          schreibt es nur Felder mit eigenem Präfix und überschreibt so keine Felder,
+          die die bestehende Synchronisation zwischen MindBody und HubSpot pflegt.
+        </li>
+        <li class="pl-1">
+          Die Bestätigung an die Eltern entsteht aus einer HubSpot-Vorlage, geht aber
+          zuerst als Entwurf an die Verwaltung. Ein Mensch gibt den Wortlaut frei, bevor
+          die Familie ihn zu sehen bekommt.
+        </li>
+      </ul>
+    </Fragment>
+
+    <Fragment slot="demonstrates">
+      <p>
+        Eine Begleitseite spielt den ganzen Ablauf an einem erfundenen Schüler durch
+        und zeigt, was jeder Schritt liest und schreibt. Dazu gehören ein
+        importierbarer Make-Blueprint mit zwanzig Modulen in drei Routen und ein
+        Runbook, das jedes Modul beschreibt.
+      </p>
+      <p>
+        Ich habe das Szenario in ein echtes Make-Konto importiert und dort laufen
+        lassen. Die Änderungen in HubSpot, die Listenmitgliedschaft und die Zeile im
+        Sheet habe ich mit echten Testkonten geprüft. Die Abfragen an MindBody und die
+        Listenauswahl liefen gegen einen Nachbau der MindBody-API, und bei den E-Mails
+        habe ich geprüft, dass jeder Pfad die richtige Sendeentscheidung trifft.
+      </p>
+      <p>
+        Der erste echte Lauf hat zwei Fehler gefunden, die eine reine Strukturprüfung
+        des Blueprints nicht bemerkt hatte. Einige handgeschriebene HTTP-Module
+        scheiterten erst zur Laufzeit, und Make wertete einen Filterausdruck als leeren
+        Wert aus, sodass der Filter alles durchließ. Beides habe ich in dem Skript
+        behoben, das den Blueprint erzeugt, und den Lauf danach fehlerfrei wiederholt.
+      </p>
+      <p>
+        Gebaut habe ich den Demonstrator als Antwort auf den Beitrag im Forum, mit
+        erfundenen Daten und ohne Zugriff auf die Konten des Anbieters.
+      </p>
+    </Fragment>
+  </CaseStudy>
+</Layout>
