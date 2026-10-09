@@ -56,8 +56,8 @@ export const courseSync: CaseStudy = {
         de: 'Karte der Begleitseite zur Duplikatprüfung mit dem Aufruf der HubSpot-Listenmitgliedschaft und der vereinfachten Logik: Steht der Kontakt schon auf der Zielliste, endet der Lauf.',
       },
       caption: {
-        en: 'The duplicate check: a student already on the class list means an earlier run got that far, so this one stops.',
-        de: 'Die Duplikatprüfung: Steht der Kontakt schon auf der Klassenliste, ist ein früherer Lauf bis dorthin gekommen, und dieser endet.',
+        en: 'The duplicate check: a student already on the class list stops the run.',
+        de: 'Die Duplikatprüfung: Steht der Kontakt schon auf der Klassenliste, endet der Lauf.',
       },
     },
     {
