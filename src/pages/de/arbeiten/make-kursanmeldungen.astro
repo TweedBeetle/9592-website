@@ -39,8 +39,10 @@ const title =
       <ul class="list-disc pl-5 space-y-3 marker:text-text-secondary/50">
         <li class="pl-1">
           Ein Kauf in MindBody startet das Szenario über einen Webhook, weil der
-          MindBody-Connector für Make keinen Auslöser für Verkäufe hat. Bevor das
-          Szenario die Daten verwendet, prüft es die Signatur des Webhooks.
+          MindBody-Connector für Make keinen Auslöser für Verkäufe hat. MindBody signiert jede Zustellung, aber ein
+          einfacher Make-Webhook kann diese Signatur nicht prüfen, deshalb prüft diese
+          Arbeitsprobe sie nicht. Die Begleitseite beschreibt den kleinen vorgeschalteten
+          Dienst, der das übernehmen würde.
         </li>
         <li class="pl-1">
           Es wartet etwa zehn Minuten und sieht dann nach, ob ein Termin des Kurses
@@ -63,8 +65,10 @@ const title =
         </li>
         <li class="pl-1">
           Bevor es etwas schreibt, prüft es, ob der Kontakt schon auf dieser Liste
-          steht. Dann hat eine frühere Buchung aus demselben Kauf die Arbeit bereits
-          erledigt, und der Lauf endet dort.
+          steht. Dann ist ein früherer Lauf aus demselben Kauf bis dorthin gekommen, und dieser
+          Lauf endet dort. Das fängt wiederholte Zustellungen ab. Zwei Zustellungen
+          wenige Sekunden nacheinander oder ein Lauf, der mittendrin abbricht, brauchen
+          den Eintrag im Datenspeicher, den die Begleitseite beschreibt.
         </li>
         <li class="pl-1">
           Danach trägt es den Kurs in die Kurshistorie des Kontakts ein, ohne frühere

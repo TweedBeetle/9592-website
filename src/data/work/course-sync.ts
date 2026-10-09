@@ -26,8 +26,8 @@ export const courseSync: CaseStudy = {
       width: 1360,
       height: 1402,
       alt: {
-        en: 'Flowchart of the scenario: a MindBody purchase webhook, an override check, a ten-minute wait, a read-only booking check, the date-range list match and a duplicate check, ending in steps 2 to 6. Three side branches stop the run: no session booked (email the parents), no single matching list (flag the admin), and already processed.',
-        de: 'Ablaufdiagramm des Szenarios: Kauf-Webhook aus MindBody, Prüfung des Häkchens, zehn Minuten Wartezeit, Buchungsabfrage ohne Änderungen in MindBody, Listenauswahl über den Zeitraum und Duplikatprüfung, am Ende die Schritte 2 bis 6. Drei Seitenzweige beenden den Lauf: kein Termin gebucht (E-Mail an die Eltern), keine eindeutige Liste (Meldung an die Verwaltung) und bereits verarbeitet.',
+        en: 'Flowchart of the scenario: a MindBody purchase webhook, an override check, a ten-minute wait, a read-only booking check, the date-range list match and a duplicate check, ending in steps 2 to 6. Three side branches stop the run: no session booked (email the parents), no single matching list (flag the admin), and already on the class list.',
+        de: 'Ablaufdiagramm des Szenarios: Kauf-Webhook aus MindBody, Prüfung des Häkchens, zehn Minuten Wartezeit, Buchungsabfrage ohne Änderungen in MindBody, Listenauswahl über den Zeitraum und Duplikatprüfung, am Ende die Schritte 2 bis 6. Drei Seitenzweige beenden den Lauf: kein Termin gebucht (E-Mail an die Eltern), keine eindeutige Liste (Meldung an die Verwaltung) und bereits auf der Klassenliste.',
       },
       caption: {
         en: 'The whole flow, with the three places where the scenario stops. Two of them hand the case to a person.',
@@ -56,8 +56,8 @@ export const courseSync: CaseStudy = {
         de: 'Karte der Begleitseite zur Duplikatprüfung mit dem Aufruf der HubSpot-Listenmitgliedschaft und der vereinfachten Logik: Steht der Kontakt schon auf der Zielliste, endet der Lauf.',
       },
       caption: {
-        en: 'The duplicate check: a student already on the class list means the purchase has been handled.',
-        de: 'Die Duplikatprüfung: Steht der Kontakt schon auf der Klassenliste, ist der Kauf bereits verarbeitet.',
+        en: 'The duplicate check: a student already on the class list means an earlier run got that far, so this one stops.',
+        de: 'Die Duplikatprüfung: Steht der Kontakt schon auf der Klassenliste, ist ein früherer Lauf bis dorthin gekommen, und dieser endet.',
       },
     },
     {

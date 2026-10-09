@@ -38,8 +38,9 @@ const title =
       <ul class="list-disc pl-5 space-y-3 marker:text-text-secondary/50">
         <li class="pl-1">
           A purchase in MindBody starts the scenario through a webhook, because the
-          MindBody connector for Make has no trigger for sales. The scenario checks
-          the webhook's signature before it uses the data.
+          MindBody connector for Make has no trigger for sales. MindBody signs each delivery, but a plain Make webhook can't check that
+          signature, so this work sample doesn't. The walkthrough page describes the
+          small relay in front of the webhook that would.
         </li>
         <li class="pl-1">
           It waits about ten minutes and then reads whether any session of the course
@@ -60,8 +61,10 @@ const title =
         </li>
         <li class="pl-1">
           Before it writes anything, it checks whether the contact is already on that
-          list. If so, an earlier booking from the same purchase has done the work and
-          the run ends there.
+          list. If so, an earlier run for the same purchase got that far, and this run ends
+          there. That catches repeat deliveries. Two deliveries a few seconds apart, or a
+          run that fails partway, need the data-store record the walkthrough page
+          describes.
         </li>
         <li class="pl-1">
           It then adds the course to the contact's course history without overwriting
