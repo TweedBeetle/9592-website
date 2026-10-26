@@ -22,9 +22,9 @@ const cards: Record<string, { title: string; teaser: string }> = {
       'A two-stage review with a diff view, an audit log, and automated reminders.',
   },
   'course-sync': {
-    title: 'Make.com automation for course enrollments',
+    title: 'Make.com automations for The StudyPro',
     teaser:
-      'From a MindBody course purchase to HubSpot, a class list and a parent email that staff approve first.',
+      'From a MindBody course purchase to HubSpot, a roster and a drafted confirmation email.',
   },
 };
 ---
@@ -113,7 +113,7 @@ const cards: Record<string, { title: string; teaser: string }> = {
             >
               <div>
                 <p class="font-mono text-[11px] text-text-secondary uppercase tracking-wider mb-1.5">
-                  Demonstrator / work sample
+                  {study.eyebrow?.[lang] ?? 'Demonstrator / work sample'}
                 </p>
                 <h3 class="text-text-primary font-medium mb-1 group-hover:text-accent transition-colors">
                   {cards[study.key].title}

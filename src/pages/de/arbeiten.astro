@@ -3,8 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 import ContactCTA from '../../components/ContactCTA.astro';
 import { caseStudies, caseStudyPath } from '../../data/work';
 
-// Work index (DE). Frames the three demonstrators as Arbeitsproben (not customer
-// projects / not products) and links to each case study. Card copy authored here,
+// Work index (DE). Two demonstrators framed as Arbeitsproben (not customer
+// projects / not products) plus one named client project (The StudyPro), each
+// linking to its case study. Card copy authored here,
 // keyed by the stable study key. No live-demo URLs (win-flip; on request only).
 const lang = 'de' as const;
 
@@ -20,9 +21,9 @@ const cards: Record<string, { title: string; teaser: string }> = {
       'Ein zweistufiger Redaktions-Workflow mit Freigabe, Diff-Anzeige, Audit-Log und automatisierten Erinnerungen, der einen öffentlichen Datenbestand aktuell hält.',
   },
   'course-sync': {
-    title: 'Make.com-Automatisierung für Kursanmeldungen',
+    title: 'Make.com-Automationen für The StudyPro',
     teaser:
-      'Ein Make.com-Szenario, das aus einem Kurskauf in MindBody Änderungen in HubSpot, einen Eintrag in der Klassenliste, eine Protokollzeile und eine Bestätigung an die Eltern macht, die das Team vorher freigibt.',
+      'Kurskäufe in MindBody fließen nach HubSpot, in eine Teilnehmerliste und in vorbereitete Bestätigungsmails, für ein Nachhilfezentrum in Virginia.',
   },
 };
 ---
@@ -31,19 +32,20 @@ const cards: Record<string, { title: string; teaser: string }> = {
   lang={lang}
   pageKey="arbeiten"
   title="Arbeiten · 9592 Solutions"
-  description="Drei Demonstratoren, gebaut als Arbeitsproben: zwei im Browser testbare Webanwendungen und eine Make.com-Automatisierung. Live-Demo auf Anfrage."
+  description="Zwei als Arbeitsproben gebaute Webanwendungen, die Sie im Browser testen können, und Make.com-Automationen für meinen Kunden The StudyPro."
 >
   <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
     <section class="mb-12">
       <p class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Arbeiten</p>
       <h1 class="text-3xl md:text-4xl font-semibold text-text-primary leading-tight mb-6">
-        Demonstratoren und Arbeitsproben
+        Zwei Arbeitsproben und ein Kundenprojekt
       </h1>
       <p class="text-lg text-text-secondary leading-relaxed">
-        Zwei Webanwendungen, die Sie im Browser testen können, und eine
-        Make.com-Automatisierung mit Begleitseite. Es sind Arbeitsproben, die zeigen
-        sollen, wie ich arbeite, keine Kundenprojekte und keine Produkte. Eine
-        Live-Demo stelle ich Ihnen auf Anfrage bereit.
+        Zwei Webanwendungen, die Sie im Browser testen können, und
+        Make.com-Automationen für meinen Kunden The StudyPro. Die beiden
+        Webanwendungen sind Arbeitsproben, die zeigen sollen, wie ich arbeite, keine
+        Kundenprojekte und keine Produkte. Für beide stelle ich Ihnen auf Anfrage eine
+        Live-Demo bereit.
       </p>
     </section>
 
@@ -57,7 +59,7 @@ const cards: Record<string, { title: string; teaser: string }> = {
             >
               <div>
                 <p class="font-mono text-[11px] text-text-secondary uppercase tracking-wider mb-2">
-                  Demonstrator / Arbeitsprobe
+                  {study.eyebrow?.[lang] ?? 'Demonstrator / Arbeitsprobe'}
                 </p>
                 <h2 class="text-text-primary font-medium text-lg mb-1.5 group-hover:text-accent transition-colors">
                   {cards[study.key].title}

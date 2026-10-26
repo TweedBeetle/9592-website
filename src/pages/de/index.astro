@@ -22,9 +22,9 @@ const cards: Record<string, { title: string; teaser: string }> = {
       'Zweistufige Freigabe mit Diff-Anzeige, Audit-Log und automatisierten Erinnerungen.',
   },
   'course-sync': {
-    title: 'Make.com-Automatisierung für Kursanmeldungen',
+    title: 'Make.com-Automationen für The StudyPro',
     teaser:
-      'Vom Kurskauf in MindBody bis zu HubSpot, Klassenliste und einer Elternbestätigung, die das Team vorher freigibt.',
+      'Vom Kurskauf in MindBody zu HubSpot, einer Teilnehmerliste und einer vorbereiteten Bestätigungsmail.',
   },
 };
 ---
@@ -116,7 +116,7 @@ const cards: Record<string, { title: string; teaser: string }> = {
             >
               <div>
                 <p class="font-mono text-[11px] text-text-secondary uppercase tracking-wider mb-1.5">
-                  Demonstrator / Arbeitsprobe
+                  {study.eyebrow?.[lang] ?? 'Demonstrator / Arbeitsprobe'}
                 </p>
                 <h3 class="text-text-primary font-medium mb-1 group-hover:text-accent transition-colors">
                   {cards[study.key].title}

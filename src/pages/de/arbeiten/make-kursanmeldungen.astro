@@ -1,114 +1,52 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import CaseStudy from '../../../components/CaseStudy.astro';
+import ClientCaseStudy from '../../../components/ClientCaseStudy.astro';
 import { courseSync } from '../../../data/work';
 
-// CourseSync (Make.com) demonstrator, DE. Eigenständig auf Deutsch geschrieben, EN-
-// Zwilling: /en/work/make-course-enrollments. Jede Aussage gilt für die öffentliche
-// Demo-Seite und ihre Build-Historie; der Anbieter, der die Spezifikation gepostet
-// hat, wird nie genannt, ebenso keine seiner Kurs- oder Listennamen.
+// The StudyPro, ein namentlich genanntes Kundenprojekt, DE twin of
+// /en/work/make-course-enrollments. Copy = make-work drafts/route6-named-page.md as
+// approved by Christo 2026-10-26. The review stays in the English original.
 const lang = 'de' as const;
-const title =
-  'CourseSync: eine Make.com-Automatisierung vom Kurskauf in MindBody bis zur Klassenliste in HubSpot und zur Bestätigung an die Eltern';
+const reviewUrl =
+  'https://community.make.com/t/hiring-make-com-specialist-with-mindbody-api-experience/111598/18';
 ---
 
 <Layout
   lang={lang}
   pageKey="arbeiten"
-  title="Make.com-Automatisierung für Kursanmeldungen · 9592 Solutions"
-  description="Demonstrator: ein Make.com-Szenario, das aus Kurskäufen in MindBody Änderungen in HubSpot, Einträge in Klassenlisten und Elternbestätigungen macht, die das Team vorher freigibt. Arbeitsprobe nach der Spezifikation eines Anbieters."
+  title="Make.com-Automationen für The StudyPro · 9592 Solutions"
+  description="Make.com-Automationen für The StudyPro, ein Nachhilfe- und Förderzentrum in Virginia: Kurskäufe in MindBody fließen nach HubSpot, in die Teilnehmerliste und in vorbereitete Bestätigungsmails."
 >
-  <CaseStudy lang={lang} study={courseSync} title={title}>
-    <Fragment slot="problem">
+  <ClientCaseStudy
+    lang={lang}
+    study={courseSync}
+    title="Make.com-Automationen für The StudyPro: vom Kurskauf in MindBody zu HubSpot, Teilnehmerlisten und E-Mails an die Eltern"
+    subtitle="Gebaut für Debbie Rosens Nachhilfe- und Förderzentrum in McLean und Reston, Virginia, und in The StudyPros eigenem Make-Konto in Betrieb."
+    reviewUrl={reviewUrl}
+    reviewBy="Debbie, The StudyPro"
+  >
+    <Fragment slot="starting">
       <p>
-        Ein Anbieter von Kursen mit mehreren Terminen hat für diese Automatisierung
-        eine Spezifikation geschrieben. Eltern kaufen einen Kurs in MindBody
-        und buchen die Termine danach selbst, oft ein paar Minuten später und nicht
-        immer der Reihe nach.
-      </p>
-      <p>
-        Gesucht war eine Automatisierung, die danach den Kontakt in HubSpot
-        aktualisiert, ihn in die richtige Klassenliste aufnimmt, die Anmeldung
-        festhält und eine Bestätigung an die Eltern vorbereitet. Die Klassenlisten
-        waren uneinheitlich benannt, und mehrere Buchungen aus einem Kauf konnten den
-        Ablauf jeweils neu anstoßen.
+        The StudyPro verkauft Kurse mit mehreren Terminen über MindBody und führt die Familien in HubSpot. Im Juli 2026 suchte Debbie Rosen im Make-Community-Forum jemanden für die Umsetzung, mit einem bezahlten Testprojekt. Kauft ein Schüler einen Kurs, soll sein Kontakt in HubSpot aktualisiert werden, er soll ins richtige Segment und in die Teilnehmerliste kommen, eine Assistenz soll benachrichtigt werden, wenn ein weiterer Schritt nötig ist, und die Familie soll eine Bestätigung bekommen. Nach wenigen Tagen hatte ich ihre Vorgabe mit erfundenen Daten lauffähig gebaut und ihr per E-Mail geschickt. Daraus wurde das Pilotprojekt.
       </p>
     </Fragment>
 
-    <Fragment slot="approach">
-      <ul class="list-disc pl-5 space-y-3 marker:text-text-secondary/50">
-        <li class="pl-1">
-          Ein Kauf in MindBody startet das Szenario über einen Webhook, weil der
-          MindBody-Connector für Make keinen Auslöser für Verkäufe hat. MindBody signiert jede Zustellung, aber ein
-          einfacher Make-Webhook kann diese Signatur nicht prüfen, deshalb prüft diese
-          Arbeitsprobe sie nicht. Die Begleitseite beschreibt den kleinen vorgeschalteten
-          Dienst, der das übernehmen würde.
-        </li>
-        <li class="pl-1">
-          Es wartet etwa zehn Minuten und sieht dann nach, ob ein Termin des Kurses
-          gebucht ist. In MindBody liest es nur, es bucht und ändert dort nichts. Ist
-          noch nichts gebucht, bittet es die Eltern per E-Mail um ihre Wunschtermine
-          und hält an. Die Buchung schließt das Team dann von Hand ab.
-        </li>
-        <li class="pl-1">
-          Mit einem Häkchen am Kontakt kann das Team die Wartezeit und die
-          Buchungsprüfung überspringen. Die Datensätze werden trotzdem aktualisiert.
-        </li>
-        <li class="pl-1">
-          Als Klassenliste nimmt es die Liste, deren Zeitraum den gebuchten Termin
-          enthält und deren Name zur Stufe des Kurses passt und dazu, ob er vor Ort oder
-          online stattfindet. Die Listennamen folgen keinem festen Muster. Deshalb
-          wertet ein kleines Programm außerhalb von Make die Namen aus, und das
-          Szenario ruft es auf. Passt
-          keine Liste oder mehr als eine, meldet das Szenario den Fall mit allen
-          Angaben per E-Mail an die Verwaltung und ändert nichts.
-        </li>
-        <li class="pl-1">
-          Bevor es etwas schreibt, prüft es, ob der Kontakt schon auf dieser Liste
-          steht. Dann endet der Lauf dort, weil ein früherer Lauf oder ein Mensch den
-          Kontakt schon eingetragen hat. Das fängt wiederholte Zustellungen ab. Zwei Zustellungen
-          wenige Sekunden nacheinander oder ein Lauf, der mittendrin abbricht, brauchen
-          den Eintrag im Datenspeicher, den die Begleitseite beschreibt.
-        </li>
-        <li class="pl-1">
-          Danach trägt es den Kurs in die Kurshistorie des Kontakts ein, ohne frühere
-          Kurse zu überschreiben, nimmt den Kontakt in die Klassenliste auf, schreibt
-          als Nachweis außerhalb beider Systeme eine Zeile in ein Google Sheet und
-          benachrichtigt das Team, wenn die Regeln des Kurses das vorsehen. In HubSpot schreibt es nur Felder mit eigenem Präfix und lässt alle anderen Felder unberührt.
-        </li>
-        <li class="pl-1">
-          Die Bestätigung an die Eltern entsteht aus einer HubSpot-Vorlage, geht aber
-          zuerst als Entwurf an die Verwaltung. Ein Mensch gibt den Wortlaut frei, bevor
-          die Familie ihn zu sehen bekommt.
-        </li>
-      </ul>
+    <Fragment slot="runs">
+      <p>
+        Ihre Automation für Kursanmeldungen ist in Betrieb. Bucht eine Familie in MindBody einen Kurs, aktualisiert Make das Segment der Familie in HubSpot, trägt den Schüler in die Teilnehmerliste ein, benachrichtigt ihre Assistenz, wenn ein weiterer Schritt nötig ist, und bereitet die Bestätigungsmail vor. Seitdem sind weitere Abläufe in ihrem Team dazugekommen, darunter das Offboarding von Mitarbeitern.
+      </p>
     </Fragment>
 
-    <Fragment slot="demonstrates">
+    <Fragment slot="how">
       <p>
-        Eine Begleitseite spielt den ganzen Ablauf an einem erfundenen Schüler durch
-        und zeigt, was jeder Schritt liest und schreibt. Dazu gehören ein
-        importierbarer Make-Blueprint mit zwanzig Modulen in drei Routen und ein
-        Runbook, das jedes Modul beschreibt.
-      </p>
-      <p>
-        Ich habe das Szenario in ein echtes Make-Konto importiert und dort laufen
-        lassen. Die Änderungen in HubSpot, die Listenmitgliedschaft und die Zeile im
-        Sheet habe ich mit echten Testkonten geprüft. Die Abfragen an MindBody und die
-        Listenauswahl liefen gegen einen Nachbau der MindBody-API, und bei den E-Mails
-        habe ich geprüft, dass jeder Pfad die richtige Sendeentscheidung trifft.
-      </p>
-      <p>
-        Der erste echte Lauf hat zwei Fehler gefunden, die eine reine Strukturprüfung
-        des Blueprints nicht bemerkt hatte. Einige handgeschriebene HTTP-Module
-        scheiterten erst zur Laufzeit, und Make wertete einen Filterausdruck als leeren
-        Wert aus, sodass der Filter alles durchließ. Beides habe ich in dem Skript
-        behoben, das den Blueprint erzeugt, und den Lauf danach fehlerfrei wiederholt.
-      </p>
-      <p>
-        Gebaut habe ich den Demonstrator nach dieser Spezifikation, mit
-        erfundenen Daten und ohne Zugriff auf die Konten des Anbieters.
+        Alles läuft in The StudyPros eigenem Make-Konto mit eigenen Verbindungen. Die Szenarien gehören also dem Unternehmen und nicht mir. Jeden Aufbau teste ich, bevor er in Betrieb geht.
       </p>
     </Fragment>
-  </CaseStudy>
+
+    <Fragment slot="review">
+      <p>Quick update for anyone who finds this thread: we hired Christo Wilken, and I'm glad we did.</p>
+      <p>We talked to five candidates. Christo stood out because he sent a working demo up front and was transparent about his approach and pricing from day one. Our course registration automation is now live: when a family books a course in MindBody, Make handles the HubSpot segment, adds them to our roster sheet, alerts our VA when there's a follow-up step, and drafts the confirmation email. That used to be a pile of manual steps for our front desk every time someone registered.</p>
+      <p>He's now helping with our staff offboarding automation too. Highly recommend.</p>
+    </Fragment>
+  </ClientCaseStudy>
 </Layout>

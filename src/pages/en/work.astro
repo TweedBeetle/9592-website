@@ -3,8 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 import ContactCTA from '../../components/ContactCTA.astro';
 import { caseStudies, caseStudyPath } from '../../data/work';
 
-// Work index (EN mirror of /de/arbeiten). Frames the three demonstrators as work
-// samples (not customer projects / not products). No live-demo URLs (win-flip).
+// Work index (EN mirror of /de/arbeiten). Two demonstrators framed as work samples
+// (not customer projects / not products) and one named client project (The StudyPro).
+// No live-demo URLs.
 const lang = 'en' as const;
 
 const cards: Record<string, { title: string; teaser: string }> = {
@@ -19,9 +20,9 @@ const cards: Record<string, { title: string; teaser: string }> = {
       'A two-stage editorial workflow with review, a diff view, an audit log, and automated reminders that keeps a public dataset current.',
   },
   'course-sync': {
-    title: 'Make.com automation for course enrollments',
+    title: 'Make.com automations for The StudyPro',
     teaser:
-      'A Make.com scenario that turns a MindBody course purchase into HubSpot updates, a class list entry, an audit row and a parent confirmation that staff approve first.',
+      'Course purchases in MindBody flowing into HubSpot, a roster sheet and drafted confirmation emails, for a tutoring business in Virginia.',
   },
 };
 ---
@@ -30,18 +31,19 @@ const cards: Record<string, { title: string; teaser: string }> = {
   lang={lang}
   pageKey="arbeiten"
   title="Work · 9592 Solutions"
-  description="Three demonstrators built as work samples: two web applications you can test in the browser and a Make.com automation. Live demo on request."
+  description="Two web applications built as work samples that you can test in the browser, and Make.com automations for my client The StudyPro."
 >
   <main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
     <section class="mb-12">
       <p class="font-mono text-sm text-text-secondary mb-3 uppercase tracking-wider">Work</p>
       <h1 class="text-3xl md:text-4xl font-semibold text-text-primary leading-tight mb-6">
-        Demonstrators and work samples
+        Two work samples and a client project
       </h1>
       <p class="text-lg text-text-secondary leading-relaxed">
-        Two web applications you can test in the browser and a Make.com automation
-        with a walkthrough page. They are work samples built to show how I work, not
-        customer projects and not products. I can give you a live demo on request.
+        Two web applications you can test in the browser, and Make.com automations
+        for my client The StudyPro. The two web applications are work samples built to
+        show how I work, not customer projects and not products. I can give you a live
+        demo of either on request.
       </p>
     </section>
 
@@ -55,7 +57,7 @@ const cards: Record<string, { title: string; teaser: string }> = {
             >
               <div>
                 <p class="font-mono text-[11px] text-text-secondary uppercase tracking-wider mb-2">
-                  Demonstrator / work sample
+                  {study.eyebrow?.[lang] ?? 'Demonstrator / work sample'}
                 </p>
                 <h2 class="text-text-primary font-medium text-lg mb-1.5 group-hover:text-accent transition-colors">
                   {cards[study.key].title}

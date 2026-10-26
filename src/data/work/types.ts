@@ -44,6 +44,9 @@ export interface CaseStudy {
   /** Optional replacement for the shared label definition under the title, for a
    *  demonstrator that is not a browser app (e.g. an automation with a walkthrough). */
   labelDef?: Record<Locale, string>;
+  /** Card and page label above the title. Defaults to the demonstrator label;
+   *  a client project sets its own (e.g. "Client project"). */
+  eyebrow?: Record<Locale, string>;
   /** Gallery, ordered to follow the case study's approach narrative. */
   images: WorkImage[];
 }

@@ -1,0 +1,163 @@
+---
+import { localizedPath } from '../i18n/utils';
+import type { Locale } from '../i18n/routes';
+import type { CaseStudy } from '../data/work/types';
+
+// A named client project. Unlike CaseStudy.astro (the demonstrator template), it has
+// no "work sample" framing, no gallery, and a quoted client review. Styling follows
+// CaseStudy.astro so the work section reads as one system. Section copy lives in the
+// page's slots; the labels below are per-locale. The end box offers a SEPARATE
+// demonstrator on invented data, never access to the client's system.
+
+interface Props {
+  lang: Locale;
+  study: CaseStudy;
+  title: string;
+  /** The line under the heading. */
+  subtitle: string;
+  /** Public URL of the client's review; the attribution line links to it. */
+  reviewUrl: string;
+  /** Attribution line under the quote (the review's own sign-off). */
+  reviewBy: string;
+}
+
+const { lang, study, title, subtitle, reviewUrl, reviewBy } = Astro.props;
+
+const c = {
+  de: {
+    back: 'Alle Arbeiten',
+    starting: 'Der Ausgangspunkt',
+    runs: 'Was heute läuft',
+    how: 'Wie gearbeitet wird',
+    wrote: 'Was sie geschrieben hat',
+    requestHeadline: 'Live-Demo auf Anfrage',
+    requestBody:
+      'Ich stelle Ihnen gerne einen eigenen Demonstrator mit erfundenen Daten zum Testen bereit. Er ist nicht das System von The StudyPro.',
+    requestLink: 'Zugang anfragen',
+  },
+  en: {
+    back: 'All work',
+    starting: 'The starting point',
+    runs: 'What runs now',
+    how: 'How the work is done',
+    wrote: 'What she wrote',
+    requestHeadline: 'Live demo on request',
+    requestBody:
+      "I'd be happy to give you access to a separate demonstrator, built on invented data, so you can test it. It is not The StudyPro's system.",
+    requestLink: 'Request access',
+  },
+}[lang];
+
+const workIndexHref = localizedPath('arbeiten', lang);
+const contactHref = localizedPath('kontakt', lang);
+---
+
+<main id="main" class="max-w-3xl mx-auto px-6 py-16 md:py-20">
+  <a
+    href={workIndexHref}
+    class="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors mb-8"
+  >
+    <span class="deco-arrow-l" aria-hidden="true"></span>
+    <span>{c.back}</span>
+  </a>
+
+  <header class="mb-12">
+    {study.eyebrow && (
+      <p class="font-mono text-xs text-text-secondary mb-4 uppercase tracking-wider">{study.eyebrow[lang]}</p>
+    )}
+    <h1 class="text-3xl md:text-4xl font-semibold text-text-primary leading-tight mb-4">{title}</h1>
+    <p class="text-text-secondary leading-relaxed">{subtitle}</p>
+  </header>
+
+  <section class="mb-14">
+    <h2 class="font-mono text-sm text-text-secondary mb-4 uppercase tracking-wider">{c.starting}</h2>
+    <div class="space-y-4 text-text-secondary leading-relaxed">
+      <slot name="starting" />
+    </div>
+  </section>
+
+  <section class="mb-14">
+    <h2 class="font-mono text-sm text-text-secondary mb-4 uppercase tracking-wider">{c.runs}</h2>
+    <div class="space-y-4 text-text-secondary leading-relaxed">
+      <slot name="runs" />
+    </div>
+  </section>
+
+  <section class="mb-14">
+    <h2 class="font-mono text-sm text-text-secondary mb-4 uppercase tracking-wider">{c.how}</h2>
+    <div class="space-y-4 text-text-secondary leading-relaxed">
+      <slot name="how" />
+    </div>
+  </section>
+
+  <section class="mb-14">
+    <h2 class="font-mono text-sm text-text-secondary mb-4 uppercase tracking-wider">{c.wrote}</h2>
+    <figure class="review m-0">
+      <blockquote lang="en" cite={reviewUrl} class="space-y-4 text-text-primary leading-relaxed">
+        <slot name="review" />
+      </blockquote>
+      <figcaption class="text-text-secondary text-sm mt-4">
+        <a href={reviewUrl} target="_blank" rel="noopener noreferrer" class="review-link">{reviewBy}</a>
+      </figcaption>
+    </figure>
+  </section>
+
+  <aside class="demo-callout">
+    <p class="demo-headline">{c.requestHeadline}</p>
+    <p class="demo-body">{c.requestBody}</p>
+    <a href={contactHref} class="demo-link">{c.requestLink} <span class="deco-arrow-r" aria-hidden="true"></span></a>
+  </aside>
+</main>
+
+<style>
+  .review {
+    border-left: 2px solid var(--color-bg-secondary);
+    padding-left: 20px;
+  }
+
+  .review-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    border-radius: 4px;
+  }
+
+  .review-link:hover { color: var(--color-accent-hover); }
+
+  .demo-callout {
+    background: var(--color-bg-secondary);
+    border-radius: 10px;
+    padding: 24px 28px;
+  }
+
+  .demo-headline {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 6px;
+  }
+
+  .demo-body {
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+
+  .demo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-accent);
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+
+  .demo-link:hover { color: var(--color-accent-hover); }
+
+  .demo-link:focus-visible,
+  .review-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+</style>
