@@ -29,3 +29,5 @@ In der Regel schließe ich den Vertrag direkt mit dem Auftraggeber. Ich arbeite 
 ## Left as they are
 
 The homepage says "You work directly with the developer doing the work, you have one contracting party, and there is nobody in between" (German the same). I left it: it describes what a direct client gets, and it does not refuse agency work. The services page's search description ("One developer, direct contracting") stays for the same reason.
+
+[[Note: lgtm]]
