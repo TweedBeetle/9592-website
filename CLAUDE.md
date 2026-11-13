@@ -207,6 +207,10 @@ npx vercel --prod # Deploy production
 
 For pixel-perfect adjustments, use Playwright's `browser_evaluate()` to tweak styles in real-time before committing to code.
 
+## Rulings
+
+Christo's rulings on what the site says are in `RULINGS.md` (verbatim, append-only). Read it before changing copy.
+
 ## Reference Material
 
 For profile content and project details: `~/memex/2_Areas/Self/Profile/`
