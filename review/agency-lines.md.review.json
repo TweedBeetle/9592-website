@@ -1,0 +1,202 @@
+{
+ "path": "/Users/christo/projects/9592-website/review/agency-lines.md",
+ "repo": "9592-website",
+ "arc": "9592-website/review",
+ "split": "dev",
+ "content_hash": "47516f1d3870301364f8361486eea98b534cd6068a079ec099a07c2c405d6320",
+ "run_id": "c1d4e969e52d",
+ "holistic": {
+  "verdict": "findings",
+  "reason": "The proposed services copy allows agency engagements while the retained homepage copy still promises that nobody is in between.",
+  "findings": [
+   {
+    "id": "H1",
+    "level": "claims",
+    "severity": "red",
+    "kind": "span",
+    "line": 31,
+    "span": "I left it: it describes what a direct client gets, and it does not refuse agency work.",
+    "concern": "The homepage does not say this applies only to direct engagements. Readers see an unqualified promise that there is nobody in between, which conflicts with the agency arrangement now offered on the services pages.",
+    "evidence": "Client-relations test: \"Did they just see a precedent this contradicts, in speed, price, or scope?\"",
+    "correction": "Explicitly qualify the homepage promise as applying to direct engagements, and check whether the search description needs the same qualification.",
+    "missing_info": null,
+    "source": "holistic",
+    "span_found": true
+   }
+  ],
+  "model": "codex:gpt-6.1-sol@medium",
+  "prompt_version": "2026-11-04.1",
+  "usage": {
+   "prompt_tokens": 7201,
+   "completion_tokens": 379,
+   "cached_prompt_tokens": 2688,
+   "reasoning_tokens": 196,
+   "parse_retries": 0
+  },
+  "cost_usd": 0.0,
+  "latency_ms": 19531,
+  "provider": "codex-exec:gpt-6.1-sol:medium",
+  "material": {
+   "rulings": {
+    "repo": "9592-website",
+    "path": "/Users/christo/projects/9592-website/RULINGS.md",
+    "total": 0,
+    "used": 0,
+    "heldout_dropped": 0,
+    "sha": null
+   },
+   "examples": [
+    {
+     "arc": "creator-assistants/sailrite",
+     "origin": "gold/conduct",
+     "level": "strategy",
+     "rule": "CANDIDATE:ease-words-deflate-price",
+     "score": 0.1788,
+     "note": ""
+    },
+    {
+     "arc": "schlachthof-kassel/Users",
+     "origin": "gold/conduct",
+     "level": "conduct",
+     "rule": "CANDIDATE:actions-consistent-with-what-we-told-her",
+     "score": 0.165,
+     "note": "Aren't we representing this being done later to the other party, so shouldn't we represent it differently to her? And ju"
+    },
+    {
+     "arc": "mom-health-support/script",
+     "origin": "gold/instances",
+     "level": "prose",
+     "rule": "CANDIDATE:soften-direct-question-to-wonder",
+     "score": 0.1397,
+     "note": "(edit, no note) 'Ich frage mich ob ...' — two stacked direct questions in a row turned into one question + one 'I wonder"
+    },
+    {
+     "arc": "b2y/plenty",
+     "origin": "gold/instances",
+     "level": "prose",
+     "rule": "CANDIDATE:constructed-non-idiom",
+     "score": 0.1281,
+     "note": ""
+    },
+    {
+     "arc": "linkedin-dms",
+     "origin": "gold/instances",
+     "level": "prose",
+     "rule": "CANDIDATE:self-label-optional-in-casual-german",
+     "score": 0.1211,
+     "note": "In German casual DM context, labeling yourself feels stiff."
+    },
+    {
+     "arc": "schlachthof-kassel/scoping",
+     "origin": "gold/conduct",
+     "level": "sentence",
+     "rule": "CANDIDATE:solo-operator-our",
+     "score": 0.118,
+     "note": "Also, it says \"wir\", W-I-R, but it should be... Ich, right? Why didn't this get flagged? Didn't we have this as a lintin"
+    },
+    {
+     "arc": "creator-assistants/sailrite",
+     "origin": "retro/A-001",
+     "level": "strategy",
+     "rule": null,
+     "score": 0.1165,
+     "note": "(strike)"
+    },
+    {
+     "arc": "make-work/research",
+     "origin": "gold/conduct",
+     "level": "conduct",
+     "rule": "CANDIDATE:prescribing-the-arrangement",
+     "score": 0.1164,
+     "note": "This is way too assertive language here. No? I mean, depending what if you mean, because we're proposing how it'd work f"
+    },
+    {
+     "arc": "zach-ddjt",
+     "origin": "gold/instances",
+     "level": "prose",
+     "rule": "unsigned-conditional-mood",
+     "score": 0.1035,
+     "note": "will be part of the work"
+    },
+    {
+     "arc": "creator-assistants/sailrite",
+     "origin": "gold/instances",
+     "level": "content",
+     "rule": "CANDIDATE:restate-the-question-in-a-reply",
+     "score": 0.0927,
+     "note": "First answer paragraph of a reply to a four-question email. Christo: 'Maybe reiterate the question here so it doesn't ha"
+    },
+    {
+     "arc": "linkedin-dms",
+     "origin": "gold/instances",
+     "level": "prose",
+     "rule": "recency-honesty",
+     "score": 0.0908,
+     "note": "Downgraded both duration and intensity. Don't overstate how deep you are."
+    },
+    {
+     "arc": null,
+     "origin": "gold/instances",
+     "level": "prose",
+     "rule": "cold-email-cta",
+     "score": 0.0903,
+     "note": "Feels like work."
+    }
+   ],
+   "corpus_rows": 812,
+   "tests_chars": 1109,
+   "prompt_chars": 13540,
+   "exclude_arc": null
+  },
+  "cached": false,
+  "prompt_sha": "786b1d857a319337a044c148ac8e99398129ace9f8ac11c5361812471fafe287"
+ },
+ "lint": {
+  "register": "all",
+  "words": 336,
+  "tiers": "01",
+  "total": 0,
+  "by_severity": {},
+  "shadow_logged": 2,
+  "actionable_only": false,
+  "scan_status": "complete",
+  "rules_failed": [],
+  "tiers_completed": [
+   "t0",
+   "t1"
+  ],
+  "content_hash": "47516f1d3870301364f8361486eea98b534cd6068a079ec099a07c2c405d6320",
+  "engine_version": "1.0.0",
+  "t1_cost": 0.0,
+  "t1_calls": 2,
+  "t1_status": "ok",
+  "t1_note": null,
+  "t1_rules_failed": [],
+  "t1_unmeasured_hosts": [],
+  "footer": "Findings are candidates against named rules, not a generation target. Apply each rule's test; fix surgically or justify; never rebuild the draft to pass.",
+  "rc": 0,
+  "stderr": ""
+ },
+ "lint_findings": [],
+ "merged": [
+  {
+   "id": "H1",
+   "level": "claims",
+   "severity": "red",
+   "kind": "span",
+   "line": 31,
+   "span": "I left it: it describes what a direct client gets, and it does not refuse agency work.",
+   "concern": "The homepage does not say this applies only to direct engagements. Readers see an unqualified promise that there is nobody in between, which conflicts with the agency arrangement now offered on the services pages.",
+   "evidence": "Client-relations test: \"Did they just see a precedent this contradicts, in speed, price, or scope?\"",
+   "correction": "Explicitly qualify the homepage promise as applying to direct engagements, and check whether the search description needs the same qualification.",
+   "missing_info": null,
+   "source": [
+    "holistic"
+   ],
+   "span_found": true
+  }
+ ],
+ "prose_lint_version": "c7bfa0b",
+ "registry_version": "f16e484d310f",
+ "ts": "2026-11-13T10:47:30+0100"
+}
